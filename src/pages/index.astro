@@ -1,0 +1,363 @@
+---
+const REFRESH_SECONDS = 60;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Clima en vivo de Chivilcoy, datos de la estación local." />
+    <title>Clima Chivilcoy</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #10131a;
+        --card: #171b24;
+        --card-2: #1e2430;
+        --text: #e8ecf1;
+        --muted: #8b97a8;
+        --accent: #4cc2ff;
+        --warm: #ff9f5a;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: radial-gradient(1200px 600px at 50% -10%, #1b2230, var(--bg));
+        color: var(--text);
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        display: flex;
+        justify-content: center;
+        padding: 24px 16px 40px;
+      }
+      .app {
+        width: 100%;
+        max-width: 720px;
+      }
+      .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+      h1 {
+        font-size: 1.2rem;
+        margin: 0;
+        letter-spacing: 0.2px;
+      }
+      .muted {
+        color: var(--muted);
+        margin: 4px 0 0;
+        font-size: 0.82rem;
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--muted);
+        box-shadow: 0 0 0 0 rgba(76, 194, 255, 0.5);
+        transition: background 0.3s;
+      }
+      .dot.is-live {
+        background: #4ade80;
+        animation: pulse 2s infinite;
+      }
+      .dot.is-error {
+        background: #f87171;
+      }
+      @keyframes pulse {
+        0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.5); }
+        70% { box-shadow: 0 0 0 8px rgba(74, 222, 128, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+      }
+      .hero {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 16px;
+        background: linear-gradient(160deg, var(--card-2), var(--card));
+        border-radius: 20px;
+        padding: 24px;
+        margin-bottom: 16px;
+      }
+      .temp {
+        font-size: 4.6rem;
+        font-weight: 600;
+        line-height: 0.95;
+      }
+      .temp .unit {
+        font-size: 1.6rem;
+        font-weight: 400;
+        color: var(--muted);
+        margin-left: 4px;
+      }
+      .feels {
+        color: var(--muted);
+        margin: 8px 0 0;
+        font-size: 0.95rem;
+      }
+      .extremes {
+        text-align: right;
+        font-size: 0.9rem;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+      .extremes b {
+        color: var(--text);
+      }
+      .card {
+        background: var(--card);
+        border-radius: 16px;
+        padding: 18px;
+      }
+      .forecast {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+      .forecast img {
+        width: 56px;
+        height: 56px;
+      }
+      .forecast-temp {
+        font-size: 1.8rem;
+        font-weight: 600;
+        margin: 0;
+      }
+      .forecast p {
+        margin: 0;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+      .metric {
+        background: var(--card);
+        border-radius: 14px;
+        padding: 14px 16px;
+      }
+      .metric .label {
+        color: var(--muted);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .metric .value {
+        font-size: 1.45rem;
+        font-weight: 600;
+        margin-top: 6px;
+      }
+      .metric .value small {
+        font-size: 0.8rem;
+        font-weight: 400;
+        color: var(--muted);
+        margin-left: 4px;
+      }
+      .metric .sub {
+        color: var(--muted);
+        font-size: 0.78rem;
+        margin-top: 4px;
+      }
+      .sun-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 14px;
+      }
+      footer {
+        margin-top: 22px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 0.75rem;
+        line-height: 1.6;
+      }
+      footer a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      @media (max-width: 460px) {
+        .temp { font-size: 3.6rem; }
+        .hero { flex-direction: column; align-items: flex-start; }
+        .extremes { text-align: left; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app">
+      <header class="top">
+        <div>
+          <h1>Clima Chivilcoy</h1>
+          <p class="muted" data-field="updated">Cargando datos...</p>
+        </div>
+        <span class="dot" data-status></span>
+      </header>
+
+      <section class="hero">
+        <div>
+          <div class="temp"><span data-field="temperature">--</span><span class="unit">°C</span></div>
+          <p class="feels">Sensación térmica <span data-field="feelsLike">--</span>°</p>
+        </div>
+        <div class="extremes">
+          <div>Máx <b data-field="temperatureMax">--</b>°</div>
+          <div>Mín <b data-field="temperatureMin">--</b>°</div>
+        </div>
+      </section>
+
+      <section class="card forecast">
+        <img data-field="forecastIcon" alt="" hidden />
+        <div>
+          <p class="forecast-temp"><span data-field="forecastTemp">--</span>°</p>
+          <p class="muted" data-field="forecastSummary">Sin pronóstico</p>
+        </div>
+      </section>
+
+      <section class="grid">
+        <article class="metric">
+          <div class="label">Humedad</div>
+          <div class="value"><span data-field="humidity">--</span><small>%</small></div>
+          <div class="sub">Máx <span data-field="humidityMax">--</span>% · Mín <span data-field="humidityMin">--</span>%</div>
+        </article>
+        <article class="metric">
+          <div class="label">Punto de rocío</div>
+          <div class="value"><span data-field="dewpoint">--</span><small>°C</small></div>
+          <div class="sub" data-field="dewpointTrend">--</div>
+        </article>
+        <article class="metric">
+          <div class="label">Presión</div>
+          <div class="value"><span data-field="pressure">--</span><small>hPa</small></div>
+          <div class="sub" data-field="pressureTrend">--</div>
+        </article>
+        <article class="metric">
+          <div class="label">Viento</div>
+          <div class="value"><span data-field="windAvg">--</span><small>km/h</small></div>
+          <div class="sub">Ráfaga <span data-field="windMax">--</span> km/h</div>
+        </article>
+        <article class="metric">
+          <div class="label">Lluvia hoy</div>
+          <div class="value"><span data-field="rainToday">--</span><small>mm</small></div>
+          <div class="sub">Mes <span data-field="rainMonth">--</span> mm</div>
+        </article>
+        <article class="metric">
+          <div class="label">Intensidad de lluvia</div>
+          <div class="value"><span data-field="rainRate">--</span><small>mm/h</small></div>
+          <div class="sub">Recorrido del viento <span data-field="windRun">--</span> km</div>
+        </article>
+      </section>
+
+      <section class="card">
+        <div class="sun-grid">
+          <div>
+            <div class="label">Amanecer</div>
+            <div class="value" data-field="sunrise">--</div>
+          </div>
+          <div>
+            <div class="label">Atardecer</div>
+            <div class="value" data-field="sunset">--</div>
+          </div>
+          <div>
+            <div class="label">Luz diurna</div>
+            <div class="value" data-field="daylight">--</div>
+          </div>
+          <div>
+            <div class="label">Luna</div>
+            <div class="value" data-field="moonPhase">--</div>
+            <div class="sub"><span data-field="moonLuminance">--</span>% iluminada</div>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        Datos en vivo de <a href="https://climachivilcoy.com.ar/">ClimaChivilcoy</a> ·
+        actualización automática cada {REFRESH_SECONDS} s
+      </footer>
+    </main>
+
+    <script>
+      const REFRESH_MS = 60_000;
+
+      const fmt = (value: number | null, digits = 1): string =>
+        value === null || value === undefined ? "--" : value.toFixed(digits);
+
+      const setField = (name: string, value: string): void => {
+        document.querySelectorAll<HTMLElement>(`[data-field="${name}"]`).forEach((el) => {
+          el.textContent = value;
+        });
+      };
+
+      const setStatus = (state: "live" | "error" | "idle"): void => {
+        const dot = document.querySelector<HTMLElement>("[data-status]");
+        if (!dot) return;
+        dot.classList.toggle("is-live", state === "live");
+        dot.classList.toggle("is-error", state === "error");
+      };
+
+      const updatedLabel = (seconds: number | null): string => {
+        if (seconds === null) return "Actualizado recientemente";
+        if (seconds < 60) return `Actualizado hace ${seconds} s`;
+        const minutes = Math.round(seconds / 60);
+        return `Actualizado hace ${minutes} min`;
+      };
+
+      const render = (data: Record<string, any>): void => {
+        setField("temperature", fmt(data.temperature));
+        setField("feelsLike", fmt(data.feelsLike, 0));
+        setField("temperatureMax", fmt(data.temperatureMax));
+        setField("temperatureMin", fmt(data.temperatureMin));
+        setField("humidity", data.humidity === null ? "--" : String(data.humidity));
+        setField("humidityMax", data.humidityMax === null ? "--" : String(data.humidityMax));
+        setField("humidityMin", data.humidityMin === null ? "--" : String(data.humidityMin));
+        setField("dewpoint", fmt(data.dewpoint));
+        setField("dewpointTrend", data.dewpointTrend ?? "--");
+        setField("pressure", data.pressure === null ? "--" : String(data.pressure));
+        setField("pressureTrend", data.pressureTrend ?? "--");
+        setField("windAvg", fmt(data.windAvg));
+        setField("windMax", fmt(data.windMax));
+        setField("windRun", fmt(data.windRun, 0));
+        setField("rainToday", fmt(data.rainToday));
+        setField("rainMonth", fmt(data.rainMonth));
+        setField("rainRate", fmt(data.rainRate));
+        setField("sunrise", data.sunrise ?? "--");
+        setField("sunset", data.sunset ?? "--");
+        setField("daylight", data.daylight ? `${data.daylight} h` : "--");
+        setField("moonPhase", data.moonPhase ?? "--");
+        setField("moonLuminance", fmt(data.moonLuminance, 0));
+        setField("forecastTemp", fmt(data.forecast?.temperature, 0));
+        setField("forecastSummary", data.forecast?.summary ?? "Sin pronóstico");
+
+        const icon = document.querySelector<HTMLImageElement>('[data-field="forecastIcon"]');
+        if (icon) {
+          if (data.forecast?.icon) {
+            icon.src = data.forecast.icon;
+            icon.hidden = false;
+          } else {
+            icon.hidden = true;
+          }
+        }
+
+        setField("updated", updatedLabel(data.sourceUpdatedSeconds));
+      };
+
+      const load = async (): Promise<void> => {
+        try {
+          const response = await fetch("/api/current", { headers: { Accept: "application/json" } });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const data = await response.json();
+          render(data);
+          setStatus("live");
+        } catch {
+          setStatus("error");
+          setField("updated", "Sin conexión con la estación");
+        }
+      };
+
+      load();
+      setInterval(load, REFRESH_MS);
+    </script>
+  </body>
+</html>
