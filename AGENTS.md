@@ -26,6 +26,8 @@ modelo de predicción propio (p. ej. WeatherNex3).
 - **TypeScript** en todo el código.
 - Gestor de paquetes: **pnpm exclusivamente**. Nunca `npm` ni `yarn`.
 - Despliegue en **Netlify Free** (`@astrojs/netlify`).
+- **Producción:** https://climachivilcoy.netlify.app/ — deploy automático desde `main`.
+  El `site` de Astro está fijado a esa URL en `astro.config.mjs`.
 - El acceso a datos va por un **endpoint server-side** (API route de Astro / Netlify Function).
 
 ## Fuente de datos

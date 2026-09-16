@@ -3,6 +3,8 @@
 App web simple para consultar el clima **en vivo** de Chivilcoy, Buenos Aires. Muestra
 las condiciones actuales y el pronóstico, con **actualización automática cada 60 segundos**.
 
+**Producción:** https://climachivilcoy.netlify.app/
+
 Está pensada para uso cotidiano y como base para, más adelante, alimentar un modelo de
 predicción propio.
 
