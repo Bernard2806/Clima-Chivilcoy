@@ -1,0 +1,19 @@
+{
+  "name": "clima-chivilcoy",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/netlify": "^8.2.6",
+    "astro": "^7.3.3"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2"
+  }
+}
