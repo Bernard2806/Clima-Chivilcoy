@@ -8,13 +8,16 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "icons": "node scripts/generate-icons.mjs",
     "astro": "astro"
   },
   "dependencies": {
     "@astrojs/netlify": "^8.2.6",
+    "@material/web": "^2.5.0",
     "astro": "^7.3.3"
   },
   "devDependencies": {
+    "sharp": "^0.35.4",
     "typescript": "^7.0.2"
   }
 }
