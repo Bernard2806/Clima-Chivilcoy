@@ -151,3 +151,11 @@ es de quienes generan, publican y mantienen la información:
 - **Stack de esta app:** [Astro](https://astro.build/), TypeScript y [Netlify](https://www.netlify.com/).
 
 Las marcas, plantillas y datos pertenecen a sus respectivos autores.
+
+## Licencia
+
+El **código** de este proyecto está bajo la licencia [MIT](./LICENSE).
+
+Los **datos meteorológicos** y las plantillas de terceros (Weather34, Meteobridge, Weather
+Underground) **no** están cubiertos por esta licencia y pertenecen a sus respectivos autores
+(ver [Créditos](#créditos)).
