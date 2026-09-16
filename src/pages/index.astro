@@ -655,47 +655,49 @@ const REFRESH_SECONDS = 60;
         ptr.style.transform = "translateY(0)";
       };
 
-      window.addEventListener(
-        "touchstart",
-        (event) => {
-          if (window.scrollY <= 0 && event.touches.length === 1) {
-            pullStartY = event.touches[0].clientY;
-            pulling = true;
-            pullDistance = 0;
-          }
-        },
-        { passive: true },
-      );
-
-      window.addEventListener(
-        "touchmove",
-        (event) => {
-          if (!pulling) return;
-          const delta = event.touches[0].clientY - pullStartY;
-          if (delta <= 0 || window.scrollY > 0) {
-            if (delta < -8) {
-              pulling = false;
-              resetPull();
+      if (isMobileOrTablet) {
+        window.addEventListener(
+          "touchstart",
+          (event) => {
+            if (window.scrollY <= 0 && event.touches.length === 1) {
+              pullStartY = event.touches[0].clientY;
+              pulling = true;
+              pullDistance = 0;
             }
-            return;
-          }
-          if (event.cancelable) event.preventDefault();
-          pullDistance = Math.min(delta * 0.5, 88);
-          setPull(pullDistance);
-        },
-        { passive: false },
-      );
+          },
+          { passive: true },
+        );
 
-      window.addEventListener("touchend", () => {
-        if (!pulling) return;
-        pulling = false;
-        if (pullDistance >= PTR_THRESHOLD) {
-          startPtrLoading();
-          load().finally(() => setTimeout(resetPull, 500));
-        } else {
-          resetPull();
-        }
-      });
+        window.addEventListener(
+          "touchmove",
+          (event) => {
+            if (!pulling) return;
+            const delta = event.touches[0].clientY - pullStartY;
+            if (delta <= 0 || window.scrollY > 0) {
+              if (delta < -8) {
+                pulling = false;
+                resetPull();
+              }
+              return;
+            }
+            if (event.cancelable) event.preventDefault();
+            pullDistance = Math.min(delta * 0.5, 88);
+            setPull(pullDistance);
+          },
+          { passive: false },
+        );
+
+        window.addEventListener("touchend", () => {
+          if (!pulling) return;
+          pulling = false;
+          if (pullDistance >= PTR_THRESHOLD) {
+            startPtrLoading();
+            load().finally(() => setTimeout(resetPull, 500));
+          } else {
+            resetPull();
+          }
+        });
+      }
 
       load();
       setInterval(load, REFRESH_MS);
