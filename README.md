@@ -128,8 +128,14 @@ La web es una **PWA**: se puede instalar como aplicación desde el navegador, si
 - **iPhone / Safari:** Compartir → **"Agregar a pantalla de inicio"**.
 - **Escritorio:** ícono de instalar en la barra de direcciones.
 
+En **teléfonos y tablets** aparece además un **botón rápido flotante** para instalar. Si la
+app ya está instalada, el botón **no se muestra**.
+
 Una vez instalada abre en pantalla completa, con su propio ícono, y se actualiza igual que en
 el navegador.
+
+Para refrescar al instante: **deslizá hacia abajo desde el tope** de la pantalla o usá el
+botón de refrescar del encabezado.
 
 ### Necesita internet
 
