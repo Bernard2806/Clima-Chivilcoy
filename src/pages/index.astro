@@ -535,47 +535,57 @@ const REFRESH_SECONDS = 60;
         setField("updated", updatedLabel(data.sourceUpdatedSeconds));
       };
 
+      const offlineBanner = document.querySelector<HTMLElement>("[data-offline]");
+      const showOffline = (offline: boolean): void => {
+        if (offlineBanner) offlineBanner.hidden = !offline;
+      };
+
       const load = async (): Promise<void> => {
         try {
-          const response = await fetch("/api/current", { headers: { Accept: "application/json" } });
+          const response = await fetch("/api/current", {
+            headers: { Accept: "application/json" },
+            cache: "no-store",
+          });
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           render(await response.json());
           setStatus("live");
+          showOffline(false);
         } catch {
+          const offline = navigator.onLine === false;
           setStatus("error");
+          showOffline(offline);
           setField(
             "updated",
-            navigator.onLine ? "No se pudo conectar con la estación" : "Sin conexión a internet",
+            offline ? "Sin conexión a internet" : "No se pudo conectar con la estación",
           );
         }
       };
 
       document.querySelector<HTMLElement>("[data-refresh]")?.addEventListener("click", load);
 
-      const offlineBanner = document.querySelector<HTMLElement>("[data-offline]");
-      const setOnline = (online: boolean): void => {
-        if (offlineBanner) offlineBanner.hidden = online;
-        if (!online) {
-          setStatus("error");
-          setField("updated", "Sin conexión a internet");
-        }
-      };
-      window.addEventListener("online", () => {
-        setOnline(true);
-        load();
+      window.addEventListener("online", () => load());
+      window.addEventListener("offline", () => {
+        setStatus("error");
+        showOffline(true);
+        setField("updated", "Sin conexión a internet");
       });
-      window.addEventListener("offline", () => setOnline(false));
       document.addEventListener("visibilitychange", () => {
         if (!document.hidden && navigator.onLine) load();
       });
-      setOnline(navigator.onLine);
 
       const isIPadOS =
         navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
       const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || isIPadOS;
+      const uaMobile = /android|iphone|ipad|ipod|mobile|tablet|silk|kindle/i.test(
+        navigator.userAgent,
+      );
+      const dataMobile = (
+        navigator as unknown as { userAgentData?: { mobile?: boolean } }
+      ).userAgentData?.mobile;
       const isMobileOrTablet =
-        /android|iphone|ipad|ipod|mobile|tablet|silk|kindle/i.test(navigator.userAgent) ||
-        isIPadOS;
+        typeof dataMobile === "boolean"
+          ? dataMobile || isIPadOS
+          : uaMobile || isIPadOS;
       const displayStandalone = (): boolean =>
         window.matchMedia("(display-mode: standalone)").matches ||
         window.matchMedia("(display-mode: minimal-ui)").matches ||
