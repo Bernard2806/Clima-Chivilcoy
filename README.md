@@ -110,6 +110,8 @@ defensivas** (°F→°C, mph/kts/m/s→km/h, inHg/mmHg→hPa, in→mm) para no m
   se renderiza en el servidor.
 - El endpoint **cachea 60 s** para no sobrecargar la fuente.
 - La UI consulta `/api/current` y se **auto-actualiza** cada 60 s.
+- La interfaz sigue **Material 3** (Material Design de Google) con los web components
+  `@material/web` e íconos **Material Symbols**.
 - Scraping/parseo aislado en `src/lib/`; UI en `src/pages/`.
 
 ### Endpoint `/api/current`
@@ -117,6 +119,24 @@ defensivas** (°F→°C, mph/kts/m/s→km/h, inHg/mmHg→hPa, in→mm) para no m
 Devuelve un JSON con, entre otros: `temperature`, `temperatureMax/Min`, `feelsLike`,
 `humidity`, `dewpoint`, `pressure`, `windAvg/Max`, `rainToday/Month/Rate`, `sunrise`,
 `sunset`, `moonPhase`, `forecast` y `sourceUpdatedSeconds`.
+
+## Instalación como app (PWA)
+
+La web es una **PWA**: se puede instalar como aplicación desde el navegador, sin tiendas.
+
+- **Android / Chrome:** botón **Instalar** (o menú ⋮ → "Instalar aplicación").
+- **iPhone / Safari:** Compartir → **"Agregar a pantalla de inicio"**.
+- **Escritorio:** ícono de instalar en la barra de direcciones.
+
+Una vez instalada abre en pantalla completa, con su propio ícono, y se actualiza igual que en
+el navegador.
+
+### Necesita internet
+
+La app **requiere conexión** para mostrar datos. Si no hay internet muestra un aviso
+("Sin conexión a internet") y el estado de error en el encabezado; al volver la conexión se
+reconecta y actualiza sola. El *app shell* (página, íconos y estilos) se cachea para que la
+app abra incluso sin conexión y pueda mostrar el aviso.
 
 ## Desarrollo
 
@@ -148,6 +168,9 @@ es de quienes generan, publican y mantienen la información:
 - **Plataforma de publicación:** **Meteobridge** (smartbedded / [meteobridge.com](https://www.meteobridge.com/)).
 - **Íconos meteorológicos:** set de **Weather34**.
 - **Texto de pronóstico:** **Weather Underground**, servido a través de Meteobridge.
+- **Logo de la app:** basado en íconos de **[Heroicons](https://heroicons.com/)** (MIT, Tailwind Labs).
+- **Interfaz (UX):** **[Material 3](https://m3.material.io/)** de Google, con `@material/web`
+  e íconos **Material Symbols** (Apache-2.0).
 - **Stack de esta app:** [Astro](https://astro.build/), TypeScript y [Netlify](https://www.netlify.com/).
 
 Las marcas, plantillas y datos pertenecen a sus respectivos autores.

@@ -84,6 +84,9 @@ Nota: la portada indica `LICENSE EXPIRED 2026-05-03`; la fuente podría disconti
 ## UI
 
 - Toda la interfaz en **español**, simple y directa.
+- Estética **Material 3** (Material Design de Google) con `@material/web` e íconos Material Symbols.
+- Web **instalable como PWA** (manifest + service worker). Requiere internet para los datos;
+  si no hay conexión, mostrar un aviso de error.
 
 ## Convenciones de código
 
