@@ -569,13 +569,12 @@ const REFRESH_SECONDS = 60;
       });
       setOnline(navigator.onLine);
 
-      const touchDevice =
-        window.matchMedia("(pointer: coarse)").matches || "ontouchstart" in window;
-      const isIOS =
-        /iphone|ipad|ipod/i.test(navigator.userAgent) ||
-        (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+      const isIPadOS =
+        navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
+      const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || isIPadOS;
       const isMobileOrTablet =
-        touchDevice || /android|iphone|ipad|ipod|mobile|tablet/i.test(navigator.userAgent);
+        /android|iphone|ipad|ipod|mobile|tablet|silk|kindle/i.test(navigator.userAgent) ||
+        isIPadOS;
       const displayStandalone = (): boolean =>
         window.matchMedia("(display-mode: standalone)").matches ||
         window.matchMedia("(display-mode: minimal-ui)").matches ||
