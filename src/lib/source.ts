@@ -1,5 +1,5 @@
 import type { CurrentWeather } from "./types";
-import { translateForecastSummary } from "./translate";
+import { buildForecast, translateForecastSummary } from "./translate";
 import {
   detectTempUnit,
   round,
@@ -276,16 +276,22 @@ export async function getCurrentWeather(): Promise<CurrentWeather> {
     moonLuminance: toNumber(pick(sunMoon, /Moon Luminance: ([\d.]+)%/)),
     moonrise: pick(sunMoon, /Next Moon Rise: (\d\d:\d\d)/),
     moonset: pick(sunMoon, /Next Moon Set: (\d\d:\d\d)/),
-    forecast: {
-      temperature: toTemperature(
-        pick(forecast, /Forecast (-?[\d.]+)\u00b0/),
-        forecastUnit,
-      ),
-      summary: translateForecastSummary(
-        pick(forecast, /Forecast -?[\d.]+ ?\u00b0 (.*)$/),
-      ),
-      icon: iconPath ? BASE_URL + iconPath : null,
-    },
+    forecast: (() => {
+      const rawSummary = pick(forecast, /Forecast -?[\d.]+ ?\u00b0 (.*)$/);
+      const parts = buildForecast(rawSummary);
+      return {
+        temperature: toTemperature(
+          pick(forecast, /Forecast (-?[\d.]+)\u00b0/),
+          forecastUnit,
+        ),
+        summary: translateForecastSummary(rawSummary),
+        icon: iconPath ? BASE_URL + iconPath : null,
+        period: parts.period,
+        periodOffsetDays: parts.periodOffsetDays,
+        condition: parts.condition,
+        details: parts.details,
+      };
+    })(),
   };
 
   return current;

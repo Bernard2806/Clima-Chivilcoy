@@ -2,6 +2,10 @@ export interface Forecast {
   temperature: number | null;
   summary: string | null;
   icon: string | null;
+  period: string | null;
+  periodOffsetDays: number | null;
+  condition: string | null;
+  details: string[];
 }
 
 export interface CurrentWeather {
