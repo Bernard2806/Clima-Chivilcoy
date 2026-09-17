@@ -24,7 +24,7 @@ const REFRESH_SECONDS = 60;
       rel="stylesheet"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&amp;icon_names=air,arrow_downward,arrow_upward,cell_tower,close,dark_mode,download,fullscreen,humidity_high,light_mode,photo_camera,rainy,refresh,speed,water,water_drop,wb_twilight,wifi_off&amp;display=block"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&amp;icon_names=air,arrow_downward,arrow_upward,cell_tower,close,dark_mode,download,fullscreen,humidity_high,light_mode,open_in_new,photo_camera,rainy,refresh,speed,thermostat,water,water_drop,wb_twilight,wifi_off&amp;display=block"
       rel="stylesheet"
     />
     <style>
@@ -423,64 +423,191 @@ const REFRESH_SECONDS = 60;
       .station-badge md-icon {
         font-size: 16px;
       }
-      .stations-note {
-        margin-left: 6px;
-        font-size: 0.7rem;
-        font-weight: 400;
-        letter-spacing: 0;
-        text-transform: none;
+      .stations-card {
+        padding: 20px;
+        margin-bottom: 14px;
+      }
+      .stations-header {
+        margin-bottom: 16px;
+      }
+      .stations-header-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .stations-badge-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 3px 10px;
+        border-radius: 999px;
+        background: rgba(109, 213, 140, 0.14);
+        border: 1px solid rgba(109, 213, 140, 0.35);
+        color: #7ee79d;
+        font-size: 0.72rem;
+        font-weight: 500;
+        letter-spacing: 0.2px;
+      }
+      .stations-badge-pill .pulse-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #6dd58c;
+        animation: pulse 2s infinite;
+      }
+      .stations-desc {
+        margin: 6px 0 0;
+        font-size: 0.78rem;
         color: var(--md-sys-color-outline);
+        line-height: 1.45;
       }
       .stations-list {
-        display: grid;
-        gap: 10px;
-        margin-top: 4px;
-      }
-      .station {
         display: flex;
         flex-direction: column;
-        gap: 8px;
-        padding: 12px 14px;
-        border-radius: 12px;
+        gap: 12px;
+      }
+      .station-card {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+        border-radius: 14px;
         background: var(--md-sys-color-surface-container-low);
         border: 1px solid var(--md-sys-color-outline-variant);
         text-decoration: none;
         color: inherit;
+        transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
       }
-      .station-top {
+      .station-card:hover,
+      .station-card:focus-visible {
+        transform: translateY(-2px);
+        background: var(--md-sys-color-surface-container);
+        border-color: var(--md-sys-color-primary);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+      }
+      .station-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 8px;
+        gap: 12px;
+      }
+      .station-identity {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+      .station-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: var(--md-sys-color-surface-container-high);
+        border: 1px solid var(--md-sys-color-outline-variant);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        padding: 4px;
+      }
+      .station-avatar img {
+        width: 26px;
+        height: 26px;
+        object-fit: contain;
+        border-radius: 4px;
+      }
+      .station-titles {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
       }
       .station-name {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        font-size: 0.9rem;
+        font-size: 0.95rem;
         font-weight: 500;
         color: var(--md-sys-color-on-surface);
-      }
-      .station-name img {
-        width: 16px;
-        height: 16px;
-        border-radius: 3px;
-      }
-      .station-age {
-        font-size: 0.7rem;
-        color: var(--md-sys-color-outline);
         white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
-      .station-vals {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 4px 16px;
-        font-size: 0.82rem;
+      .station-tag {
+        font-size: 0.72rem;
         color: var(--md-sys-color-on-surface-variant);
       }
-      .station-vals b {
-        color: var(--md-sys-color-on-surface);
+      .station-meta-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+      .station-time-badge {
+        font-size: 0.7rem;
+        color: var(--md-sys-color-outline);
+        background: var(--md-sys-color-surface-container-high);
+        padding: 3px 8px;
+        border-radius: 999px;
+        white-space: nowrap;
+      }
+      .station-open-icon {
+        color: var(--md-sys-color-outline);
+        font-size: 18px;
+        --md-icon-size: 18px;
+        transition: color 0.2s ease, transform 0.2s ease;
+      }
+      .station-card:hover .station-open-icon {
+        color: var(--md-sys-color-primary);
+        transform: translate(2px, -2px);
+      }
+      .station-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+        gap: 8px;
+      }
+      .station-tile {
+        background: var(--md-sys-color-surface-container-high);
+        border: 1px solid rgba(255, 255, 255, 0.04);
+        border-radius: 10px;
+        padding: 8px 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .station-tile-head {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.68rem;
+        color: var(--md-sys-color-on-surface-variant);
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
         font-weight: 500;
+      }
+      .station-tile-head md-icon {
+        font-size: 14px;
+        --md-icon-size: 14px;
+        color: var(--md-sys-color-primary);
+      }
+      .station-tile-val {
+        font-size: 1.15rem;
+        font-weight: 500;
+        color: var(--md-sys-color-on-surface);
+        line-height: 1.2;
+        margin-top: 2px;
+      }
+      .station-tile-val small {
+        font-size: 0.72rem;
+        font-weight: 400;
+        color: var(--md-sys-color-on-surface-variant);
+        margin-left: 2px;
+      }
+      .station-tile-sub {
+        font-size: 0.68rem;
+        color: var(--md-sys-color-outline);
+        margin-top: 1px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       .sun-grid {
         display: grid;
@@ -502,51 +629,117 @@ const REFRESH_SECONDS = 60;
         margin-top: 2px;
       }
       footer {
-        margin-top: 20px;
+        margin-top: 28px;
+        padding-top: 20px;
+        border-top: 1px solid var(--md-sys-color-outline-variant);
         text-align: center;
         color: var(--md-sys-color-on-surface-variant);
-        font-size: 0.75rem;
-        line-height: 1.7;
-      }
-      footer a {
-        color: var(--md-sys-color-primary);
-        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
       }
       .socials {
         display: flex;
         justify-content: center;
-        gap: 10px;
-        margin-bottom: 14px;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin: 0;
       }
       .social {
-        width: 40px;
-        height: 40px;
+        width: 42px;
+        height: 42px;
         border-radius: 50%;
         display: inline-flex;
         align-items: center;
         justify-content: center;
         color: var(--md-sys-color-on-surface-variant);
         background: var(--md-sys-color-surface-container-high);
-        transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+        border: 1px solid var(--md-sys-color-outline-variant);
+        transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        text-decoration: none;
       }
       .social:hover,
       .social:focus-visible {
         color: var(--md-sys-color-primary);
         background: var(--md-sys-color-surface-container-highest);
+        border-color: var(--md-sys-color-primary);
         transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
       }
       .social svg {
         width: 20px;
         height: 20px;
         fill: currentColor;
       }
-      .footer-text {
-        margin: 0;
+      .social-img {
+        width: 22px;
+        height: 22px;
+        object-fit: contain;
+        border-radius: 4px;
       }
-      .footer-text img {
-        vertical-align: -2px;
+      .footer-sources {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.78rem;
+      }
+      .footer-sources-label {
+        color: var(--md-sys-color-outline);
+        font-size: 0.72rem;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+        font-weight: 500;
+      }
+      .footer-chips {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .footer-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 12px;
+        border-radius: 999px;
+        background: var(--md-sys-color-surface-container);
+        border: 1px solid var(--md-sys-color-outline-variant);
+        color: var(--md-sys-color-on-surface);
+        text-decoration: none;
+        font-size: 0.76rem;
+        font-weight: 500;
+        transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+      }
+      .footer-chip:hover,
+      .footer-chip:focus-visible {
+        border-color: var(--md-sys-color-primary);
+        background: var(--md-sys-color-surface-container-high);
+        transform: translateY(-1px);
+        color: var(--md-sys-color-primary);
+      }
+      .footer-chip img {
+        width: 14px;
+        height: 14px;
+        object-fit: contain;
         border-radius: 2px;
-        margin-right: 2px;
+      }
+      .footer-chip md-icon {
+        font-size: 14px;
+        --md-icon-size: 14px;
+        color: var(--md-sys-color-outline);
+      }
+      .footer-chip:hover md-icon {
+        color: var(--md-sys-color-primary);
+      }
+      .footer-note {
+        margin: 0;
+        font-size: 0.74rem;
+        line-height: 1.5;
+        color: var(--md-sys-color-outline);
+        max-width: 480px;
       }
       .install-fab {
         position: fixed;
@@ -721,9 +914,20 @@ const REFRESH_SECONDS = 60;
       </section>
 
       <section class="card stations-card">
-        <div class="metric-head">
-          <md-icon>cell_tower</md-icon> Estaciones
-          <span class="stations-note" data-field="stationsNote"></span>
+        <div class="stations-header">
+          <div class="stations-header-top">
+            <div class="metric-head">
+              <md-icon>cell_tower</md-icon>
+              <span>Estaciones meteorológicas</span>
+            </div>
+            <div class="stations-badge-pill" data-field="stationsBadgePill">
+              <span class="pulse-dot" aria-hidden="true"></span>
+              <span data-field="stationsBadgeCount">2 estaciones en línea</span>
+            </div>
+          </div>
+          <p class="stations-desc">
+            Red de estaciones locales en tiempo real. Tocá cualquier estación para ver su reporte oficial detallado.
+          </p>
         </div>
         <div class="stations-list" data-stations></div>
       </section>
@@ -749,28 +953,42 @@ const REFRESH_SECONDS = 60;
       </section>
 
       <footer>
-        <nav class="socials" aria-label="Redes y sitio de ClimaChivilcoy">
-          <a class="social" href="https://climachivilcoy.com.ar/" target="_blank" rel="noopener noreferrer" title="Web" aria-label="Web de ClimaChivilcoy">
+        <nav class="socials" aria-label="Enlaces y redes oficiales">
+          <a class="social" href="https://climachivilcoy.com.ar/" target="_blank" rel="noopener noreferrer" title="Web ClimaChivilcoy" aria-label="Sitio web de ClimaChivilcoy">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
           </a>
-          <a class="social" href="https://t.me/climachivilcoy" target="_blank" rel="noopener noreferrer" title="Telegram" aria-label="Canal de Telegram de ClimaChivilcoy">
+          <a class="social" href="https://chivilcoy.gov.ar/inta/" target="_blank" rel="noopener noreferrer" title="Estación INTA · Municipalidad de Chivilcoy" aria-label="Sitio web de la estación INTA en la Municipalidad de Chivilcoy">
+            <img src="/img/inta-favicon.ico" class="social-img" width="22" height="22" alt="INTA" />
+          </a>
+          <a class="social" href="https://t.me/climachivilcoy" target="_blank" rel="noopener noreferrer" title="Canal de Telegram de ClimaChivilcoy" aria-label="Canal de Telegram de ClimaChivilcoy">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.26-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
           </a>
-          <a class="social" href="https://climachivilcoy.com.ar/whatsapp" target="_blank" rel="noopener noreferrer" title="WhatsApp" aria-label="WhatsApp de ClimaChivilcoy">
+          <a class="social" href="https://climachivilcoy.com.ar/whatsapp" target="_blank" rel="noopener noreferrer" title="WhatsApp de ClimaChivilcoy" aria-label="WhatsApp de ClimaChivilcoy">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
           </a>
-          <a class="social" href="https://www.facebook.com/climachivilcoy/" target="_blank" rel="noopener noreferrer" title="Facebook" aria-label="Facebook de ClimaChivilcoy">
+          <a class="social" href="https://www.facebook.com/climachivilcoy/" target="_blank" rel="noopener noreferrer" title="Facebook de ClimaChivilcoy" aria-label="Facebook de ClimaChivilcoy">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
           </a>
         </nav>
-        <p class="footer-text">
-          Datos en vivo de
-          <a href="https://climachivilcoy.com.ar/">ClimaChivilcoy</a> y
-          <a href="https://chivilcoy.gov.ar/inta/">
-            <img src="/img/inta-favicon.ico" width="14" height="14" alt="" />
-            INTA Chivilcoy</a
-          >
-          · promedio de ambas estaciones · actualización automática cada {REFRESH_SECONDS} s
+
+        <div class="footer-sources">
+          <span class="footer-sources-label">Estaciones meteorológicas</span>
+          <div class="footer-chips">
+            <a class="footer-chip" href="https://climachivilcoy.com.ar/" target="_blank" rel="noopener noreferrer">
+              <img src="/favicon.svg" width="16" height="16" alt="" />
+              <span>ClimaChivilcoy</span>
+              <md-icon>open_in_new</md-icon>
+            </a>
+            <a class="footer-chip" href="https://chivilcoy.gov.ar/inta/" target="_blank" rel="noopener noreferrer">
+              <img src="/img/inta-favicon.ico" width="16" height="16" alt="" />
+              <span>INTA Chivilcoy</span>
+              <md-icon>open_in_new</md-icon>
+            </a>
+          </div>
+        </div>
+
+        <p class="footer-note">
+          Promedio de lecturas en vivo de ambas estaciones · Actualización automática cada {REFRESH_SECONDS} s
         </p>
       </footer>
     </main>
@@ -880,15 +1098,6 @@ const REFRESH_SECONDS = 60;
         return `hace ${(seconds / 3600).toFixed(1)} h`;
       };
 
-      const stationItem = (label: string, value: string): HTMLElement => {
-        const wrap = document.createElement("span");
-        wrap.textContent = `${label} `;
-        const b = document.createElement("b");
-        b.textContent = value;
-        wrap.appendChild(b);
-        return wrap;
-      };
-
       const renderStations = (data: Record<string, any>): void => {
         const list = document.querySelector<HTMLElement>("[data-stations]");
         const sources: Record<string, any>[] = Array.isArray(data.sources) ? data.sources : [];
@@ -896,50 +1105,114 @@ const REFRESH_SECONDS = 60;
         const badge = document.querySelector<HTMLElement>('[data-field="stationBadge"]');
         if (badge) badge.hidden = count < 2;
         if (count >= 2) setField("stationBadgeText", `${count} estaciones`);
-        setField("stationsNote", count >= 2 ? "promedio de ambas" : "");
+        setField("stationsNote", count >= 2 ? `${count} activas` : "");
+
+        const pill = document.querySelector<HTMLElement>('[data-field="stationsBadgePill"]');
+        if (pill) {
+          pill.hidden = count === 0;
+          const countEl = pill.querySelector<HTMLElement>('[data-field="stationsBadgeCount"]');
+          if (countEl) countEl.textContent = count >= 2 ? `${count} estaciones en línea` : `${count} estación en línea`;
+        }
+
         if (!list) return;
         list.textContent = "";
         for (const s of sources) {
-          const row = document.createElement("a");
-          row.className = "station";
-          row.href = s.url;
-          row.target = "_blank";
-          row.rel = "noopener noreferrer";
+          const card = document.createElement("a");
+          card.className = "station-card";
+          card.href = s.url;
+          card.target = "_blank";
+          card.rel = "noopener noreferrer";
+          card.title = `Abrir reporte oficial de ${s.name}`;
 
-          const top = document.createElement("div");
-          top.className = "station-top";
-          const name = document.createElement("span");
-          name.className = "station-name";
+          const header = document.createElement("div");
+          header.className = "station-header";
+
+          const identity = document.createElement("div");
+          identity.className = "station-identity";
+
+          const avatar = document.createElement("div");
+          avatar.className = "station-avatar";
+          const img = document.createElement("img");
           if (s.key === "inta") {
-            const img = document.createElement("img");
             img.src = "/img/inta-favicon.ico";
-            img.alt = "";
-            img.width = 16;
-            img.height = 16;
-            name.appendChild(img);
+            img.alt = "INTA";
+          } else {
+            img.src = "/favicon.svg";
+            img.alt = "ClimaChivilcoy";
           }
-          const nameText = document.createElement("span");
-          nameText.textContent = s.name;
-          name.appendChild(nameText);
-          const age = document.createElement("span");
-          age.className = "station-age";
-          age.textContent = agoShort(s.updatedSeconds ?? null);
-          top.append(name, age);
+          avatar.appendChild(img);
 
-          const vals = document.createElement("div");
-          vals.className = "station-vals";
-          vals.append(
-            stationItem("Temp", `${fmt(s.temperature ?? null)}°`),
-            stationItem("Humedad", s.humidity === null ? "--" : `${s.humidity}%`),
-            stationItem("Presión", s.pressure === null ? "--" : `${s.pressure} hPa`),
-            stationItem("Viento", s.windAvg === null ? "--" : `${fmt(s.windAvg)} km/h`),
-          );
-          if (s.windGust !== null && s.windGust !== undefined) {
-            vals.append(stationItem("Ráfaga", `${fmt(s.windGust)} km/h`));
-          }
+          const titles = document.createElement("div");
+          titles.className = "station-titles";
+          const nameEl = document.createElement("div");
+          nameEl.className = "station-name";
+          nameEl.textContent = s.name;
+          const tagEl = document.createElement("div");
+          tagEl.className = "station-tag";
+          tagEl.textContent = s.key === "inta" ? "Zona rural · Municipalidad de Chivilcoy" : "Zona urbana · Davis Vantage Pro";
+          titles.append(nameEl, tagEl);
+          identity.append(avatar, titles);
 
-          row.append(top, vals);
-          list.appendChild(row);
+          const metaRight = document.createElement("div");
+          metaRight.className = "station-meta-right";
+          const timeBadge = document.createElement("span");
+          timeBadge.className = "station-time-badge";
+          timeBadge.textContent = agoShort(s.updatedSeconds ?? null);
+
+          const linkIcon = document.createElement("md-icon");
+          linkIcon.className = "station-open-icon";
+          linkIcon.textContent = "open_in_new";
+
+          metaRight.append(timeBadge, linkIcon);
+          header.append(identity, metaRight);
+
+          const grid = document.createElement("div");
+          grid.className = "station-grid";
+
+          const createTile = (icon: string, label: string, val: string, sub?: string): HTMLElement => {
+            const tile = document.createElement("div");
+            tile.className = "station-tile";
+
+            const head = document.createElement("div");
+            head.className = "station-tile-head";
+            const ic = document.createElement("md-icon");
+            ic.textContent = icon;
+            const lb = document.createElement("span");
+            lb.textContent = label;
+            head.append(ic, lb);
+
+            const v = document.createElement("div");
+            v.className = "station-tile-val";
+            v.innerHTML = val;
+            tile.append(head, v);
+
+            if (sub) {
+              const sEl = document.createElement("div");
+              sEl.className = "station-tile-sub";
+              sEl.textContent = sub;
+              tile.appendChild(sEl);
+            }
+            return tile;
+          };
+
+          const tempVal = s.temperature !== null && s.temperature !== undefined ? `${fmt(s.temperature)}<small>°C</small>` : "--";
+          const feelsSub = s.feelsLike !== null && s.feelsLike !== undefined ? `ST ${fmt(s.feelsLike, 0)}°` : undefined;
+          grid.appendChild(createTile("thermostat", "Temp", tempVal, feelsSub));
+
+          const humVal = s.humidity !== null && s.humidity !== undefined ? `${s.humidity}<small>%</small>` : "--";
+          const dewSub = s.dewpoint !== null && s.dewpoint !== undefined ? `Rocío ${fmt(s.dewpoint)}°` : undefined;
+          grid.appendChild(createTile("humidity_high", "Humedad", humVal, dewSub));
+
+          const windVal = s.windAvg !== null && s.windAvg !== undefined ? `${fmt(s.windAvg)}<small>km/h</small>` : "--";
+          const gustSub = s.windGust !== null && s.windGust !== undefined ? `Ráfaga ${fmt(s.windGust)} km/h` : undefined;
+          grid.appendChild(createTile("air", "Viento", windVal, gustSub));
+
+          const presVal = s.pressure !== null && s.pressure !== undefined ? `${fmt(s.pressure, 0)}<small>hPa</small>` : "--";
+          const rainSub = s.rainToday !== null && s.rainToday !== undefined ? `Lluvia ${fmt(s.rainToday)} mm` : undefined;
+          grid.appendChild(createTile("speed", "Presión", presVal, rainSub));
+
+          card.append(header, grid);
+          list.appendChild(card);
         }
       };
 
