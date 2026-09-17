@@ -32,23 +32,18 @@ function valueOf(map: Map<string, IntaSensor>, name: string): number | null {
   return toNumber(map.get(name.toLowerCase())?.valor);
 }
 
+function pad(value: string): string {
+  return value.length === 2 ? value : `0${value}`;
+}
+
 function argTimestamp(value: string | null | undefined): number | null {
   if (!value) return null;
   const match = value.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})[ T](\d{1,2}):(\d{2}):(\d{2})/);
   if (!match) return null;
   const [, day, month, year, hour, minute, second] = match;
-  const utcMs =
-    Date.UTC(
-      Number(year),
-      Number(month) - 1,
-      Number(day),
-      Number(hour),
-      Number(minute),
-      Number(second),
-    ) -
-    3 * 3_600_000;
-  if (!Number.isFinite(utcMs)) return null;
-  return utcMs;
+  const iso = `${year}-${pad(month)}-${pad(day)}T${pad(hour)}:${minute}:${second}-03:00`;
+  const parsed = Date.parse(iso);
+  return Number.isFinite(parsed) ? parsed : null;
 }
 
 export async function getIntaSnapshot(): Promise<StationSnapshot | null> {
