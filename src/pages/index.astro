@@ -497,7 +497,7 @@ const REFRESH_SECONDS = 60;
             <md-icon>refresh</md-icon>
           </div>
         </div>
-        <p class="webcam-note">Imagen de la estación · se actualiza sola cada ~20 s.</p>
+        <p class="webcam-note">Cámara de la estación con lecturas · se actualiza sola cada ~15 s.</p>
       </section>
 
       <section class="grid">
@@ -574,7 +574,7 @@ const REFRESH_SECONDS = 60;
       import "@material/web/fab/fab.js";
 
       const REFRESH_MS = 60_000;
-      const CAMERA_REFRESH_MS = 20_000;
+      const CAMERA_REFRESH_MS = 15_000;
 
       const fmt = (value: number | null, digits = 1): string =>
         value === null || value === undefined ? "--" : value.toFixed(digits);
