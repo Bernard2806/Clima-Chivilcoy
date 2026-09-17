@@ -13,7 +13,7 @@ function precipitationName(kind: string): string {
 
 const RULES: Array<[RegExp, Replacer]> = [
   [
-    /\bWinds? ([NSEW]{1,3}) at (\d+) to (\d+) km\/h/gi,
+    /\bWinds? ([NSEW]{1,3})\s+(?:at\s+)?(\d+)\s+to\s+(\d+)\s+km\/h/gi,
     (_match, direction: string, from: string, to: string) =>
       `Vientos del ${orientDirection(direction)} de ${from} a ${to} km/h`,
   ],
@@ -60,4 +60,60 @@ export function translateForecastSummary(summary: string | null): string | null 
     text = text.replace(pattern, replacement);
   }
   return text;
+}
+
+interface PeriodRule {
+  pattern: RegExp;
+  label: string;
+  offsetDays: number;
+}
+
+const PERIOD_RULES: PeriodRule[] = [
+  { pattern: /^Tomorrow Night\b/i, label: "Mañana a la noche", offsetDays: 1 },
+  { pattern: /^Tonight\b/i, label: "Esta noche", offsetDays: 0 },
+  { pattern: /^Overnight\b/i, label: "Esta noche", offsetDays: 0 },
+  { pattern: /^Tomorrow\b/i, label: "Mañana", offsetDays: 1 },
+  { pattern: /^This (?:Evening|Afternoon)\b/i, label: "Hoy", offsetDays: 0 },
+  { pattern: /^Today\b/i, label: "Hoy", offsetDays: 0 },
+];
+
+export interface ForecastParts {
+  period: string | null;
+  periodOffsetDays: number | null;
+  condition: string | null;
+  details: string[];
+}
+
+export function buildForecast(raw: string | null): ForecastParts {
+  const empty: ForecastParts = {
+    period: null,
+    periodOffsetDays: null,
+    condition: null,
+    details: [],
+  };
+  if (!raw) return empty;
+
+  let text = raw.trim();
+  let period: string | null = null;
+  let periodOffsetDays: number | null = null;
+
+  for (const rule of PERIOD_RULES) {
+    const match = text.match(rule.pattern);
+    if (match) {
+      text = text.slice(match[0].length).trim();
+      period = rule.label;
+      periodOffsetDays = rule.offsetDays;
+      break;
+    }
+  }
+
+  const sentences = text
+    .split(/\.\s+/)
+    .map((sentence) => sentence.trim().replace(/\.$/, ""))
+    .filter(Boolean)
+    .map((sentence) => translateForecastSummary(sentence) ?? sentence);
+
+  const condition = sentences.shift() ?? null;
+
+  return { period, periodOffsetDays, condition, details: sentences };
 }
