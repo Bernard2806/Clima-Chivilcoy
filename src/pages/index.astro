@@ -212,23 +212,53 @@ const REFRESH_SECONDS = 60;
       .extremes b {
         color: var(--md-sys-color-on-surface);
       }
-      .forecast-row {
+      .forecast-head {
         display: flex;
         align-items: center;
-        gap: 16px;
+        gap: 12px;
+        margin-bottom: 12px;
       }
       .forecast-icon {
-        width: 56px;
-        height: 56px;
+        width: 48px;
+        height: 48px;
       }
-      .forecast-temp {
-        font-size: 1.7rem;
-        font-weight: 500;
+      .forecast-heading {
+        display: flex;
+        flex-direction: column;
       }
-      .forecast-row p {
-        margin: 2px 0 0;
-        font-size: 0.85rem;
+      .forecast-label {
+        font-size: 0.72rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
         color: var(--md-sys-color-on-surface-variant);
+      }
+      .forecast-period {
+        font-size: 1.05rem;
+        font-weight: 500;
+        color: var(--md-sys-color-primary);
+      }
+      .forecast-condition {
+        font-size: 1.35rem;
+        font-weight: 500;
+        margin-bottom: 12px;
+      }
+      .forecast-details {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .forecast-chip {
+        background: var(--md-sys-color-surface-container-high);
+        color: var(--md-sys-color-on-surface-variant);
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 0.85rem;
+      }
+      .forecast-note {
+        margin: 14px 0 0;
+        font-size: 0.72rem;
+        line-height: 1.4;
+        color: var(--md-sys-color-outline);
       }
       .grid {
         display: grid;
@@ -394,12 +424,20 @@ const REFRESH_SECONDS = 60;
         </div>
       </section>
 
-      <section class="card elevated forecast-row">
-        <img class="forecast-icon" data-field="forecastIcon" alt="" hidden />
-        <div>
-          <div class="forecast-temp"><span data-field="forecastTemp">--</span>°</div>
-          <p data-field="forecastSummary">Sin pronóstico</p>
+      <section class="card elevated forecast-card">
+        <div class="forecast-head">
+          <img class="forecast-icon" data-field="forecastIcon" alt="" hidden />
+          <div class="forecast-heading">
+            <span class="forecast-label">Pronóstico</span>
+            <span class="forecast-period" data-field="forecastPeriod">--</span>
+          </div>
         </div>
+        <div class="forecast-condition" data-field="forecastCondition">Sin pronóstico</div>
+        <div class="forecast-details" data-field="forecastDetails"></div>
+        <p class="forecast-note">
+          Estimación a partir de modelos meteorológicos (no es una medición en vivo de la
+          estación).
+        </p>
       </section>
 
       <section class="grid">
@@ -499,6 +537,50 @@ const REFRESH_SECONDS = 60;
         return `Actualizado hace ${Math.round(seconds / 60)} min`;
       };
 
+      const forecastDateLabel = (offsetDays: number | null): string => {
+        if (typeof offsetDays !== "number") return "";
+        try {
+          const date = new Date(Date.now() + offsetDays * 86_400_000);
+          return new Intl.DateTimeFormat("es-AR", {
+            weekday: "short",
+            day: "numeric",
+            month: "short",
+            timeZone: "America/Argentina/Buenos_Aires",
+          }).format(date);
+        } catch {
+          return "";
+        }
+      };
+
+      const setForecastCard = (forecast: Record<string, any> | undefined): void => {
+        const parts: string[] = [];
+        if (forecast?.period) {
+          const when = forecastDateLabel(forecast.periodOffsetDays);
+          parts.push(when ? `${forecast.period} · ${when}` : forecast.period);
+        }
+        setField("forecastPeriod", parts.join(" ") || "Próximas horas");
+
+        const fallback = forecast?.summary ?? "";
+        let condition = forecast?.condition ?? fallback;
+        if (forecast?.period && condition.toLowerCase().startsWith(forecast.period.toLowerCase())) {
+          condition = condition.slice(forecast.period.length).trim();
+        }
+        setField("forecastCondition", condition || "Sin pronóstico");
+
+        const wrap = document.querySelector<HTMLElement>('[data-field="forecastDetails"]');
+        if (wrap) {
+          wrap.textContent = "";
+          const details = Array.isArray(forecast?.details) ? forecast.details : [];
+          for (const detail of details) {
+            const chip = document.createElement("span");
+            chip.className = "forecast-chip";
+            chip.textContent = detail;
+            wrap.appendChild(chip);
+          }
+          wrap.hidden = details.length === 0;
+        }
+      };
+
       const render = (data: Record<string, any>): void => {
         setField("temperature", fmt(data.temperature));
         setField("feelsLike", fmt(data.feelsLike, 0));
@@ -522,8 +604,7 @@ const REFRESH_SECONDS = 60;
         setField("daylight", data.daylight ? `${data.daylight} h` : "--");
         setField("moonPhase", data.moonPhase ?? "--");
         setField("moonLuminance", fmt(data.moonLuminance, 0));
-        setField("forecastTemp", fmt(data.forecast?.temperature, 0));
-        setField("forecastSummary", data.forecast?.summary ?? "Sin pronóstico");
+        setForecastCard(data.forecast);
 
         const icon = document.querySelector<HTMLImageElement>('[data-field="forecastIcon"]');
         if (icon) {
