@@ -24,7 +24,7 @@ const REFRESH_SECONDS = 60;
       rel="stylesheet"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&amp;icon_names=air,arrow_downward,arrow_upward,dark_mode,download,humidity_high,light_mode,photo_camera,rainy,refresh,speed,water,water_drop,wb_twilight,wifi_off&amp;display=block"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&amp;icon_names=air,arrow_downward,arrow_upward,close,dark_mode,download,fullscreen,humidity_high,light_mode,photo_camera,rainy,refresh,speed,water,water_drop,wb_twilight,wifi_off&amp;display=block"
       rel="stylesheet"
     />
     <style>
@@ -266,6 +266,11 @@ const REFRESH_SECONDS = 60;
         justify-content: space-between;
         margin-bottom: 12px;
       }
+      .webcam-actions {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
       .webcam-time {
         font-size: 0.72rem;
         color: var(--md-sys-color-on-surface-variant);
@@ -276,6 +281,11 @@ const REFRESH_SECONDS = 60;
         border-radius: 12px;
         overflow: hidden;
         background: var(--md-sys-color-surface-container-highest);
+        cursor: zoom-in;
+      }
+      .webcam-frame:focus-visible {
+        outline: 2px solid var(--md-sys-color-primary);
+        outline-offset: 2px;
       }
       .webcam-img {
         width: 100%;
@@ -300,11 +310,64 @@ const REFRESH_SECONDS = 60;
         font-size: 28px;
         animation: spin 1s linear infinite;
       }
+      .webcam-zoom-hint {
+        position: absolute;
+        right: 8px;
+        bottom: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.55);
+        color: #fff;
+        pointer-events: none;
+      }
+      .webcam-zoom-hint md-icon {
+        font-size: 20px;
+      }
       .webcam-note {
         margin: 10px 0 0;
         font-size: 0.72rem;
         line-height: 1.4;
         color: var(--md-sys-color-outline);
+      }
+      .lightbox {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        background: rgba(0, 0, 0, 0.94);
+      }
+      .lightbox-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: max(8px, env(safe-area-inset-top)) 8px 8px 16px;
+        color: #fff;
+        flex-shrink: 0;
+      }
+      .lightbox-title {
+        font-size: 0.95rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+      }
+      .lightbox-actions {
+        display: flex;
+        gap: 4px;
+        color: #fff;
+      }
+      .lightbox-actions md-icon-button {
+        color: #fff;
+      }
+      .lightbox-img {
+        flex: 1;
+        min-height: 0;
+        width: 100%;
+        object-fit: contain;
+        padding: 8px 8px max(8px, env(safe-area-inset-bottom));
       }
       .grid {
         display: grid;
@@ -489,15 +552,24 @@ const REFRESH_SECONDS = 60;
       <section class="card webcam-card" data-webcam-card hidden>
         <div class="webcam-head">
           <div class="metric-head"><md-icon>photo_camera</md-icon> Cámara en vivo</div>
-          <span class="webcam-time" data-field="webcamTime">--</span>
+          <div class="webcam-actions">
+            <span class="webcam-time" data-field="webcamTime">--</span>
+            <md-icon-button data-webcam-refresh aria-label="Actualizar la cámara ahora">
+              <md-icon>refresh</md-icon>
+            </md-icon-button>
+          </div>
         </div>
-        <div class="webcam-frame">
+        <div class="webcam-frame" data-webcam-zoom role="button" tabindex="0" aria-label="Ver la cámara en pantalla completa">
           <img class="webcam-img" data-webcam-img alt="Vista en vivo desde la estación" />
           <div class="webcam-overlay" data-webcam-loading>
             <md-icon>refresh</md-icon>
           </div>
+          <span class="webcam-zoom-hint" aria-hidden="true"><md-icon>fullscreen</md-icon></span>
         </div>
-        <p class="webcam-note">Cámara de la estación con lecturas · se actualiza sola cada ~15 s.</p>
+        <p class="webcam-note">
+          Cámara de la estación con lecturas · se actualiza sola cada ~2 min. Tocá la imagen
+          para agrandar o el botón para refrescar al instante.
+        </p>
       </section>
 
       <section class="grid">
@@ -567,6 +639,21 @@ const REFRESH_SECONDS = 60;
       <md-icon slot="icon">download</md-icon>
     </md-fab>
 
+    <div class="lightbox" data-lightbox role="dialog" aria-modal="true" aria-label="Cámara en pantalla completa" hidden>
+      <div class="lightbox-bar">
+        <span class="lightbox-title">Cámara en vivo</span>
+        <div class="lightbox-actions">
+          <md-icon-button data-lightbox-refresh aria-label="Recargar imagen">
+            <md-icon>refresh</md-icon>
+          </md-icon-button>
+          <md-icon-button data-lightbox-close aria-label="Cerrar pantalla completa">
+            <md-icon>close</md-icon>
+          </md-icon-button>
+        </div>
+      </div>
+      <img class="lightbox-img" data-lightbox-img alt="Vista en vivo desde la estación" />
+    </div>
+
     <script>
       import "@material/web/icon/icon.js";
       import "@material/web/iconbutton/icon-button.js";
@@ -574,7 +661,7 @@ const REFRESH_SECONDS = 60;
       import "@material/web/fab/fab.js";
 
       const REFRESH_MS = 60_000;
-      const CAMERA_REFRESH_MS = 15_000;
+      const CAMERA_REFRESH_MS = 120_000;
 
       const fmt = (value: number | null, digits = 1): string =>
         value === null || value === undefined ? "--" : value.toFixed(digits);
@@ -709,6 +796,12 @@ const REFRESH_SECONDS = 60;
       const webcamCard = document.querySelector<HTMLElement>("[data-webcam-card]");
       const webcamImg = document.querySelector<HTMLImageElement>("[data-webcam-img]");
       const webcamLoading = document.querySelector<HTMLElement>("[data-webcam-loading]");
+      const webcamZoom = document.querySelector<HTMLElement>("[data-webcam-zoom]");
+      const webcamRefreshBtn = document.querySelector<HTMLElement>("[data-webcam-refresh]");
+      const lightbox = document.querySelector<HTMLElement>("[data-lightbox]");
+      const lightboxImg = document.querySelector<HTMLImageElement>("[data-lightbox-img]");
+      const lightboxClose = document.querySelector<HTMLElement>("[data-lightbox-close]");
+      const lightboxRefresh = document.querySelector<HTMLElement>("[data-lightbox-refresh]");
       let webcamLoaded = false;
       let webcamTimer: number | null = null;
 
@@ -721,10 +814,10 @@ const REFRESH_SECONDS = 60;
         setField("webcamTime", `al aire ${time}`);
       };
 
-      const reloadWebcam = (): void => {
+      const reloadWebcam = (force = false): void => {
         if (!webcamImg || document.hidden || navigator.onLine === false) return;
         if (webcamLoading) webcamLoading.hidden = false;
-        webcamImg.src = `/api/webcam?t=${Date.now()}`;
+        webcamImg.src = `/api/webcam?t=${Date.now()}${force ? "&refresh=1" : ""}`;
       };
 
       if (webcamImg) {
@@ -734,6 +827,9 @@ const REFRESH_SECONDS = 60;
           if (webcamCard) webcamCard.hidden = false;
           webcamLoaded = true;
           webcamLabel();
+          if (lightbox && !lightbox.hidden && lightboxImg) {
+            lightboxImg.src = webcamImg.src;
+          }
         });
         webcamImg.addEventListener("error", () => {
           if (webcamLoading) webcamLoading.hidden = true;
@@ -747,9 +843,39 @@ const REFRESH_SECONDS = 60;
         webcamTimer = window.setInterval(reloadWebcam, CAMERA_REFRESH_MS);
       };
 
+      const openLightbox = (): void => {
+        if (!lightbox || !lightboxImg || !webcamImg || !webcamLoaded) return;
+        lightboxImg.src = webcamImg.src;
+        lightbox.hidden = false;
+      };
+
+      const closeLightbox = (): void => {
+        if (!lightbox) return;
+        lightbox.hidden = true;
+        if (lightboxImg) lightboxImg.removeAttribute("src");
+      };
+
+      webcamZoom?.addEventListener("click", openLightbox);
+      webcamZoom?.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openLightbox();
+        }
+      });
+      lightboxClose?.addEventListener("click", closeLightbox);
+      lightbox?.addEventListener("click", (event) => {
+        if (event.target === lightbox) closeLightbox();
+      });
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && lightbox && !lightbox.hidden) closeLightbox();
+      });
+
+      webcamRefreshBtn?.addEventListener("click", () => reloadWebcam(true));
+      lightboxRefresh?.addEventListener("click", () => reloadWebcam(true));
+
       document.querySelector<HTMLElement>("[data-refresh]")?.addEventListener("click", () => {
         load();
-        reloadWebcam();
+        reloadWebcam(true);
       });
 
       window.addEventListener("online", () => {
@@ -897,7 +1023,7 @@ const REFRESH_SECONDS = 60;
           pulling = false;
           if (pullDistance >= PTR_THRESHOLD) {
             startPtrLoading();
-            reloadWebcam();
+            reloadWebcam(true);
             load().finally(() => setTimeout(resetPull, 500));
           } else {
             resetPull();
