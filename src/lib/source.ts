@@ -19,6 +19,14 @@ const BASE_URL = "https://climachivilcoy.com.ar/";
 const USER_AGENT =
   "ClimaChivilcoy/0.1 (+https://github.com/Bernard2806/Clima-Chivilcoy)";
 
+const WEBCAM_PATH = "webcam/foto.jpg";
+
+export interface WebcamImage {
+  body: Uint8Array;
+  contentType: string;
+  fetchedAt: number;
+}
+
 const MODULES = {
   temperature: "temperaturemod-Chart-2024.php",
   humidity: "humiditymod-Chart-2024.php",
@@ -295,4 +303,25 @@ export async function getCurrentWeather(): Promise<CurrentWeather> {
   };
 
   return current;
+}
+
+export async function getWebcam(): Promise<WebcamImage | null> {
+  try {
+    const url = new URL(WEBCAM_PATH, BASE_URL);
+    const response = await fetch(url, {
+      headers: { "User-Agent": USER_AGENT, Accept: "image/jpeg,image/*,*/*" },
+      signal: AbortSignal.timeout(8000),
+      cache: "no-store",
+    });
+    if (!response.ok) return null;
+    const buffer = await response.arrayBuffer();
+    if (!buffer.byteLength) return null;
+    return {
+      body: new Uint8Array(buffer),
+      contentType: response.headers.get("Content-Type") ?? "image/jpeg",
+      fetchedAt: Date.now(),
+    };
+  } catch {
+    return null;
+  }
 }
