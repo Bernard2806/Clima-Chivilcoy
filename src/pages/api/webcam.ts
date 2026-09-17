@@ -29,10 +29,11 @@ function respond(
   });
 }
 
-export const GET: APIRoute = async () => {
+export const GET: APIRoute = async ({ request }) => {
   const now = Date.now();
+  const force = new URL(request.url).searchParams.get("refresh") === "1";
 
-  if (cache && cache.expires > now) {
+  if (cache && !force && cache.expires > now) {
     return respond(
       cache,
       "public, max-age=0, s-maxage=15, stale-while-revalidate=30",
@@ -55,7 +56,10 @@ export const GET: APIRoute = async () => {
   const fresh = await pending;
 
   if (fresh) {
-    return respond(fresh, "public, max-age=0, s-maxage=20, stale-while-revalidate=40");
+    return respond(
+      fresh,
+      "public, max-age=0, s-maxage=15, stale-while-revalidate=30",
+    );
   }
 
   if (cache) {
