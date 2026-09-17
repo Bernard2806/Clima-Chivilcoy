@@ -24,7 +24,7 @@ const REFRESH_SECONDS = 60;
       rel="stylesheet"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&amp;icon_names=air,arrow_downward,arrow_upward,close,dark_mode,download,fullscreen,humidity_high,light_mode,photo_camera,rainy,refresh,speed,water,water_drop,wb_twilight,wifi_off&amp;display=block"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&amp;icon_names=air,arrow_downward,arrow_upward,cell_tower,close,dark_mode,download,fullscreen,humidity_high,light_mode,photo_camera,rainy,refresh,speed,water,water_drop,wb_twilight,wifi_off&amp;display=block"
       rel="stylesheet"
     />
     <style>
@@ -407,6 +407,81 @@ const REFRESH_SECONDS = 60;
         font-size: 0.75rem;
         margin-top: 4px;
       }
+      .station-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        margin: 8px 0 0;
+        padding: 3px 10px;
+        border-radius: 999px;
+        background: var(--md-sys-color-secondary-container);
+        color: var(--md-sys-color-on-secondary-container);
+        font-size: 0.72rem;
+        font-weight: 500;
+        width: fit-content;
+      }
+      .station-badge md-icon {
+        font-size: 16px;
+      }
+      .stations-note {
+        margin-left: 6px;
+        font-size: 0.7rem;
+        font-weight: 400;
+        letter-spacing: 0;
+        text-transform: none;
+        color: var(--md-sys-color-outline);
+      }
+      .stations-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 4px;
+      }
+      .station {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: var(--md-sys-color-surface-container-low);
+        border: 1px solid var(--md-sys-color-outline-variant);
+        text-decoration: none;
+        color: inherit;
+      }
+      .station-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .station-name {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--md-sys-color-on-surface);
+      }
+      .station-name img {
+        width: 16px;
+        height: 16px;
+        border-radius: 3px;
+      }
+      .station-age {
+        font-size: 0.7rem;
+        color: var(--md-sys-color-outline);
+        white-space: nowrap;
+      }
+      .station-vals {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 16px;
+        font-size: 0.82rem;
+        color: var(--md-sys-color-on-surface-variant);
+      }
+      .station-vals b {
+        color: var(--md-sys-color-on-surface);
+        font-weight: 500;
+      }
       .sun-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -467,6 +542,11 @@ const REFRESH_SECONDS = 60;
       }
       .footer-text {
         margin: 0;
+      }
+      .footer-text img {
+        vertical-align: -2px;
+        border-radius: 2px;
+        margin-right: 2px;
       }
       .install-fab {
         position: fixed;
@@ -556,6 +636,10 @@ const REFRESH_SECONDS = 60;
           <div>
             <div class="temp"><span data-field="temperature">--</span><span class="unit">°C</span></div>
             <p class="feels">Sensación térmica <span data-field="feelsLike">--</span>°</p>
+            <p class="station-badge" data-field="stationBadge" hidden>
+              <md-icon>cell_tower</md-icon>
+              <span data-field="stationBadgeText"></span>
+            </p>
           </div>
           <div class="extremes">
             <span><md-icon>arrow_upward</md-icon> Máx <b data-field="temperatureMax">--</b>°</span>
@@ -636,6 +720,14 @@ const REFRESH_SECONDS = 60;
         </article>
       </section>
 
+      <section class="card stations-card">
+        <div class="metric-head">
+          <md-icon>cell_tower</md-icon> Estaciones
+          <span class="stations-note" data-field="stationsNote"></span>
+        </div>
+        <div class="stations-list" data-stations></div>
+      </section>
+
       <section class="card sun-grid">
         <div class="sun-item">
           <div class="metric-head"><md-icon>wb_twilight</md-icon> Amanecer</div>
@@ -672,8 +764,13 @@ const REFRESH_SECONDS = 60;
           </a>
         </nav>
         <p class="footer-text">
-          Datos en vivo de <a href="https://climachivilcoy.com.ar/">ClimaChivilcoy</a> ·
-          actualización automática cada {REFRESH_SECONDS} s
+          Datos en vivo de
+          <a href="https://climachivilcoy.com.ar/">ClimaChivilcoy</a> y
+          <a href="https://chivilcoy.gov.ar/inta/">
+            <img src="/img/inta-favicon.ico" width="14" height="14" alt="" />
+            INTA Chivilcoy</a
+          >
+          · promedio de ambas estaciones · actualización automática cada {REFRESH_SECONDS} s
         </p>
       </footer>
     </main>
@@ -776,6 +873,76 @@ const REFRESH_SECONDS = 60;
         }
       };
 
+      const agoShort = (seconds: number | null): string => {
+        if (seconds === null) return "ahora";
+        if (seconds < 60) return `hace ${seconds} s`;
+        if (seconds < 3600) return `hace ${Math.round(seconds / 60)} min`;
+        return `hace ${(seconds / 3600).toFixed(1)} h`;
+      };
+
+      const stationItem = (label: string, value: string): HTMLElement => {
+        const wrap = document.createElement("span");
+        wrap.textContent = `${label} `;
+        const b = document.createElement("b");
+        b.textContent = value;
+        wrap.appendChild(b);
+        return wrap;
+      };
+
+      const renderStations = (data: Record<string, any>): void => {
+        const list = document.querySelector<HTMLElement>("[data-stations]");
+        const sources: Record<string, any>[] = Array.isArray(data.sources) ? data.sources : [];
+        const count: number = data.stationCount ?? sources.length;
+        const badge = document.querySelector<HTMLElement>('[data-field="stationBadge"]');
+        if (badge) badge.hidden = count < 2;
+        if (count >= 2) setField("stationBadgeText", `${count} estaciones`);
+        setField("stationsNote", count >= 2 ? "promedio de ambas" : "");
+        if (!list) return;
+        list.textContent = "";
+        for (const s of sources) {
+          const row = document.createElement("a");
+          row.className = "station";
+          row.href = s.url;
+          row.target = "_blank";
+          row.rel = "noopener noreferrer";
+
+          const top = document.createElement("div");
+          top.className = "station-top";
+          const name = document.createElement("span");
+          name.className = "station-name";
+          if (s.key === "inta") {
+            const img = document.createElement("img");
+            img.src = "/img/inta-favicon.ico";
+            img.alt = "";
+            img.width = 16;
+            img.height = 16;
+            name.appendChild(img);
+          }
+          const nameText = document.createElement("span");
+          nameText.textContent = s.name;
+          name.appendChild(nameText);
+          const age = document.createElement("span");
+          age.className = "station-age";
+          age.textContent = agoShort(s.updatedSeconds ?? null);
+          top.append(name, age);
+
+          const vals = document.createElement("div");
+          vals.className = "station-vals";
+          vals.append(
+            stationItem("Temp", `${fmt(s.temperature ?? null)}°`),
+            stationItem("Humedad", s.humidity === null ? "--" : `${s.humidity}%`),
+            stationItem("Presión", s.pressure === null ? "--" : `${s.pressure} hPa`),
+            stationItem("Viento", s.windAvg === null ? "--" : `${fmt(s.windAvg)} km/h`),
+          );
+          if (s.windGust !== null && s.windGust !== undefined) {
+            vals.append(stationItem("Ráfaga", `${fmt(s.windGust)} km/h`));
+          }
+
+          row.append(top, vals);
+          list.appendChild(row);
+        }
+      };
+
       const render = (data: Record<string, any>): void => {
         setField("temperature", fmt(data.temperature));
         setField("feelsLike", fmt(data.feelsLike, 0));
@@ -800,6 +967,7 @@ const REFRESH_SECONDS = 60;
         setField("moonPhase", data.moonPhase ?? "--");
         setField("moonLuminance", fmt(data.moonLuminance, 0));
         setForecastCard(data.forecast);
+        renderStations(data);
 
         const icon = document.querySelector<HTMLImageElement>('[data-field="forecastIcon"]');
         if (icon) {
