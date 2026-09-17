@@ -19,7 +19,7 @@ function respond(
   entry: { body: Uint8Array; contentType: string; fetchedAt: number },
   cacheControl: string,
 ): Response {
-  return new Response(entry.body, {
+  return new Response(entry.body as unknown as BodyInit, {
     status: 200,
     headers: {
       "Content-Type": entry.contentType,

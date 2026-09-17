@@ -57,7 +57,10 @@ export function translateForecastSummary(summary: string | null): string | null 
   if (!summary) return null;
   let text = summary.trim();
   for (const [pattern, replacement] of RULES) {
-    text = text.replace(pattern, replacement);
+    text =
+      typeof replacement === "function"
+        ? text.replace(pattern, replacement)
+        : text.replace(pattern, replacement);
   }
   return text;
 }
