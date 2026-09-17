@@ -3,7 +3,7 @@ import { getWebcam, type WebcamImage } from "../../lib/source";
 
 export const prerender = false;
 
-const TTL_MS = 20_000;
+const TTL_MS = 15_000;
 
 interface CachedWebcam {
   body: Uint8Array;
@@ -35,7 +35,7 @@ export const GET: APIRoute = async () => {
   if (cache && cache.expires > now) {
     return respond(
       cache,
-      "public, max-age=0, s-maxage=20, stale-while-revalidate=40",
+      "public, max-age=0, s-maxage=15, stale-while-revalidate=30",
     );
   }
 
