@@ -24,7 +24,7 @@ const REFRESH_SECONDS = 60;
       rel="stylesheet"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&amp;icon_names=air,arrow_downward,arrow_upward,cell_tower,close,dark_mode,download,fullscreen,humidity_high,language,light_mode,open_in_new,photo_camera,rainy,refresh,speed,thermostat,water,water_drop,wb_twilight,wifi_off&amp;display=block"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&amp;icon_names=air,arrow_downward,arrow_upward,cell_tower,close,cloud,dark_mode,download,fullscreen,humidity_high,language,light_mode,location_on,open_in_new,photo_camera,rainy,refresh,speed,thermostat,water,water_drop,wb_twilight,wifi_off&amp;display=block"
       rel="stylesheet"
     />
     <style>
@@ -493,6 +493,21 @@ const REFRESH_SECONDS = 60;
         color: var(--md-sys-color-on-primary-container);
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
       }
+      .station-tab-icon {
+        width: 26px;
+        height: 26px;
+        border-radius: 8px;
+        background: rgba(168, 199, 250, 0.15);
+        color: var(--md-sys-color-primary);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .station-tab-icon md-icon {
+        font-size: 20px;
+        --md-icon-size: 20px;
+      }
       .station-tab img {
         width: 24px;
         height: 24px;
@@ -561,28 +576,39 @@ const REFRESH_SECONDS = 60;
       .station-metrics-grid {
         margin-bottom: 12px;
       }
-      .station-web-card {
+      .station-actions-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 10px;
+        margin-bottom: 0;
+      }
+      .station-action-card {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 14px;
-        padding: 14px 18px;
+        gap: 12px;
+        padding: 12px 14px;
         margin-bottom: 0;
         background: var(--md-sys-color-surface-container);
         border: 1px solid var(--md-sys-color-outline-variant);
-        transition: border-color 0.2s ease, background-color 0.2s ease;
+        text-decoration: none;
+        color: inherit;
+        border-radius: 14px;
+        transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
       }
-      .station-web-card:hover {
+      .station-action-card:hover,
+      .station-action-card:focus-visible {
         border-color: var(--md-sys-color-primary);
         background: var(--md-sys-color-surface-container-high);
+        transform: translateY(-1px);
       }
-      .station-web-left {
+      .station-action-left {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 10px;
         min-width: 0;
       }
-      .station-web-avatar {
+      .station-action-avatar {
         width: 36px;
         height: 36px;
         border-radius: 10px;
@@ -592,68 +618,74 @@ const REFRESH_SECONDS = 60;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
+        color: var(--md-sys-color-primary);
       }
-      .station-web-avatar img {
+      .station-action-avatar md-icon {
+        font-size: 20px;
+        --md-icon-size: 20px;
+      }
+      .station-action-avatar.map-avatar {
+        color: #ff897d;
+        background: rgba(255, 137, 125, 0.12);
+        border-color: rgba(255, 137, 125, 0.3);
+      }
+      .station-action-avatar img {
         width: 22px;
         height: 22px;
         object-fit: contain;
         border-radius: 3px;
       }
-      .station-web-text {
+      .station-action-text {
         display: flex;
         flex-direction: column;
         min-width: 0;
       }
-      .station-web-title {
-        font-size: 0.85rem;
+      .station-action-title {
+        font-size: 0.83rem;
         font-weight: 500;
         color: var(--md-sys-color-on-surface);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
-      .station-web-url {
-        font-size: 0.73rem;
-        color: var(--md-sys-color-primary);
+      .station-action-url {
+        font-size: 0.72rem;
+        color: var(--md-sys-color-outline);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
-      .station-web-btn {
+      .station-action-pill {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        padding: 7px 14px;
+        gap: 4px;
+        padding: 6px 12px;
         border-radius: 999px;
         background: var(--md-sys-color-primary);
         color: var(--md-sys-color-on-primary);
-        text-decoration: none;
-        font-size: 0.8rem;
+        font-size: 0.76rem;
         font-weight: 500;
         flex-shrink: 0;
-        transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+        transition: transform 0.2s ease, opacity 0.2s ease;
       }
-      .station-web-btn:hover,
-      .station-web-btn:focus-visible {
-        transform: translateY(-1px);
-        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
-        opacity: 0.95;
+      .station-action-pill md-icon {
+        font-size: 14px;
+        --md-icon-size: 14px;
       }
-      .station-web-btn md-icon {
-        font-size: 16px;
-        --md-icon-size: 16px;
+      .station-action-pill.map-pill {
+        background: var(--md-sys-color-surface-container-highest);
+        color: var(--md-sys-color-on-surface);
+        border: 1px solid var(--md-sys-color-outline-variant);
       }
-      @media (max-width: 480px) {
+      .station-action-card:hover .station-action-pill {
+        opacity: 0.92;
+      }
+      @media (max-width: 520px) {
         .station-selector {
           grid-template-columns: 1fr;
         }
-        .station-web-card {
-          flex-direction: column;
-          align-items: stretch;
-          gap: 12px;
-        }
-        .station-web-btn {
-          justify-content: center;
+        .station-actions-grid {
+          grid-template-columns: 1fr;
         }
       }
       .sun-grid {
@@ -979,7 +1011,9 @@ const REFRESH_SECONDS = 60;
 
         <div class="station-selector" role="tablist" aria-label="Selector de estaciones">
           <button type="button" class="station-tab active" data-station-key="chivilcoy" role="tab" aria-selected="true">
-            <img src="/favicon.svg" width="24" height="24" alt="" />
+            <span class="station-tab-icon">
+              <md-icon>cloud</md-icon>
+            </span>
             <div class="station-tab-info">
               <span class="station-tab-name">ClimaChivilcoy</span>
               <span class="station-tab-tag">Urbana</span>
@@ -987,10 +1021,10 @@ const REFRESH_SECONDS = 60;
             <span class="station-tab-temp" data-station-tab-temp="chivilcoy">--°</span>
           </button>
           <button type="button" class="station-tab" data-station-key="inta" role="tab" aria-selected="false">
-            <img src="/img/inta-favicon.ico" width="24" height="24" alt="" />
+            <img src="/img/inta-favicon.ico" width="24" height="24" alt="INTA" />
             <div class="station-tab-info">
               <span class="station-tab-name">INTA Chivilcoy</span>
-              <span class="station-tab-tag">Rural</span>
+              <span class="station-tab-tag">Polideportivo Municipal</span>
             </div>
             <span class="station-tab-temp" data-station-tab-temp="inta">--°</span>
           </button>
@@ -1027,19 +1061,37 @@ const REFRESH_SECONDS = 60;
           </article>
         </div>
 
-        <div class="card station-web-card">
-          <div class="station-web-left">
-            <div class="station-web-avatar" data-station-web-avatar>
-              <img src="/favicon.svg" alt="" width="22" height="22" />
+        <div class="station-actions-grid">
+          <a class="card station-action-card" data-station-web-btn href="https://climachivilcoy.com.ar/" target="_blank" rel="noopener noreferrer">
+            <div class="station-action-left">
+              <div class="station-action-avatar" data-station-web-avatar>
+                <md-icon>cloud</md-icon>
+              </div>
+              <div class="station-action-text">
+                <span class="station-action-title" data-station-web-title>Sitio oficial de ClimaChivilcoy</span>
+                <span class="station-action-url" data-station-web-url>climachivilcoy.com.ar</span>
+              </div>
             </div>
-            <div class="station-web-text">
-              <span class="station-web-title" data-station-web-title>Sitio oficial de ClimaChivilcoy</span>
-              <span class="station-web-url" data-station-web-url>climachivilcoy.com.ar</span>
+            <span class="station-action-pill">
+              <span>Abrir web</span>
+              <md-icon>open_in_new</md-icon>
+            </span>
+          </a>
+
+          <a class="card station-action-card" data-station-map-card href="https://www.google.com/maps/search/?api=1&query=-34.890556,-60.005833" target="_blank" rel="noopener noreferrer" hidden>
+            <div class="station-action-left">
+              <div class="station-action-avatar map-avatar">
+                <md-icon>location_on</md-icon>
+              </div>
+              <div class="station-action-text">
+                <span class="station-action-title" data-station-map-title>Polideportivo Municipal</span>
+                <span class="station-action-url" data-station-map-sub>Coordenadas: -34.8906, -60.0058</span>
+              </div>
             </div>
-          </div>
-          <a class="station-web-btn" data-station-web-btn href="https://climachivilcoy.com.ar/" target="_blank" rel="noopener noreferrer">
-            <span>Abrir sitio</span>
-            <md-icon>open_in_new</md-icon>
+            <span class="station-action-pill map-pill">
+              <span>Ver en Maps</span>
+              <md-icon>open_in_new</md-icon>
+            </span>
           </a>
         </div>
       </section>
@@ -1087,13 +1139,13 @@ const REFRESH_SECONDS = 60;
           <span class="footer-sources-label">Estaciones meteorológicas</span>
           <div class="footer-chips">
             <a class="footer-chip" href="https://climachivilcoy.com.ar/" target="_blank" rel="noopener noreferrer">
-              <img src="/favicon.svg" width="16" height="16" alt="" />
+              <md-icon>cloud</md-icon>
               <span>ClimaChivilcoy</span>
               <md-icon>open_in_new</md-icon>
             </a>
             <a class="footer-chip" href="https://chivilcoy.gov.ar/inta/" target="_blank" rel="noopener noreferrer">
               <img src="/img/inta-favicon.ico" width="16" height="16" alt="" />
-              <span>INTA Chivilcoy</span>
+              <span>INTA Chivilcoy (Polideportivo)</span>
               <md-icon>open_in_new</md-icon>
             </a>
           </div>
@@ -1225,12 +1277,13 @@ const REFRESH_SECONDS = 60;
 
         if (!s) return;
 
+        const isInta = s.key === "inta";
         const titleEl = document.querySelector<HTMLElement>('[data-station-detail="title"]');
         if (titleEl) titleEl.textContent = s.name;
 
         const subEl = document.querySelector<HTMLElement>('[data-station-detail="subtitle"]');
         if (subEl) {
-          subEl.textContent = s.key === "inta" ? "Zona rural · Municipalidad de Chivilcoy" : "Zona urbana · Davis Vantage Pro";
+          subEl.textContent = isInta ? "Polideportivo Municipal · Chivilcoy" : "Zona urbana · Davis Vantage Pro";
         }
 
         const ageEl = document.querySelector<HTMLElement>('[data-station-detail="age"]');
@@ -1270,10 +1323,18 @@ const REFRESH_SECONDS = 60;
 
         const webAvatar = document.querySelector<HTMLElement>("[data-station-web-avatar]");
         if (webAvatar) {
-          const img = webAvatar.querySelector<HTMLImageElement>("img");
-          if (img) {
-            img.src = s.key === "inta" ? "/img/inta-favicon.ico" : "/favicon.svg";
-            img.alt = s.name;
+          webAvatar.textContent = "";
+          if (isInta) {
+            const img = document.createElement("img");
+            img.src = "/img/inta-favicon.ico";
+            img.alt = "INTA";
+            img.width = 22;
+            img.height = 22;
+            webAvatar.appendChild(img);
+          } else {
+            const ic = document.createElement("md-icon");
+            ic.textContent = "cloud";
+            webAvatar.appendChild(ic);
           }
         }
 
@@ -1294,6 +1355,20 @@ const REFRESH_SECONDS = 60;
         if (webBtn) {
           webBtn.href = s.url;
           webBtn.title = `Abrir sitio oficial de ${s.name}`;
+        }
+
+        const mapCard = document.querySelector<HTMLAnchorElement>("[data-station-map-card]");
+        const mapTitle = document.querySelector<HTMLElement>("[data-station-map-title]");
+        const mapSub = document.querySelector<HTMLElement>("[data-station-map-sub]");
+        if (mapCard) {
+          if (isInta) {
+            mapCard.hidden = false;
+            mapCard.href = "https://www.google.com/maps/search/?api=1&query=-34.890556,-60.005833";
+            if (mapTitle) mapTitle.textContent = "Polideportivo Municipal";
+            if (mapSub) mapSub.textContent = "Coordenadas: -34.8906, -60.0058";
+          } else {
+            mapCard.hidden = true;
+          }
         }
       };
 
