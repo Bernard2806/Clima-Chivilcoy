@@ -1,5 +1,7 @@
 import type { APIRoute } from "astro";
 import { getCurrentWeather } from "../../lib/source";
+import { getIntaSnapshot } from "../../lib/inta";
+import { combineStations } from "../../lib/ensemble";
 import type { CurrentWeather } from "../../lib/types";
 
 export const prerender = false;
@@ -23,7 +25,11 @@ export const GET: APIRoute = async () => {
 
   try {
     if (!cache || cache.expires <= now) {
-      const data = await getCurrentWeather();
+      const [current, inta] = await Promise.all([
+        getCurrentWeather(),
+        getIntaSnapshot().catch(() => null),
+      ]);
+      const data = combineStations(current, inta);
       cache = { data, expires: now + TTL_MS };
     }
     return json(

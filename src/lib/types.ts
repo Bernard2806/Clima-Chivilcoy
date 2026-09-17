@@ -8,6 +8,22 @@ export interface Forecast {
   details: string[];
 }
 
+export interface StationSnapshot {
+  key: "chivilcoy" | "inta";
+  name: string;
+  url: string;
+  updatedSeconds: number | null;
+  temperature: number | null;
+  humidity: number | null;
+  dewpoint: number | null;
+  feelsLike: number | null;
+  pressure: number | null;
+  windAvg: number | null;
+  windGust: number | null;
+  windDirection: number | null;
+  rainToday: number | null;
+}
+
 export interface CurrentWeather {
   source: string;
   fetchedAt: string;
@@ -37,4 +53,6 @@ export interface CurrentWeather {
   moonrise: string | null;
   moonset: string | null;
   forecast: Forecast;
+  sources: StationSnapshot[];
+  stationCount: number;
 }

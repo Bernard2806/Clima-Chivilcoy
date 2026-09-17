@@ -303,6 +303,8 @@ export async function getCurrentWeather(): Promise<CurrentWeather> {
         details: parts.details,
       };
     })(),
+    sources: [],
+    stationCount: 1,
   };
 
   return current;
