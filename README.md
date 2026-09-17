@@ -1,43 +1,126 @@
+<div align="center">
+
+<img src="./public/favicon.svg" alt="Clima Chivilcoy" width="96" />
+
 # Clima Chivilcoy
 
-App web simple para consultar el clima **en vivo** de Chivilcoy, Buenos Aires. Muestra
-las condiciones actuales y el pronóstico, con **actualización automática cada 60 segundos**.
+**Clima en vivo de Chivilcoy (Buenos Aires), directo desde las estaciones locales.**
 
-**Producción:** https://climachivilcoy.netlify.app/
+Condiciones actuales y pronóstico, con datos reales de estaciones meteorológicas físicas y
+actualización automática.
 
-Está pensada para uso cotidiano y como base para, más adelante, alimentar un modelo de
-predicción propio.
+[![Netlify Status](https://api.netlify.com/api/v1/badges/fb8808d4-d874-47d5-a36e-84c543366ad1/deploy-status)](https://app.netlify.com/projects/climachivilcoy/deploys)
+[![Sitio en vivo](https://img.shields.io/badge/ver%20en%20vivo-climachivilcoy.netlify.app-111318?logo=googlechrome&logoColor=white)](https://climachivilcoy.netlify.app/)
+![Astro](https://img.shields.io/badge/Astro-BC52EE?logo=astro&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+![Netlify](https://img.shields.io/badge/Netlify-00C7B7?logo=netlify&logoColor=white)
+![pnpm](https://img.shields.io/badge/pnpm-F69220?logo=pnpm&logoColor=white)
+![Licencia MIT](https://img.shields.io/badge/licencia-MIT-green)
+![Unidades](https://img.shields.io/badge/unidades-m%C3%A9tricas-blue)
 
-## ¿De dónde salen los datos?
+</div>
 
-**Todos los datos provienen de la estación meteorológica local publicada en
-[https://climachivilcoy.com.ar/](https://climachivilcoy.com.ar/).** Esta web no genera,
-estima ni modela nada: sólo **lee y muestra** las mediciones de esa estación.
+---
 
-Ese sitio corre sobre:
+## ✨ Qué ofrece
 
-- **Meteobridge**: sistema (hardware + software) que toma las lecturas de la estación física
-  y las publica en la web.
-- **Weather34 Aurora MKII**: plantilla PHP que arma el panel a partir de esos datos. Cada
-  panel (temperatura, viento, lluvia, etc.) es un pequeño archivo `.php` que se refresca solo
-  cada ~30-60 segundos.
+| | |
+| --- | --- |
+| ⛅ | **Condiciones actuales + pronóstico** del día, simples y a mano. |
+| 📊 | Panel de temperatura, sensación, humedad, punto de rocío, presión, viento, lluvia, sol y luna. |
+| 🛰️ | **Dos estaciones locales combinadas**: ClimaChivilcoy e INTA Chivilcoy (ensamble por variable). |
+| 📷 | **Cámara en vivo** de la estación, con lecturas sobreimpresas y vista a pantalla completa. |
+| 🔄 | **Auto-refresco**: datos ~60 s, cámara ~2 min — más recarga manual al instante. |
+| 📱 | **PWA instalable** en Android, iPhone y escritorio. |
+| 🇦🇷 | **Unidades métricas** argentinas, siempre. |
+| 🎨 | Interfaz **Material 3** (Material Design). |
 
-### El problema del acceso
+## 🔎 De dónde salen los datos
 
-La fuente **no expone una API pública** ni envía cabeceras **CORS**, por lo que un navegador
-no puede consultarla directamente. Por eso el acceso se hace **del lado del servidor**:
+Esta web **no genera, estima ni modela el clima**: lee y muestra mediciones de estaciones
+físicas reales ubicadas en Chivilcoy. Combina dos fuentes.
 
-1. Un endpoint de Astro (`/api/current`) corre en el servidor (Netlify Function).
-2. Ese endpoint pide los fragmentos HTML y los CSV a la fuente, los parsea y arma un JSON.
-3. El navegador consume **sólo nuestro JSON**. Nunca se consulta la fuente desde el cliente.
+### Estación 1 — ClimaChivilcoy
 
-Además se fuerza `?units=metric` en cada request para garantizar el sistema métrico.
+Panel público en [climachivilcoy.com.ar](https://climachivilcoy.com.ar/), sobre
+**Meteobridge** (hardware de la estación) con la plantilla **Weather34 Aurora MKII**. No expone
+API ni CORS, así que **todo el acceso se hace del lado del servidor**:
 
-## Cómo se obtienen los datos
+- **Módulos en vivo** (fragmentos HTML, refresco ~30-60 s): cada métrica sale de un `.php`.
+- **CSV abiertos** (texto plano, sin auth): series históricas diarias/mensuales/anuales.
 
-### 1. Módulos en vivo (fragmentos HTML, refresco ~30-60 s)
+### Estación 2 — INTA Chivilcoy
 
-Cada métrica actual sale de un endpoint independiente:
+[Estación del INTA](https://chivilcoy.gov.ar/inta/) que expone un endpoint **JSON** en
+`https://chivilcoy.gov.ar/inta/api.php` (con `Access-Control-Allow-Origin: *`). Aporta
+temperatura, humedad, punto de rocío, sensación térmica, presión, viento, ráfaga, dirección y
+lluvia, **ya en unidades métricas**. Refresca con menor frecuencia (cada pocos minutos).
+
+## 🧮 Cómo se combinan (ensamble por variable)
+
+Las dos estaciones calzan bien en las variables lentas, pero **divergen en viento y presión**
+(están en sitios distintos y miden el viento con exposiciones diferentes; la presión difiere por
+el método de reducción). Por eso no se promedia todo a ciegas, sino con reglas por variable:
+
+| Variable | Regla |
+| --- | --- |
+| Temperatura · Sensación · Humedad · Punto de rocío | **Promedio** de ambas (cuando hay lectura). |
+| Ráfaga máxima | **Máximo** entre las dos. |
+| Velocidad del viento | **ClimaChivilcoy** (más frecuente y coherente). |
+| Presión | **ClimaChivilcoy** (no promediar: son criterios de reducción distintos). |
+
+La UI muestra un **desglose por estación** con su valor crudo y su antigüedad ("hace 30 s" /
+"hace 14 min"), así el dato combinado nunca tapa la fuente. Si una estación falla, todo degrada
+limpiamente a la otra.
+
+## 🏗️ Arquitectura
+
+- **Astro** con islas: página estática + endpoints on-demand (`/api/current`, `/api/webcam`).
+- **Scraping/parseo aislado** en `src/lib/` (`source.ts`, `inta.ts`, `ensemble.ts`, `translate.ts`);
+  UI en `src/pages/`.
+- `/api/current` pide ambos orígenes en paralelo, los parsea, arma el JSON combinado y
+  **cachea ~60 s** para no sobrecargar la fuente. Se fuerza `?units=metric` en cada request.
+- `/api/webcam` actúa de **proxy** de la imagen de la cámara (cumple la regla de nunca tocar la
+  fuente desde el navegador), con caché corta y modo `?refresh=1` para forzar al toque.
+- El cliente consume **sólo nuestros endpoints** (JSON + imagen), nunca la fuente.
+- **Service worker network-only**: basta para que la app sea instalable, y así **no sirve
+  contenido viejo cacheado**.
+
+### Endpoint `/api/current`
+
+Devuelve, entre otros: `temperature`, `feelsLike`, `temperatureMax/Min`, `humidity`, `dewpoint`,
+`pressure`, `windAvg/Max`, `rainToday/Month/Rate`, `sunrise`, `sunset`, `moonPhase`, `forecast`,
+`sourceUpdatedSeconds`, más `sources[]` y `stationCount` para el desglose por estación.
+
+## 📷 Cámara en vivo
+
+Imagen de la estación servida por Meteobridge (`.../camplus.jpg`, con lecturas sobreimpresas).
+Se muestra via `/api/webcam` y **se actualiza sola cada ~2 min**; se puede **forzar al instante**
+con el botón ↻ (en la tarjeta o dentro del modo pantalla completa). Tocando la imagen se abre a
+pantalla completa.
+
+## 📱 PWA instalable
+
+- **Android / Chrome:** botón **Instalar** (o menú ⋮ → "Instalar aplicación").
+- **iPhone / Safari:** Compartir → **"Agregar a pantalla de inicio"**.
+- **Escritorio:** ícono de instalar en la barra de direcciones.
+
+En teléfonos y tablets aparece además un botón flotante para instalar; si la app ya está
+instalada, no se muestra. Para refrescar: deslizá hacia abajo desde el tope, o usá el botón del
+encabezado.
+
+> **Necesita internet.** Los datos son en vivo y **no se cachean**: sin conexión se ve el aviso
+> "Sin conexión a internet" y el estado de error. Al reconectar, se actualiza solo.
+
+## 🌡️ Unidades
+
+Siempre **métricas argentinas**, forzando `?units=metric` en la fuente: **°C**, **km/h**,
+**hPa**, **mm** / **mm/h**, **%**. Si la fuente respondiera en imperiales, se aplican
+**conversiones defensivas** (°F→°C, mph/kts/m/s→km/h, inHg/mmHg→hPa, in→mm).
+
+## 🧩 Fuente de datos: detalle
+
+### Módulos en vivo de ClimaChivilcoy (fragmentos HTML, refresco ~30-60 s)
 
 | Módulo | Datos que aporta |
 | --- | --- |
@@ -49,15 +132,13 @@ Cada métrica actual sale de un endpoint independiente:
 | `rainmod-Chart-2024.php` | Lluvia de hoy, del mes y del año |
 | `rainratemod-Chart-2024.php` | Intensidad de lluvia (mm/h) |
 | `weather34-sun-moon-2024.php` | Amanecer, atardecer, luz diurna y datos de la luna |
-| `weather34-Chart-forecast-2024.php` | Pronóstico (temperatura, ícono y texto) |
+| `weather34-Chart-forecast-2024.php` | Pronóstico (período, condición, máx/mín, viento e ícono) |
 | `data-updated.php` | Antigüedad del último dato recibido |
 
-El parseo de estos fragmentos es **frágil** por naturaleza (depende del HTML de la
-plantilla) y por eso vive aislado en `src/lib/`.
+El parseo de estos fragmentos es **frágil** (depende del HTML de la plantilla) y por eso vive
+aislado en `src/lib/`.
 
-### 2. Archivos CSV abiertos (vía estable, texto plano)
-
-La propia web publica sus datos históricos como CSV, sin autenticación:
+### CSV abiertos de ClimaChivilcoy (texto plano, sin auth)
 
 | Ruta | Contenido | Frecuencia |
 | --- | --- | --- |
@@ -65,12 +146,11 @@ La propia web publica sus datos históricos como CSV, sin autenticación:
 | `/weather34charts/{YYYY}/{Month}.csv` | Resumen por día del mes | diario |
 | `/weather34charts/{YYYY}.csv` | Resumen del año | diario |
 
-Cobertura disponible: anuales **2020–2026**; series diarias de 10 min **2025–2026**;
-resúmenes mensuales por mes.
+Cobertura: anuales **2020–2026**; series diarias de 10 min **2025–2026**; resúmenes mensuales.
 
 Columnas del CSV diario (0-indexado):
 
-```
+```text
 0  flag            1  hora             2  temp °C         3  presión hPa
 4  lluvia mm       5  UV               6  viento máx m/s 7  viento prom m/s
 8  radiación solar 9  punto de rocío °C 10 rain rate      11 dir viento °
@@ -81,112 +161,48 @@ Columnas del CSV diario (0-indexado):
 > En los gráficos de la fuente el viento se muestra en km/h (`valor_m/s × 3.6`).
 > Los valores `--` o `**` significan **sin sensor / sin dato**.
 
-## ¿Por qué es más preciso que las apps de clima cotidianas?
-
-- Es una **estación física ubicada en la ciudad**: mide temperatura, humedad, presión, viento
-  y lluvia en el lugar, no valores interpolados desde puntos lejanos.
-- Se actualiza cada **~30-60 segundos**. Las apps comerciales suelen refrescar cada 10-30
-  minutos y se apoyan en modelos regionales.
-- Muestra **datos medidos** (máxima/mínima del día, lluvia acumulada, ráfagas) en lugar de
-  promedios de grilla.
-
-En resumen: para responder *"¿cómo está el clima acá ahora?"*, la estación local es más fiel;
-para el pronóstico extendido, las apps globales siguen siendo mejores.
-
-## Unidades
-
-Siempre en **unidades métricas usadas en Argentina**, forzando `?units=metric` en la fuente:
-
-- Temperatura y punto de rocío: **°C**
-- Viento: **km/h**
-- Presión: **hPa**
-- Lluvia: **mm** / **mm/h**
-- Humedad: **%**
-
-Si la fuente llegara a responder en unidades imperiales, el cliente aplica **conversiones
-defensivas** (°F→°C, mph/kts/m/s→km/h, inHg/mmHg→hPa, in→mm) para no mostrar valores raros.
-
-## Cómo funciona (arquitectura)
-
-- **Astro** con salida estática + endpoint on-demand: la página es estática y `/api/current`
-  se renderiza en el servidor.
-- El endpoint **cachea 60 s** para no sobrecargar la fuente.
-- La UI consulta `/api/current` y se **auto-actualiza** cada 60 s.
-- La interfaz sigue **Material 3** (Material Design de Google) con los web components
-  `@material/web` e íconos **Material Symbols**.
-- Scraping/parseo aislado en `src/lib/`; UI en `src/pages/`.
-
-### Endpoint `/api/current`
-
-Devuelve un JSON con, entre otros: `temperature`, `temperatureMax/Min`, `feelsLike`,
-`humidity`, `dewpoint`, `pressure`, `windAvg/Max`, `rainToday/Month/Rate`, `sunrise`,
-`sunset`, `moonPhase`, `forecast` y `sourceUpdatedSeconds`.
-
-## Instalación como app (PWA)
-
-La web es una **PWA**: se puede instalar como aplicación desde el navegador, sin tiendas.
-
-- **Android / Chrome:** botón **Instalar** (o menú ⋮ → "Instalar aplicación").
-- **iPhone / Safari:** Compartir → **"Agregar a pantalla de inicio"**.
-- **Escritorio:** ícono de instalar en la barra de direcciones.
-
-En **teléfonos y tablets** aparece además un **botón rápido flotante** para instalar. Si la
-app ya está instalada, el botón **no se muestra**.
-
-Una vez instalada abre en pantalla completa, con su propio ícono, y se actualiza igual que en
-el navegador.
-
-Para refrescar al instante: **deslizá hacia abajo desde el tope** de la pantalla o usá el
-botón de refrescar del encabezado.
-
-### Necesita internet
-
-La app **requiere conexión** para mostrar datos. Si no hay internet muestra un aviso
-("Sin conexión a internet") y el estado de error en el encabezado; al volver la conexión se
-reconecta y actualiza sola. El *app shell* (página, íconos y estilos) se cachea para que la
-app abra incluso sin conexión y pueda mostrar el aviso.
-
-## Desarrollo
+## 👨‍💻 Desarrollo
 
 ```bash
-pnpm install
-pnpm dev     # servidor local
-pnpm build   # build de producción
+pnpm install   # instalar dependencias
+pnpm dev       # servidor local
+pnpm build     # build de producción
+pnpm preview   # previsualizar el build
 ```
 
-> Este repositorio usa **pnpm exclusivamente**. No usar `npm` ni `yarn`.
+> Este repositorio usa **pnpm exclusivamente**. No `npm`, ni `yarn`, ni `bun`.
 
-## Fuente y notas
+Estructura:
 
-- Sitio: [https://climachivilcoy.com.ar/](https://climachivilcoy.com.ar/)
-- Plantilla: Weather34 Aurora MKII sobre Meteobridge.
-- La fuente no ofrece API ni CORS; su scraping puede romperse si cambian la plantilla.
-- La portada del sitio indica `LICENSE EXPIRED 2026-05-03`; la fuente podría discontinuarse
-  en el futuro.
+```text
+src/
+  lib/       scraping y parseo (source.ts, inta.ts, ensemble.ts, translate.ts, units.ts, types.ts)
+  pages/
+    index.astro        panel principal (isla interactiva + PWA)
+    api/current.ts     endpoint combinado de clima
+    api/webcam.ts      proxy de la cámara
+public/      manifest, service worker, íconos y favicon de INTA
+```
 
-## Créditos
+## 🤝 Créditos
 
-Este proyecto **no es oficial** y sólo consume datos publicados públicamente. Todo el mérito
-es de quienes generan, publican y mantienen la información:
+Proyecto **no oficial** que sólo consume datos publicados. El mérito es de quienes generan y
+mantienen la información:
 
-- **Datos meteorológicos:** estación **ClimaChivilcoy** —
-  [climachivilcoy.com.ar](https://climachivilcoy.com.ar/). Gracias a quien la opera y mantiene.
-- **Plantilla del panel:** **Weather34 Aurora MKII**, creada por **Brian Underdown
-  (Weather34)**.
-- **Plataforma de publicación:** **Meteobridge** (smartbedded / [meteobridge.com](https://www.meteobridge.com/)).
-- **Íconos meteorológicos:** set de **Weather34**.
-- **Texto de pronóstico:** **Weather Underground**, servido a través de Meteobridge.
-- **Logo de la app:** basado en íconos de **[Heroicons](https://heroicons.com/)** (MIT, Tailwind Labs).
-- **Interfaz (UX):** **[Material 3](https://m3.material.io/)** de Google, con `@material/web`
-  e íconos **Material Symbols** (Apache-2.0).
-- **Stack de esta app:** [Astro](https://astro.build/), TypeScript y [Netlify](https://www.netlify.com/).
+- **Datos:** estaciones **ClimaChivilcoy** ([climachivilcoy.com.ar](https://climachivilcoy.com.ar/))
+  e **INTA Chivilcoy** ([chivilcoy.gov.ar/inta](https://chivilcoy.gov.ar/inta/)).
+- **Panel y plantilla:** **Weather34 Aurora MKII** de **Brian Underdown (Weather34)**; íconos
+  meteorológicos del set de Weather34.
+- **Publicación:** **Meteobridge** (smartbedded · [meteobridge.com](https://www.meteobridge.com/)).
+- **Pronóstico (texto):** **Weather Underground**, servido vía Meteobridge.
+- **Interfaz:** **[Material 3](https://m3.material.io/)** de Google, con `@material/web` e íconos
+  **Material Symbols** (Apache-2.0).
+- **Stack:** [Astro](https://astro.build/), TypeScript y [Netlify](https://www.netlify.com/).
 
 Las marcas, plantillas y datos pertenecen a sus respectivos autores.
 
-## Licencia
+## 📄 Licencia
 
-El **código** de este proyecto está bajo la licencia [MIT](./LICENSE).
-
-Los **datos meteorológicos** y las plantillas de terceros (Weather34, Meteobridge, Weather
-Underground) **no** están cubiertos por esta licencia y pertenecen a sus respectivos autores
-(ver [Créditos](#créditos)).
+El **código** de este proyecto está bajo la licencia [MIT](./LICENSE). Los **datos
+meteorológicos** y las plantillas de terceros (Weather34, Meteobridge, Weather Underground) **no**
+están cubiertos por esta licencia y pertenecen a sus autores.
