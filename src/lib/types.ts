@@ -26,6 +26,23 @@ export interface StationSnapshot {
   rainToday: number | null;
 }
 
+export type SmnAlertLevel = "verde" | "amarillo" | "naranja" | "rojo";
+
+export interface SmnAlert {
+  id: string;
+  type: "alerta" | "corto_plazo" | "temperatura";
+  level: SmnAlertLevel;
+  levelColor: string;
+  title: string;
+  event: string;
+  description: string | null;
+  instructions: string | null;
+  timeFrame: string | null;
+  startsAt: string | null;
+  expiresAt: string | null;
+  updatedAt: string | null;
+}
+
 export interface CurrentWeather {
   source: string;
   fetchedAt: string;
@@ -57,4 +74,5 @@ export interface CurrentWeather {
   forecast: Forecast;
   sources: StationSnapshot[];
   stationCount: number;
+  alerts: SmnAlert[];
 }
