@@ -46,13 +46,29 @@ function argTimestamp(value: string | null | undefined): number | null {
   return Number.isFinite(parsed) ? parsed : null;
 }
 
+function getArgentinaToday(): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/Argentina/Buenos_Aires",
+  }).format(new Date());
+}
+
 export async function getIntaSnapshot(): Promise<StationSnapshot | null> {
   try {
-    const response = await fetch(INTA_API_URL, {
-      headers: { "User-Agent": USER_AGENT, Accept: "application/json" },
-      signal: AbortSignal.timeout(8000),
-      cache: "no-store",
-    });
+    const today = getArgentinaToday();
+    const historyUrl = `${INTA_API_URL}?historico=1&idEquipo=1731&idSensor=11&fechaDesde=${today}&fechaHasta=${today}`;
+
+    const [response, historyResponse] = await Promise.all([
+      fetch(INTA_API_URL, {
+        headers: { "User-Agent": USER_AGENT, Accept: "application/json" },
+        signal: AbortSignal.timeout(8000),
+        cache: "no-store",
+      }),
+      fetch(historyUrl, {
+        headers: { "User-Agent": USER_AGENT, Accept: "application/json" },
+        signal: AbortSignal.timeout(8000),
+        cache: "no-store",
+      }).catch(() => null),
+    ]);
     if (!response.ok) return null;
     const payload = (await response.json()) as {
       sensores?: {
@@ -78,6 +94,34 @@ export async function getIntaSnapshot(): Promise<StationSnapshot | null> {
     const rawGust = valueOf(byName, "Vel. Ráfaga");
     const rawRain = valueOf(byName, "Lluvia Caida");
 
+    const historicalTemps: number[] = [];
+    if (historyResponse && historyResponse.ok) {
+      try {
+        const historyJson = await historyResponse.json();
+        if (Array.isArray(historyJson)) {
+          for (const item of historyJson) {
+            const val = typeof item?.valor === "number" ? item.valor : toNumber(item?.valor);
+            if (val !== null && Number.isFinite(val)) {
+              historicalTemps.push(val);
+            }
+          }
+        }
+      } catch {
+      }
+    }
+    if (rawTemp !== null && Number.isFinite(rawTemp)) {
+      historicalTemps.push(rawTemp);
+    }
+
+    const temperatureMin =
+      historicalTemps.length > 0
+        ? round(toCelsius(Math.min(...historicalTemps), tempUnit), 1)
+        : null;
+    const temperatureMax =
+      historicalTemps.length > 0
+        ? round(toCelsius(Math.max(...historicalTemps), tempUnit), 1)
+        : null;
+
     const updatedAt = argTimestamp(payload.sensores?.fechaUltimaActualizacionDatos);
 
     return {
@@ -87,6 +131,8 @@ export async function getIntaSnapshot(): Promise<StationSnapshot | null> {
       updatedSeconds:
         updatedAt === null ? null : Math.max(0, Math.round((Date.now() - updatedAt) / 1000)),
       temperature: rawTemp === null ? null : round(toCelsius(rawTemp, tempUnit), 1),
+      temperatureMax,
+      temperatureMin,
       humidity: valueOf(byName, "Humedad de Aire exterior"),
       dewpoint: rawDew === null ? null : round(toCelsius(rawDew, tempUnit), 1),
       feelsLike: rawFeels === null ? null : round(toCelsius(rawFeels, tempUnit), 1),

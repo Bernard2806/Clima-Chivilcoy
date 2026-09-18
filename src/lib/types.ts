@@ -14,6 +14,8 @@ export interface StationSnapshot {
   url: string;
   updatedSeconds: number | null;
   temperature: number | null;
+  temperatureMax: number | null;
+  temperatureMin: number | null;
   humidity: number | null;
   dewpoint: number | null;
   feelsLike: number | null;

@@ -58,6 +58,12 @@ function maxOf(values: Array<number | null>, digits = 1): number | null {
   return round(Math.max(...clean), digits);
 }
 
+function minOf(values: Array<number | null>, digits = 1): number | null {
+  const clean = values.filter((value): value is number => value !== null && value !== undefined);
+  if (clean.length === 0) return null;
+  return round(Math.min(...clean), digits);
+}
+
 function chivilcoySnapshot(current: CurrentWeather): StationSnapshot {
   return {
     key: "chivilcoy",
@@ -65,6 +71,8 @@ function chivilcoySnapshot(current: CurrentWeather): StationSnapshot {
     url: CHIVILCOY_URL,
     updatedSeconds: current.sourceUpdatedSeconds,
     temperature: current.temperature,
+    temperatureMax: current.temperatureMax,
+    temperatureMin: current.temperatureMin,
     humidity: current.humidity,
     dewpoint: current.dewpoint,
     feelsLike: current.feelsLike,
@@ -92,9 +100,25 @@ export function combineStations(
 
   const activeSources = group.filter((s) => s.temperature !== null && calculateWeight(s.updatedSeconds) > 0);
 
+  const mergedTemperature = avg((s) => s.temperature, 1) ?? current.temperature;
+
+  const rawMax = maxOf(group.map((s) => s.temperatureMax)) ?? current.temperatureMax;
+  const temperatureMax =
+    rawMax !== null && mergedTemperature !== null
+      ? round(Math.max(rawMax, mergedTemperature), 1)
+      : rawMax;
+
+  const rawMin = minOf(group.map((s) => s.temperatureMin)) ?? current.temperatureMin;
+  const temperatureMin =
+    rawMin !== null && mergedTemperature !== null
+      ? round(Math.min(rawMin, mergedTemperature), 1)
+      : rawMin;
+
   const merged: CurrentWeather = {
     ...current,
-    temperature: avg((s) => s.temperature, 1) ?? current.temperature,
+    temperature: mergedTemperature,
+    temperatureMax,
+    temperatureMin,
     feelsLike: avg((s) => s.feelsLike, 1) ?? current.feelsLike,
     humidity: avg((s) => s.humidity, 0) ?? current.humidity,
     dewpoint: avg((s) => s.dewpoint, 1) ?? current.dewpoint,
