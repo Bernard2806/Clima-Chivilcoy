@@ -358,28 +358,6 @@ const REFRESH_SECONDS = 60;
       .smn-alert-toggle-btn.open md-icon {
         transform: rotate(180deg);
       }
-      .hero-badges {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        flex-wrap: wrap;
-        margin-top: 8px;
-      }
-      .smn-calm-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        font-size: 0.74rem;
-        color: var(--md-sys-color-on-surface-variant);
-        background: var(--md-sys-color-surface-container-high);
-        padding: 3px 8px;
-        border-radius: 999px;
-        margin: 0;
-      }
-      .smn-calm-badge md-icon {
-        --md-icon-size: 15px;
-        color: #2e7d32;
-      }
       .webcam-head {
         display: flex;
         align-items: center;
@@ -1048,16 +1026,10 @@ const REFRESH_SECONDS = 60;
           <div>
             <div class="temp"><span data-field="temperature">--</span><span class="unit">°C</span></div>
             <p class="feels">Sensación térmica <span data-field="feelsLike">--</span>°</p>
-            <div class="hero-badges">
-              <p class="station-badge" data-field="stationBadge" hidden>
-                <md-icon>cell_tower</md-icon>
-                <span data-field="stationBadgeText"></span>
-              </p>
-              <p class="smn-calm-badge" data-field="smnCalmBadge" hidden>
-                <md-icon>verified_user</md-icon>
-                <span>Sin alertas SMN</span>
-              </p>
-            </div>
+            <p class="station-badge" data-field="stationBadge" hidden>
+              <md-icon>cell_tower</md-icon>
+              <span data-field="stationBadgeText"></span>
+            </p>
           </div>
           <div class="extremes">
             <span><md-icon>arrow_upward</md-icon> Máx <b data-field="temperatureMax">--</b>°</span>
@@ -1577,17 +1549,13 @@ const REFRESH_SECONDS = 60;
 
       const renderAlerts = (alerts: any[]): void => {
         const card = document.querySelector<HTMLElement>("[data-smn-card]");
-        const calmBadge = document.querySelector<HTMLElement>('[data-field="smnCalmBadge"]');
-
         const activeAlerts = Array.isArray(alerts) ? alerts.filter((a) => a && a.level !== "verde") : [];
 
         if (activeAlerts.length === 0) {
           if (card) card.hidden = true;
-          if (calmBadge) calmBadge.hidden = false;
           return;
         }
 
-        if (calmBadge) calmBadge.hidden = true;
         if (!card) return;
 
         card.hidden = false;
