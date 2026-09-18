@@ -5,11 +5,11 @@ públicas de observación, más su ubicación. Verificado el 2026-09-17/18.
 
 ## Resumen
 
-| Estación | Red / código | Coordenadas (lat, lon) | Elevación | Software de subida |
-| --- | --- | --- | --- | --- |
-| ClimaChivilcoy | Weather Underground `ICHIVI1` | -34.903034, -60.002193 | ~50 m | meteobridge |
-| LW6EQG | Weather Underground `ICHIVI22` | -34.893694, -60.005607 | ~17 m | meteobridge |
-| INTA Chivilcoy | sin PWS en Weather Underground | -34.890556, -60.005833 | — | API propia |
+| Estación | Nombre en WU | Red / código | Coordenadas (lat, lon) | Elevación | Software de subida |
+| --- | --- | --- | --- | --- | --- |
+| ClimaChivilcoy | Barrio Alsina (Zona Este) | Weather Underground `ICHIVI1` | -34.903034, -60.002193 | ~50 m | meteobridge |
+| LW6EQG | LW6EQG Chivilcoy | Weather Underground `ICHIVI22` | -34.893694, -60.005607 | ~17 m | meteobridge |
+| INTA Chivilcoy | — | sin PWS en Weather Underground | -34.890556, -60.005833 | — | API propia |
 
 Dashboards de Weather Underground:
 
@@ -53,9 +53,21 @@ Comparación LW6EQG con ICHIVI22:
 
 ## Otra estación cercana (no pertenece al proyecto)
 
-- **`ICHIVI4`**: Weather Underground, Chivilcoy, lat `-34.92062`, lon `-60.001767`,
-  elevación ~55 m, software `EasyWeatherV1.6.4`. Está en la misma ciudad pero no
-  corresponde a ninguna de las estaciones que consume este proyecto.
+- **`ICHIVI4`** — "Chivilcoy, Zona Sur": Weather Underground, Chivilcoy, lat `-34.92062`,
+  lon `-60.001767`, elevación ~55 m, software `EasyWeatherV1.6.4`. Está en la misma
+  ciudad pero no corresponde a ninguna de las estaciones que consume este proyecto.
+- **`ICHIVI12`** — "In-Aqua": Weather Underground, Chivilcoy, lat `-34.870264`,
+  lon `-59.997462`, elevación ~16 m, software `EasyWeatherV1.7.5`, sobre la **Ruta 30**.
+  No pertenece al proyecto y por ahora **no se consume**; queda documentada únicamente
+  a modo de referencia.
+- **`ICHIVI27`** — "AFA CHIVILCOY": Weather Underground, Chivilcoy, lat `-34.865`,
+  lon `-60.003`, elevación ~16 m, software `EasyWeatherPro_V5.2.2`. Muy cercana a
+  `ICHIVI12`. No pertenece al proyecto y por ahora **no se consume**; queda documentada
+  únicamente a modo de referencia.
+- **`ICORON112`** — "La blanqueada": Weather Underground, zona `Coronel Mon` (a la salida
+  de Chivilcoy, poco poblada), lat `-34.857665`, lon `-60.079049`, elevación ~17 m,
+  software sin informar. No pertenece al proyecto y por ahora **no se consume**; queda
+  documentada únicamente a modo de referencia.
 
 ## Consulta rápida (Weather Underground API)
 
