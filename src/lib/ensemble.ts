@@ -86,10 +86,14 @@ function chivilcoySnapshot(current: CurrentWeather): StationSnapshot {
 
 export function combineStations(
   current: CurrentWeather,
-  inta: StationSnapshot | null,
+  extra: Array<StationSnapshot | null | undefined> | StationSnapshot | null = [],
 ): CurrentWeather {
   const chivilcoy = chivilcoySnapshot(current);
-  const sources = inta ? [chivilcoy, inta] : [chivilcoy];
+  const extraList = Array.isArray(extra) ? extra : [extra];
+  const validExtra = extraList.filter(
+    (s): s is StationSnapshot => s !== null && s !== undefined,
+  );
+  const sources = [chivilcoy, ...validExtra];
   const group = sources;
 
   const avg = (extractor: (s: StationSnapshot) => number | null | undefined, digits: number) =>
