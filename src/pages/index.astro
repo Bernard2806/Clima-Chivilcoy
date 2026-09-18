@@ -260,6 +260,126 @@ const REFRESH_SECONDS = 60;
         line-height: 1.4;
         color: var(--md-sys-color-outline);
       }
+      .smn-alerts-card {
+        margin-bottom: 12px;
+        border-left: 5px solid var(--smn-border-color, #fbc02d);
+        background: var(--md-sys-color-surface-container);
+        border-radius: 16px;
+        padding: 16px;
+        transition: transform 0.2s ease, border-color 0.2s ease;
+      }
+      .smn-alerts-card.level-amarillo {
+        --smn-border-color: #fbc02d;
+      }
+      .smn-alerts-card.level-naranja {
+        --smn-border-color: #f57c00;
+      }
+      .smn-alerts-card.level-rojo {
+        --smn-border-color: #d32f2f;
+      }
+      .smn-alert-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+      .smn-alert-title-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .smn-alert-badge {
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        padding: 3px 9px;
+        border-radius: 999px;
+        background: var(--smn-badge-bg, #fbc02d);
+        color: var(--smn-badge-color, #000);
+        letter-spacing: 0.04em;
+      }
+      .smn-alert-title {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: var(--md-sys-color-on-surface);
+      }
+      .smn-alert-source {
+        font-size: 0.72rem;
+        font-weight: 500;
+        color: var(--md-sys-color-outline);
+        white-space: nowrap;
+      }
+      .smn-alert-desc {
+        font-size: 0.88rem;
+        line-height: 1.45;
+        color: var(--md-sys-color-on-surface-variant);
+        margin: 0 0 10px;
+      }
+      .smn-alert-instructions {
+        margin: 10px 0;
+        padding: 10px 14px;
+        background: var(--md-sys-color-surface-container-high);
+        border-radius: 10px;
+        font-size: 0.82rem;
+        line-height: 1.45;
+        color: var(--md-sys-color-on-surface);
+        white-space: pre-line;
+      }
+      .smn-alert-foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        font-size: 0.75rem;
+        color: var(--md-sys-color-outline);
+      }
+      .smn-alert-toggle-btn {
+        background: transparent;
+        border: none;
+        color: var(--md-sys-color-primary);
+        font-size: 0.8rem;
+        font-weight: 500;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 8px;
+        border-radius: 8px;
+      }
+      .smn-alert-toggle-btn:hover {
+        background: var(--md-sys-color-surface-container-highest);
+      }
+      .smn-alert-toggle-btn md-icon {
+        --md-icon-size: 16px;
+        transition: transform 0.2s ease;
+      }
+      .smn-alert-toggle-btn.open md-icon {
+        transform: rotate(180deg);
+      }
+      .hero-badges {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+      }
+      .smn-calm-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.74rem;
+        color: var(--md-sys-color-on-surface-variant);
+        background: var(--md-sys-color-surface-container-high);
+        padding: 3px 8px;
+        border-radius: 999px;
+        margin: 0;
+      }
+      .smn-calm-badge md-icon {
+        --md-icon-size: 15px;
+        color: #2e7d32;
+      }
       .webcam-head {
         display: flex;
         align-items: center;
@@ -903,15 +1023,41 @@ const REFRESH_SECONDS = 60;
         </md-filled-button>
       </div>
 
+      <!-- Alertas SMN -->
+      <section class="card smn-alerts-card" data-smn-card hidden>
+        <div class="smn-alert-head">
+          <div class="smn-alert-title-row">
+            <span class="smn-alert-badge" data-smn-badge>Alerta SMN</span>
+            <span class="smn-alert-title" data-smn-title>--</span>
+          </div>
+          <span class="smn-alert-source">SMN Oficial</span>
+        </div>
+        <p class="smn-alert-desc" data-smn-desc></p>
+        <div class="smn-alert-instructions" data-smn-instructions hidden></div>
+        <div class="smn-alert-foot">
+          <span class="smn-alert-time" data-smn-time></span>
+          <button type="button" class="smn-alert-toggle-btn" data-smn-toggle hidden>
+            <span>Recomendaciones</span>
+            <md-icon>expand_more</md-icon>
+          </button>
+        </div>
+      </section>
+
       <section class="card hero">
         <div class="hero-row">
           <div>
             <div class="temp"><span data-field="temperature">--</span><span class="unit">°C</span></div>
             <p class="feels">Sensación térmica <span data-field="feelsLike">--</span>°</p>
-            <p class="station-badge" data-field="stationBadge" hidden>
-              <md-icon>cell_tower</md-icon>
-              <span data-field="stationBadgeText"></span>
-            </p>
+            <div class="hero-badges">
+              <p class="station-badge" data-field="stationBadge" hidden>
+                <md-icon>cell_tower</md-icon>
+                <span data-field="stationBadgeText"></span>
+              </p>
+              <p class="smn-calm-badge" data-field="smnCalmBadge" hidden>
+                <md-icon>verified_user</md-icon>
+                <span>Sin alertas SMN</span>
+              </p>
+            </div>
           </div>
           <div class="extremes">
             <span><md-icon>arrow_upward</md-icon> Máx <b data-field="temperatureMax">--</b>°</span>
@@ -1419,6 +1565,80 @@ const REFRESH_SECONDS = 60;
         updateStationView(activeStationKey);
       };
 
+      const smnToggleBtn = document.querySelector<HTMLButtonElement>("[data-smn-toggle]");
+      const smnInstEl = document.querySelector<HTMLElement>("[data-smn-instructions]");
+      if (smnToggleBtn && smnInstEl) {
+        smnToggleBtn.addEventListener("click", () => {
+          const isHidden = smnInstEl.hidden;
+          smnInstEl.hidden = !isHidden;
+          smnToggleBtn.classList.toggle("open", isHidden);
+        });
+      }
+
+      const renderAlerts = (alerts: any[]): void => {
+        const card = document.querySelector<HTMLElement>("[data-smn-card]");
+        const calmBadge = document.querySelector<HTMLElement>('[data-field="smnCalmBadge"]');
+
+        const activeAlerts = Array.isArray(alerts) ? alerts.filter((a) => a && a.level !== "verde") : [];
+
+        if (activeAlerts.length === 0) {
+          if (card) card.hidden = true;
+          if (calmBadge) calmBadge.hidden = false;
+          return;
+        }
+
+        if (calmBadge) calmBadge.hidden = true;
+        if (!card) return;
+
+        card.hidden = false;
+        const alert = activeAlerts[0];
+
+        card.classList.remove("level-amarillo", "level-naranja", "level-rojo");
+        card.classList.add(`level-${alert.level}`);
+
+        const badge = card.querySelector<HTMLElement>("[data-smn-badge]");
+        if (badge) {
+          badge.textContent = alert.type === "corto_plazo" ? "Aviso a Corto Plazo" : `Alerta ${alert.level.toUpperCase()}`;
+          badge.style.setProperty("--smn-badge-bg", alert.levelColor);
+          badge.style.setProperty("--smn-badge-color", alert.level === "amarillo" ? "#000" : "#fff");
+        }
+
+        const titleEl = card.querySelector<HTMLElement>("[data-smn-title]");
+        if (titleEl) titleEl.textContent = alert.title || alert.event;
+
+        const descEl = card.querySelector<HTMLElement>("[data-smn-desc]");
+        if (descEl) descEl.textContent = alert.description ?? "";
+
+        const timeEl = card.querySelector<HTMLElement>("[data-smn-time]");
+        if (timeEl) {
+          const parts: string[] = [];
+          if (alert.timeFrame) parts.push(`Período: ${alert.timeFrame}`);
+          if (alert.startsAt) {
+            try {
+              const d = new Date(alert.startsAt);
+              parts.push(`Inicio: ${d.toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" })}`);
+            } catch {}
+          }
+          if (alert.expiresAt) {
+            try {
+              const d = new Date(alert.expiresAt);
+              parts.push(`Hasta: ${d.toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit" })}`);
+            } catch {}
+          }
+          timeEl.textContent = parts.join(" · ");
+        }
+
+        if (smnInstEl && smnToggleBtn) {
+          if (alert.instructions) {
+            smnInstEl.textContent = alert.instructions;
+            smnToggleBtn.hidden = false;
+          } else {
+            smnInstEl.hidden = true;
+            smnToggleBtn.hidden = true;
+          }
+        }
+      };
+
       const render = (data: Record<string, any>): void => {
         setField("temperature", fmt(data.temperature));
         setField("feelsLike", fmt(data.feelsLike, 0));
@@ -1444,6 +1664,7 @@ const REFRESH_SECONDS = 60;
         setField("moonLuminance", fmt(data.moonLuminance, 0));
         setForecastCard(data.forecast);
         renderStations(data);
+        renderAlerts(data.alerts);
 
         const icon = document.querySelector<HTMLImageElement>('[data-field="forecastIcon"]');
         if (icon) {
