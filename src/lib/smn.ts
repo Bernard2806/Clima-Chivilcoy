@@ -54,9 +54,9 @@ function conditionToIcon(cond: string | null | undefined): string {
   if (c.includes("lluvia") || c.includes("llovizna") || c.includes("chaparron")) return "rainy";
   if (c.includes("nieve") || c.includes("nevada")) return "weather_snowy";
   if (c.includes("niebla") || c.includes("neblina")) return "foggy";
-  if (c.includes("despejado")) return "sunny";
   if (c.includes("algo nublado") || c.includes("ligeramente nublado") || c.includes("parcialmente")) return "partly_cloudy_day";
-  if (c.includes("nublado") || c.includes("cubierto")) return "cloudy";
+  if (c.includes("nublado") || c.includes("cubierto")) return "cloud";
+  if (c.includes("despejado")) return "wb_sunny";
   if (c.includes("ventoso")) return "air";
   return "wb_sunny";
 }
