@@ -1294,7 +1294,17 @@ const REFRESH_SECONDS = 60;
 
         const feelsEl = document.querySelector<HTMLElement>('[data-station-detail="feels"]');
         if (feelsEl) {
-          feelsEl.textContent = s.feelsLike !== null && s.feelsLike !== undefined ? `Sensación térmica ${fmt(s.feelsLike, 0)}°` : "Sin sensación térmica";
+          const parts: string[] = [];
+          if (s.feelsLike !== null && s.feelsLike !== undefined) {
+            parts.push(`ST ${fmt(s.feelsLike, 0)}°`);
+          }
+          if (s.temperatureMax !== null && s.temperatureMax !== undefined) {
+            parts.push(`Máx ${fmt(s.temperatureMax)}°`);
+          }
+          if (s.temperatureMin !== null && s.temperatureMin !== undefined) {
+            parts.push(`Mín ${fmt(s.temperatureMin)}°`);
+          }
+          feelsEl.textContent = parts.length > 0 ? parts.join(" · ") : "Sin datos adicionales";
         }
 
         const humEl = document.querySelector<HTMLElement>('[data-station-detail="humidity"]');
