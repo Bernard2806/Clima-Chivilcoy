@@ -43,6 +43,19 @@ export interface SmnAlert {
   updatedAt: string | null;
 }
 
+export interface SmnForecastItem {
+  date: string;
+  dayName: string;
+  period: string;
+  temp: number | null;
+  tempMin: number | null;
+  tempMax: number | null;
+  condition: string;
+  icon: string;
+  rainProb: number | null;
+  wind: string | null;
+}
+
 export interface CurrentWeather {
   source: string;
   fetchedAt: string;
@@ -75,4 +88,5 @@ export interface CurrentWeather {
   sources: StationSnapshot[];
   stationCount: number;
   alerts: SmnAlert[];
+  smnForecast: SmnForecastItem[];
 }

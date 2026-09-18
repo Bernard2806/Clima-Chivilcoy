@@ -306,6 +306,7 @@ export async function getCurrentWeather(): Promise<CurrentWeather> {
     sources: [],
     stationCount: 1,
     alerts: [],
+    smnForecast: [],
   };
 
   return current;

@@ -260,6 +260,112 @@ const REFRESH_SECONDS = 60;
         line-height: 1.4;
         color: var(--md-sys-color-outline);
       }
+      .smn-forecast-section {
+        margin-top: 16px;
+      }
+      .smn-forecast-divider {
+        height: 1px;
+        background: var(--md-sys-color-outline-variant);
+        margin: 14px 0 12px;
+        opacity: 0.6;
+      }
+      .smn-forecast-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 10px;
+        flex-wrap: wrap;
+      }
+      .smn-forecast-title-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .smn-forecast-badge {
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        padding: 2px 7px;
+        border-radius: 999px;
+        background: var(--md-sys-color-primary-container);
+        color: var(--md-sys-color-on-primary-container);
+        letter-spacing: 0.04em;
+      }
+      .smn-forecast-title {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--md-sys-color-on-surface);
+      }
+      .smn-forecast-source {
+        font-size: 0.7rem;
+        color: var(--md-sys-color-outline);
+      }
+      .smn-forecast-scroll {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 8px;
+        overflow-x: auto;
+        padding-bottom: 2px;
+      }
+      .smn-forecast-item {
+        background: var(--md-sys-color-surface-container-high);
+        border: 1px solid var(--md-sys-color-outline-variant);
+        border-radius: 12px;
+        padding: 10px 6px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 3px;
+        min-width: 90px;
+      }
+      .smn-day-title {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--md-sys-color-on-surface);
+      }
+      .smn-day-icon {
+        --md-icon-size: 24px;
+        color: var(--md-sys-color-primary);
+        margin: 2px 0;
+      }
+      .smn-day-condition {
+        font-size: 0.7rem;
+        color: var(--md-sys-color-on-surface-variant);
+        line-height: 1.2;
+        min-height: 2.4em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .smn-day-temps {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--md-sys-color-on-surface);
+      }
+      .smn-day-temps .min {
+        color: var(--md-sys-color-outline);
+        font-weight: 400;
+      }
+      .smn-day-rain {
+        font-size: 0.68rem;
+        color: #0288d1;
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        margin-top: 1px;
+      }
+      .smn-day-wind {
+        font-size: 0.65rem;
+        color: var(--md-sys-color-outline);
+      }
+      .smn-forecast-note {
+        margin: 10px 0 0;
+        font-size: 0.7rem;
+        line-height: 1.35;
+        color: var(--md-sys-color-outline);
+      }
       .smn-alerts-card {
         margin-bottom: 12px;
         border-left: 5px solid var(--smn-border-color, #fbc02d);
@@ -430,6 +536,224 @@ const REFRESH_SECONDS = 60;
         font-size: 0.72rem;
         line-height: 1.4;
         color: var(--md-sys-color-outline);
+      }
+      .radar-card {
+        padding: 0;
+        overflow: hidden;
+        margin-bottom: 12px;
+        border-radius: 16px;
+      }
+      .radar-card-header {
+        width: 100%;
+        background: transparent;
+        border: none;
+        padding: 14px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        cursor: pointer;
+        color: inherit;
+        text-align: left;
+        gap: 12px;
+        transition: background-color 0.2s ease;
+      }
+      .radar-card-header:hover {
+        background: var(--md-sys-color-surface-container-high);
+      }
+      .radar-head-left {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        min-width: 0;
+      }
+      .radar-head-icon {
+        --md-icon-size: 24px;
+        color: var(--md-sys-color-primary);
+        flex-shrink: 0;
+      }
+      .radar-head-titles {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+      .radar-head-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--md-sys-color-on-surface);
+      }
+      .radar-head-sub {
+        font-size: 0.74rem;
+        color: var(--md-sys-color-on-surface-variant);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .radar-head-right {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-shrink: 0;
+      }
+      .radar-badge-pill {
+        font-size: 0.7rem;
+        font-weight: 500;
+        background: var(--md-sys-color-surface-container-highest);
+        color: var(--md-sys-color-outline);
+        padding: 2px 8px;
+        border-radius: 999px;
+      }
+      .radar-chevron {
+        --md-icon-size: 20px;
+        color: var(--md-sys-color-on-surface-variant);
+        transition: transform 0.25s ease;
+      }
+      .radar-card-header[aria-expanded="true"] .radar-chevron {
+        transform: rotate(180deg);
+      }
+      .radar-card-body {
+        padding: 0 16px 16px;
+        border-top: 1px solid var(--md-sys-color-outline-variant);
+      }
+      .radar-controls {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 12px 0;
+        flex-wrap: wrap;
+      }
+      .radar-select-wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex: 1;
+        min-width: 240px;
+      }
+      .radar-select-label {
+        font-size: 0.78rem;
+        color: var(--md-sys-color-on-surface-variant);
+        white-space: nowrap;
+      }
+      .radar-select {
+        flex: 1;
+        padding: 7px 10px;
+        border-radius: 10px;
+        background: var(--md-sys-color-surface-container-high);
+        color: var(--md-sys-color-on-surface);
+        border: 1px solid var(--md-sys-color-outline-variant);
+        font-size: 0.82rem;
+        font-family: inherit;
+        outline: none;
+        cursor: pointer;
+      }
+      .radar-select:focus {
+        border-color: var(--md-sys-color-primary);
+      }
+      .radar-actions {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .radar-layer-time {
+        font-size: 0.72rem;
+        color: var(--md-sys-color-outline);
+      }
+      .radar-frame {
+        position: relative;
+        aspect-ratio: 16 / 10;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #0b0f14;
+      }
+      .radar-iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+        display: block;
+      }
+      .radar-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+      .radar-img.loaded {
+        opacity: 1;
+      }
+      .radar-overlay {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(0, 0, 0, 0.45);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+      }
+      .radar-overlay.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+      .radar-overlay md-icon {
+        --md-icon-size: 32px;
+        color: #fff;
+        animation: spin 1s linear infinite;
+      }
+      .radar-fullscreen-btn {
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+        background: rgba(0, 0, 0, 0.6);
+        border: none;
+        color: #fff;
+        border-radius: 8px;
+        padding: 6px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(4px);
+      }
+      .radar-fullscreen-btn:hover {
+        background: rgba(0, 0, 0, 0.85);
+      }
+      .radar-fullscreen-btn md-icon {
+        --md-icon-size: 18px;
+      }
+      .radar-frame:fullscreen {
+        aspect-ratio: auto;
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+      }
+      .radar-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+      }
+      .radar-source-note {
+        font-size: 0.72rem;
+        color: var(--md-sys-color-outline);
+        line-height: 1.35;
+        flex: 1;
+        min-width: 200px;
+      }
+      .radar-link-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 0.74rem;
+        color: var(--md-sys-color-primary);
+        text-decoration: none;
+        white-space: nowrap;
+      }
+      .radar-link-btn md-icon {
+        --md-icon-size: 14px;
       }
       .lightbox {
         position: fixed;
@@ -1052,6 +1376,20 @@ const REFRESH_SECONDS = 60;
           Estimación a partir de modelos meteorológicos (no es una medición en vivo de la
           estación).
         </p>
+        <div class="smn-forecast-section" data-smn-forecast-container hidden>
+          <div class="smn-forecast-divider"></div>
+          <div class="smn-forecast-header">
+            <div class="smn-forecast-title-row">
+              <span class="smn-forecast-badge">Oficial SMN</span>
+              <span class="smn-forecast-title">Pronóstico extendido regional</span>
+            </div>
+            <span class="smn-forecast-source">Servicio Meteorológico Nacional</span>
+          </div>
+          <div class="smn-forecast-scroll" data-smn-forecast-list></div>
+          <p class="smn-forecast-note">
+            Emitido por el Servicio Meteorológico Nacional (SMN) para la región de Chivilcoy.
+          </p>
+        </div>
       </section>
 
       <section class="card webcam-card" data-webcam-card hidden>
@@ -1075,6 +1413,61 @@ const REFRESH_SECONDS = 60;
           Cámara de la estación ClimaChivilcoy con lecturas · se actualiza sola cada ~2 min. Tocá la
           imagen para agrandar o el botón para refrescar al instante.
         </p>
+      </section>
+
+      <section class="card radar-card" data-radar-card>
+        <button type="button" class="radar-card-header" data-radar-toggle aria-expanded="false">
+          <div class="radar-head-left">
+            <md-icon class="radar-head-icon">radar</md-icon>
+            <div class="radar-head-titles">
+              <span class="radar-head-title">Radar y Satélite en vivo</span>
+              <span class="radar-head-sub">Precipitaciones y nubosidad en tiempo real</span>
+            </div>
+          </div>
+          <div class="radar-head-right">
+            <span class="radar-badge-pill">Opcional</span>
+            <md-icon class="radar-chevron">expand_more</md-icon>
+          </div>
+        </button>
+
+        <div class="radar-card-body" data-radar-body hidden>
+          <div class="radar-controls">
+            <label class="radar-select-wrap">
+              <span class="radar-select-label">Capa:</span>
+              <select class="radar-select" data-radar-layer>
+                <option value="rainviewer">🌧️ Radar de lluvia en vivo (Pergamino / Ezeiza / Región)</option>
+                <option value="goes19_geocolor">🛰️ Satélite GOES-19 GeoColor (Visible día y noche)</option>
+                <option value="goes19_ir">🌡️ Satélite Infrarrojo (Topes nubosos y tormentas)</option>
+                <option value="goes19_sandwich">⚡ Satélite Sandwich RGB (Convección severa)</option>
+              </select>
+            </label>
+            <div class="radar-actions">
+              <span class="radar-layer-time" data-radar-time>--</span>
+              <md-icon-button data-radar-refresh aria-label="Actualizar imagen de radar o satélite">
+                <md-icon>refresh</md-icon>
+              </md-icon-button>
+            </div>
+          </div>
+
+          <div class="radar-frame" data-radar-frame>
+            <iframe class="radar-iframe" data-radar-iframe title="Radar meteorológico en vivo"></iframe>
+            <img class="radar-img" data-radar-img alt="Imagen satelital en tiempo real" hidden />
+            <div class="radar-overlay" data-radar-loading>
+              <md-icon>refresh</md-icon>
+            </div>
+            <button type="button" class="radar-fullscreen-btn" data-radar-fullscreen aria-label="Ver en pantalla completa">
+              <md-icon>fullscreen</md-icon>
+            </button>
+          </div>
+
+          <div class="radar-footer">
+            <span class="radar-source-note">Fuentes oficiales: SINARAME / SMN (Radares Pergamino y Ezeiza) y NOAA (GOES-19).</span>
+            <a class="radar-link-btn" href="https://www.smn.gob.ar/radar" target="_blank" rel="noopener noreferrer">
+              <span>Sitio oficial de radares SMN</span>
+              <md-icon>open_in_new</md-icon>
+            </a>
+          </div>
+        </div>
       </section>
 
       <section class="grid">
@@ -1607,6 +2000,70 @@ const REFRESH_SECONDS = 60;
         }
       };
 
+      const renderSmnForecast = (items: any[] | undefined): void => {
+        const container = document.querySelector<HTMLElement>("[data-smn-forecast-container]");
+        const list = document.querySelector<HTMLElement>("[data-smn-forecast-list]");
+        if (!container || !list) return;
+
+        const validItems = Array.isArray(items) ? items : [];
+        if (validItems.length === 0) {
+          container.hidden = true;
+          return;
+        }
+
+        container.hidden = false;
+        list.textContent = "";
+
+        for (const item of validItems) {
+          const card = document.createElement("div");
+          card.className = "smn-day-card";
+
+          const dayEl = document.createElement("span");
+          dayEl.className = "smn-day-name";
+          dayEl.textContent = item.dayName;
+
+          const dateEl = document.createElement("span");
+          dateEl.className = "smn-day-date";
+          dateEl.textContent = item.dateLabel;
+
+          const iconEl = document.createElement("md-icon");
+          iconEl.className = "smn-day-icon";
+          iconEl.textContent = item.icon || "wb_sunny";
+
+          const tempsEl = document.createElement("div");
+          tempsEl.className = "smn-day-temps";
+          const maxStr = item.tempMax !== null && item.tempMax !== undefined ? `${fmt(item.tempMax, 0)}°` : "--";
+          const minStr = item.tempMin !== null && item.tempMin !== undefined ? `${fmt(item.tempMin, 0)}°` : "--";
+          tempsEl.innerHTML = `<span class="smn-temp-max">${maxStr}</span><span class="smn-temp-min">${minStr}</span>`;
+
+          const condEl = document.createElement("span");
+          condEl.className = "smn-day-desc";
+          condEl.textContent = item.description || "";
+
+          card.appendChild(dayEl);
+          card.appendChild(dateEl);
+          card.appendChild(iconEl);
+          card.appendChild(tempsEl);
+          card.appendChild(condEl);
+
+          if (item.rainProb) {
+            const rainEl = document.createElement("span");
+            rainEl.className = "smn-day-pop";
+            rainEl.innerHTML = `<md-icon>water_drop</md-icon> ${item.rainProb}`;
+            card.appendChild(rainEl);
+          }
+
+          if (item.windSpeed) {
+            const windEl = document.createElement("span");
+            windEl.className = "smn-day-wind";
+            windEl.innerHTML = `<md-icon>air</md-icon> ${item.windSpeed} km/h`;
+            card.appendChild(windEl);
+          }
+
+          list.appendChild(card);
+        }
+      };
+
       const render = (data: Record<string, any>): void => {
         setField("temperature", fmt(data.temperature));
         setField("feelsLike", fmt(data.feelsLike, 0));
@@ -1633,6 +2090,7 @@ const REFRESH_SECONDS = 60;
         setForecastCard(data.forecast);
         renderStations(data);
         renderAlerts(data.alerts);
+        renderSmnForecast(data.smnForecast);
 
         const icon = document.querySelector<HTMLImageElement>('[data-field="forecastIcon"]');
         if (icon) {
@@ -1771,6 +2229,112 @@ const REFRESH_SECONDS = 60;
         if (!document.hidden && navigator.onLine) {
           load();
           reloadWebcam();
+        }
+      });
+
+      const radarToggle = document.querySelector<HTMLButtonElement>("[data-radar-toggle]");
+      const radarBody = document.querySelector<HTMLElement>("[data-radar-body]");
+      const radarLayerSelect = document.querySelector<HTMLSelectElement>("[data-radar-layer]");
+      const radarRefreshBtn = document.querySelector<HTMLElement>("[data-radar-refresh]");
+      const radarTime = document.querySelector<HTMLElement>("[data-radar-time]");
+      const radarIframe = document.querySelector<HTMLIFrameElement>("[data-radar-iframe]");
+      const radarImg = document.querySelector<HTMLImageElement>("[data-radar-img]");
+      const radarLoading = document.querySelector<HTMLElement>("[data-radar-loading]");
+      const radarFullscreenBtn = document.querySelector<HTMLButtonElement>("[data-radar-fullscreen]");
+      const radarFrame = document.querySelector<HTMLElement>("[data-radar-frame]");
+
+      const RADAR_URLS: Record<string, string> = {
+        rainviewer: "https://www.rainviewer.com/map.html?loc=-34.8906,-60.0058,8&oFa=0&oC=1&oU=0&oCl=0&c=1&o=83&layer=radar&sm=1&ts=1",
+        goes19_geocolor: "https://cdn.star.nesdis.noaa.gov/GOES19/ABI/SECTOR/ssa/GEOCOLOR/latest.jpg",
+        goes19_ir: "https://cdn.star.nesdis.noaa.gov/GOES19/ABI/SECTOR/ssa/13/latest.jpg",
+        goes19_sandwich: "https://cdn.star.nesdis.noaa.gov/GOES19/ABI/SECTOR/ssa/Sandwich/latest.jpg",
+      };
+
+      let radarInitialized = false;
+
+      const updateRadarTime = (): void => {
+        if (!radarTime) return;
+        const now = new Intl.DateTimeFormat("es-AR", {
+          hour: "2-digit",
+          minute: "2-digit",
+          timeZone: "America/Argentina/Buenos_Aires",
+        }).format(new Date());
+        radarTime.textContent = `al aire ${now}`;
+      };
+
+      const loadRadarLayer = (force = false): void => {
+        const layer = radarLayerSelect?.value || "rainviewer";
+        const url = RADAR_URLS[layer] || RADAR_URLS.rainviewer;
+        if (radarLoading) radarLoading.classList.add("active");
+
+        if (layer === "rainviewer") {
+          if (radarImg) {
+            radarImg.hidden = true;
+            radarImg.classList.remove("loaded");
+          }
+          if (radarIframe) {
+            radarIframe.hidden = false;
+            const targetUrl = force ? `${url}&_t=${Date.now()}` : url;
+            if (radarIframe.src !== targetUrl) {
+              radarIframe.src = targetUrl;
+            } else {
+              if (radarLoading) radarLoading.classList.remove("active");
+            }
+          }
+        } else {
+          if (radarIframe) radarIframe.hidden = true;
+          if (radarImg) {
+            radarImg.hidden = false;
+            radarImg.classList.remove("loaded");
+            radarImg.src = `${url}?t=${Date.now()}`;
+          }
+        }
+        updateRadarTime();
+      };
+
+      if (radarIframe) {
+        radarIframe.addEventListener("load", () => {
+          if (radarLoading) radarLoading.classList.remove("active");
+        });
+      }
+      if (radarImg) {
+        radarImg.addEventListener("load", () => {
+          radarImg.classList.add("loaded");
+          if (radarLoading) radarLoading.classList.remove("active");
+        });
+        radarImg.addEventListener("error", () => {
+          if (radarLoading) radarLoading.classList.remove("active");
+        });
+      }
+
+      if (radarToggle && radarBody) {
+        radarToggle.addEventListener("click", () => {
+          const isExpanded = radarToggle.getAttribute("aria-expanded") === "true";
+          const nextState = !isExpanded;
+          radarToggle.setAttribute("aria-expanded", String(nextState));
+          radarBody.hidden = !nextState;
+
+          if (nextState && !radarInitialized) {
+            radarInitialized = true;
+            loadRadarLayer();
+          }
+        });
+      }
+
+      radarLayerSelect?.addEventListener("change", () => {
+        loadRadarLayer();
+      });
+
+      radarRefreshBtn?.addEventListener("click", () => {
+        loadRadarLayer(true);
+      });
+
+      radarFullscreenBtn?.addEventListener("click", () => {
+        if (!radarFrame) return;
+        if (!document.fullscreenElement) {
+          radarFrame.requestFullscreen?.().catch(() => {});
+        } else {
+          document.exitFullscreen?.().catch(() => {});
         }
       });
 
