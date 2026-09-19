@@ -67,12 +67,12 @@ const REFRESH_SECONDS = 60;
         font-family: Roboto, system-ui, -apple-system, "Segoe UI", sans-serif;
         display: flex;
         justify-content: center;
-        padding: 16px 16px 40px;
+        padding: 16px 16px 72px;
         overscroll-behavior-y: contain;
         -webkit-tap-highlight-color: transparent;
       }
       body.has-fab {
-        padding-bottom: 104px;
+        padding-bottom: 120px;
       }
       .app {
         width: 100%;
@@ -1354,10 +1354,76 @@ const REFRESH_SECONDS = 60;
         color: var(--md-sys-color-outline);
         max-width: 480px;
       }
-      .install-fab {
+      .creator-badge {
         position: fixed;
         left: 16px;
-        right: auto;
+        bottom: calc(16px + env(safe-area-inset-bottom));
+        z-index: 11;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 12px 4px 6px;
+        border-radius: 999px;
+        background: rgba(29, 32, 36, 0.9);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--md-sys-color-outline-variant);
+        text-decoration: none;
+        color: var(--md-sys-color-on-surface);
+        font-size: 0.76rem;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+        transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, bottom 0.2s ease;
+        max-width: calc(100vw - 32px);
+      }
+      .creator-badge:hover,
+      .creator-badge:focus-visible {
+        border-color: var(--md-sys-color-primary);
+        background: var(--md-sys-color-surface-container-high);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
+      }
+      body.has-fab .creator-badge {
+        bottom: calc(76px + env(safe-area-inset-bottom));
+      }
+      .creator-badge-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 8px;
+        border-radius: 999px;
+        background: rgba(168, 199, 250, 0.15);
+        color: var(--md-sys-color-primary);
+        font-weight: 500;
+        font-size: 0.72rem;
+        white-space: nowrap;
+      }
+      .creator-badge-tag md-icon {
+        font-size: 13px;
+        --md-icon-size: 13px;
+      }
+      .creator-badge-name {
+        font-weight: 500;
+        color: var(--md-sys-color-on-surface);
+        transition: color 0.2s ease;
+        white-space: nowrap;
+      }
+      .creator-badge:hover .creator-badge-name {
+        color: var(--md-sys-color-primary);
+      }
+      .creator-badge-arrow {
+        font-size: 13px;
+        --md-icon-size: 13px;
+        color: var(--md-sys-color-outline);
+        transition: color 0.2s ease, transform 0.2s ease;
+      }
+      .creator-badge:hover .creator-badge-arrow {
+        color: var(--md-sys-color-primary);
+        transform: translate(1px, -1px);
+      }
+      .install-fab {
+        position: fixed;
+        right: 16px;
+        left: auto;
         bottom: calc(16px + env(safe-area-inset-bottom));
         z-index: 12;
       }
@@ -1839,6 +1905,22 @@ const REFRESH_SECONDS = 60;
     <div class="ptr" data-ptr aria-hidden="true">
       <md-icon>refresh</md-icon>
     </div>
+
+    <a
+      class="creator-badge"
+      href="https://bernard2806.is-a.dev/"
+      target="_blank"
+      rel="noopener noreferrer"
+      title="Website of Bernardo G. Erramuspe"
+      aria-label="Created by Bernardo G. Erramuspe (opens in a new tab)"
+    >
+      <span class="creator-badge-tag">
+        <md-icon>code</md-icon>
+        <span>Created by</span>
+      </span>
+      <span class="creator-badge-name">Bernardo G. Erramuspe</span>
+      <md-icon class="creator-badge-arrow">open_in_new</md-icon>
+    </a>
 
     <md-fab class="install-fab" data-install-fab variant="primary" label="Instalar" hidden>
       <md-icon slot="icon">download</md-icon>
