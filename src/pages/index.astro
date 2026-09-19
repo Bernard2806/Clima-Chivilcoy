@@ -1356,69 +1356,67 @@ const REFRESH_SECONDS = 60;
       }
       .creator-badge {
         position: fixed;
-        left: 16px;
-        bottom: calc(16px + env(safe-area-inset-bottom));
+        left: 18px;
+        bottom: calc(18px + env(safe-area-inset-bottom));
         z-index: 11;
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        padding: 4px 12px 4px 6px;
+        gap: 9px;
+        white-space: nowrap;
+        padding: 9px 14px 9px 11px;
         border-radius: 999px;
-        background: rgba(29, 32, 36, 0.9);
+        background: linear-gradient(180deg, #1d2024 0%, #131518 100%);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
-        border: 1px solid var(--md-sys-color-outline-variant);
+        border: 1px solid rgba(255, 255, 255, 0.12);
         text-decoration: none;
-        color: var(--md-sys-color-on-surface);
-        font-size: 0.76rem;
+        color: #f4f9f9;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+        line-height: 1.2;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-        transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, bottom 0.2s ease;
-        max-width: calc(100vw - 32px);
+        transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, bottom 0.2s ease;
+        max-width: calc(100vw - 36px);
       }
       .creator-badge:hover,
       .creator-badge:focus-visible {
-        border-color: var(--md-sys-color-primary);
-        background: var(--md-sys-color-surface-container-high);
-        transform: translateY(-2px);
+        border-color: rgba(168, 199, 250, 0.35);
+        transform: translateY(-1px);
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
       }
       body.has-fab .creator-badge {
         bottom: calc(76px + env(safe-area-inset-bottom));
       }
-      .creator-badge-tag {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-        padding: 3px 8px;
-        border-radius: 999px;
-        background: rgba(168, 199, 250, 0.15);
+      .creator-badge-icon {
+        font-size: 18px;
+        --md-icon-size: 18px;
+        width: 18px;
+        height: 18px;
         color: var(--md-sys-color-primary);
-        font-weight: 500;
-        font-size: 0.72rem;
-        white-space: nowrap;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
-      .creator-badge-tag md-icon {
+      .creator-badge-text {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 5px;
+      }
+      .creator-badge-label {
+        color: #c4c6d0;
+        font-weight: 500;
         font-size: 13px;
-        --md-icon-size: 13px;
       }
       .creator-badge-name {
-        font-weight: 500;
-        color: var(--md-sys-color-on-surface);
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 13px;
         transition: color 0.2s ease;
-        white-space: nowrap;
       }
       .creator-badge:hover .creator-badge-name {
         color: var(--md-sys-color-primary);
-      }
-      .creator-badge-arrow {
-        font-size: 13px;
-        --md-icon-size: 13px;
-        color: var(--md-sys-color-outline);
-        transition: color 0.2s ease, transform 0.2s ease;
-      }
-      .creator-badge:hover .creator-badge-arrow {
-        color: var(--md-sys-color-primary);
-        transform: translate(1px, -1px);
       }
       .install-fab {
         position: fixed;
@@ -1914,12 +1912,11 @@ const REFRESH_SECONDS = 60;
       title="Website of Bernardo G. Erramuspe"
       aria-label="Created by Bernardo G. Erramuspe (opens in a new tab)"
     >
-      <span class="creator-badge-tag">
-        <md-icon>code</md-icon>
-        <span>Created by</span>
+      <md-icon class="creator-badge-icon">code</md-icon>
+      <span class="creator-badge-text">
+        <span class="creator-badge-label">Created by</span>
+        <span class="creator-badge-name">Bernardo G. Erramuspe</span>
       </span>
-      <span class="creator-badge-name">Bernardo G. Erramuspe</span>
-      <md-icon class="creator-badge-arrow">open_in_new</md-icon>
     </a>
 
     <md-fab class="install-fab" data-install-fab variant="primary" label="Instalar" hidden>
