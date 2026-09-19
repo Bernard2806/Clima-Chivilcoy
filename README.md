@@ -9,13 +9,13 @@
 Condiciones actuales, pronóstico, alertas oficiales y cámara en vivo, con datos de estaciones
 físicas reales y actualización automática.
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/fb8808d4-d874-47d5-a36e-84c543366ad1/deploy-status)](https://app.netlify.com/projects/climachivilcoy/deploys)
 [![Ver en vivo](https://img.shields.io/badge/%F0%9F%8C%90%20Ver%20en%20vivo-climachivilcoy.netlify.app-111318)](https://climachivilcoy.netlify.app/)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/fb8808d4-d874-47d5-a36e-84c543366ad1/deploy-status)](https://app.netlify.com/projects/climachivilcoy/deploys)
 ![Astro](https://img.shields.io/badge/Astro-BC52EE?logo=astro&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
 ![pnpm](https://img.shields.io/badge/pnpm-F69220?logo=pnpm&logoColor=white)
-![Licencia MIT](https://img.shields.io/badge/licencia-MIT-green)
 ![Unidades](https://img.shields.io/badge/unidades-m%C3%A9tricas-blue)
+![Licencia MIT](https://img.shields.io/badge/licencia-MIT-green)
 
 </div>
 
