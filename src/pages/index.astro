@@ -1669,6 +1669,26 @@ const REFRESH_SECONDS = 60;
             </div>
             <span class="station-tab-temp" data-station-tab-temp="lw6eqg">--°</span>
           </button>
+          <button type="button" class="station-tab" data-station-key="ichivi27" role="tab" aria-selected="false">
+            <span class="station-tab-icon">
+              <md-icon>agriculture</md-icon>
+            </span>
+            <div class="station-tab-info">
+              <span class="station-tab-name">AFA Chivilcoy</span>
+              <span class="station-tab-tag">Ruta 30</span>
+            </div>
+            <span class="station-tab-temp" data-station-tab-temp="ichivi27">--°</span>
+          </button>
+          <button type="button" class="station-tab" data-station-key="ichivi4" role="tab" aria-selected="false">
+            <span class="station-tab-icon">
+              <md-icon>south</md-icon>
+            </span>
+            <div class="station-tab-info">
+              <span class="station-tab-name">Zona Sur</span>
+              <span class="station-tab-tag">Barrio Sur</span>
+            </div>
+            <span class="station-tab-temp" data-station-tab-temp="ichivi4">--°</span>
+          </button>
         </div>
 
         <div class="station-status-row">
@@ -1795,6 +1815,16 @@ const REFRESH_SECONDS = 60;
             <a class="footer-chip" href="https://lw6eqg.ar/" target="_blank" rel="noopener noreferrer">
               <img src="/img/lw6eqg-favicon.svg" width="16" height="16" alt="" />
               <span>LW6EQG Chivilcoy</span>
+              <md-icon>open_in_new</md-icon>
+            </a>
+            <a class="footer-chip" href="https://www.wunderground.com/dashboard/pws/ICHIVI27" target="_blank" rel="noopener noreferrer">
+              <md-icon>agriculture</md-icon>
+              <span>AFA Chivilcoy (Ruta 30)</span>
+              <md-icon>open_in_new</md-icon>
+            </a>
+            <a class="footer-chip" href="https://www.wunderground.com/dashboard/pws/ICHIVI4" target="_blank" rel="noopener noreferrer">
+              <md-icon>south</md-icon>
+              <span>Chivilcoy Zona Sur</span>
               <md-icon>open_in_new</md-icon>
             </a>
           </div>
@@ -1928,6 +1958,8 @@ const REFRESH_SECONDS = 60;
 
         const isInta = s.key === "inta";
         const isLw6eqg = s.key === "lw6eqg";
+        const isIchivi27 = s.key === "ichivi27";
+        const isIchivi4 = s.key === "ichivi4";
         const titleEl = document.querySelector<HTMLElement>('[data-station-detail="title"]');
         if (titleEl) titleEl.textContent = s.name;
 
@@ -1937,6 +1969,10 @@ const REFRESH_SECONDS = 60;
             subEl.textContent = "Polideportivo Municipal · Chivilcoy";
           } else if (isLw6eqg) {
             subEl.textContent = "Zona urbana · MeteoBridge v6.4";
+          } else if (isIchivi27) {
+            subEl.textContent = "Ruta Provincial 30 · AcuRite 5-in-1";
+          } else if (isIchivi4) {
+            subEl.textContent = "Barrio Sur · EasyWeather";
           } else {
             subEl.textContent = "Zona urbana · Davis Vantage Pro";
           }
@@ -2004,6 +2040,14 @@ const REFRESH_SECONDS = 60;
             img.width = 22;
             img.height = 22;
             webAvatar.appendChild(img);
+          } else if (isIchivi27) {
+            const ic = document.createElement("md-icon");
+            ic.textContent = "agriculture";
+            webAvatar.appendChild(ic);
+          } else if (isIchivi4) {
+            const ic = document.createElement("md-icon");
+            ic.textContent = "south";
+            webAvatar.appendChild(ic);
           } else {
             const ic = document.createElement("md-icon");
             ic.textContent = "cloud";
@@ -2044,6 +2088,16 @@ const REFRESH_SECONDS = 60;
             mapCard.href = "https://www.google.com/maps/search/?api=1&query=-34.893675,-60.005533";
             if (mapTitle) mapTitle.textContent = "Estación LW6EQG";
             if (mapSub) mapSub.textContent = "Coordenadas: -34.8937, -60.0055";
+          } else if (isIchivi27) {
+            mapCard.hidden = false;
+            mapCard.href = "https://www.google.com/maps/search/?api=1&query=-34.865,-60.003";
+            if (mapTitle) mapTitle.textContent = "AFA Chivilcoy";
+            if (mapSub) mapSub.textContent = "Coordenadas: -34.8650, -60.0030";
+          } else if (isIchivi4) {
+            mapCard.hidden = false;
+            mapCard.href = "https://www.google.com/maps/search/?api=1&query=-34.92062,-60.001767";
+            if (mapTitle) mapTitle.textContent = "Chivilcoy Zona Sur";
+            if (mapSub) mapSub.textContent = "Coordenadas: -34.9206, -60.0018";
           } else {
             mapCard.hidden = true;
           }

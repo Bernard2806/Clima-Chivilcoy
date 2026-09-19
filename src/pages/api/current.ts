@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 import { getCurrentWeather } from "../../lib/source";
 import { getIntaSnapshot } from "../../lib/inta";
 import { getLw6eqgSnapshot } from "../../lib/lw6eqg";
+import { getIchivi27Snapshot, getIchivi4Snapshot } from "../../lib/wu";
 import { getSmnAlerts, getSmnForecast } from "../../lib/smn";
 import { combineStations } from "../../lib/ensemble";
 import type { CurrentWeather } from "../../lib/types";
@@ -27,14 +28,16 @@ export const GET: APIRoute = async () => {
 
   try {
     if (!cache || cache.expires <= now) {
-      const [current, inta, lw6eqg, alerts, smnForecast] = await Promise.all([
+      const [current, inta, lw6eqg, ichivi27, ichivi4, alerts, smnForecast] = await Promise.all([
         getCurrentWeather(),
         getIntaSnapshot().catch(() => null),
         getLw6eqgSnapshot().catch(() => null),
+        getIchivi27Snapshot().catch(() => null),
+        getIchivi4Snapshot().catch(() => null),
         getSmnAlerts().catch(() => []),
         getSmnForecast().catch(() => []),
       ]);
-      const combined = combineStations(current, [inta, lw6eqg]);
+      const combined = combineStations(current, [inta, lw6eqg, ichivi27, ichivi4]);
       const data: CurrentWeather = {
         ...combined,
         alerts: alerts ?? [],

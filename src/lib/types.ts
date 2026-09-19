@@ -9,7 +9,7 @@ export interface Forecast {
 }
 
 export interface StationSnapshot {
-  key: "chivilcoy" | "inta" | "lw6eqg";
+  key: "chivilcoy" | "inta" | "lw6eqg" | "ichivi27" | "ichivi4";
   name: string;
   url: string;
   updatedSeconds: number | null;

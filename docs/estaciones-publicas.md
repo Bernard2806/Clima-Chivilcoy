@@ -17,11 +17,15 @@ Coordenadas del punto centro de la ciudad, usadas como referencia geográfica:
 | ClimaChivilcoy | Barrio Alsina (Zona Este) | Weather Underground `ICHIVI1` | -34.903034, -60.002193 | ~50 m | meteobridge |
 | LW6EQG | LW6EQG Chivilcoy | Weather Underground `ICHIVI22` | -34.893694, -60.005607 | ~17 m | meteobridge |
 | INTA Chivilcoy | — | sin PWS en Weather Underground | -34.890556, -60.005833 | — | API propia |
+| AFA Chivilcoy | AFA CHIVILCOY | Weather Underground `ICHIVI27` | -34.865, -60.003 | ~16 m | EasyWeatherPro_V5.2.2 |
+| Chivilcoy Zona Sur | Chivilcoy, Zona Sur | Weather Underground `ICHIVI4` | -34.92062, -60.001767 | ~55 m | EasyWeatherV1.6.4 |
 
 Dashboards de Weather Underground:
 
 - ClimaChivilcoy: https://www.wunderground.com/dashboard/pws/ICHIVI1
 - LW6EQG: https://www.wunderground.com/dashboard/pws/ICHIVI22
+- AFA Chivilcoy: https://www.wunderground.com/dashboard/pws/ICHIVI27
+- Chivilcoy Zona Sur: https://www.wunderground.com/dashboard/pws/ICHIVI4
 
 ## Hardware
 
@@ -30,6 +34,8 @@ Dashboards de Weather Underground:
   TP-Link** (firmware 6.4) y la plantilla **Weather34 Aurora MKII**; la página
   `weather34-template-legend.php` ("Hardware Info") indica `Meteobridge Interface TP-Link`.
 - **LW6EQG**: **Meteobridge** (según el campo `softwareType` de Weather Underground).
+- **AFA Chivilcoy (`ICHIVI27`)**: hardware **AcuRite 5-in-1 Weather Station with Wi-Fi**, software `EasyWeatherPro_V5.2.2`.
+- **Chivilcoy Zona Sur (`ICHIVI4`)**: software `EasyWeatherV1.6.4`.
 
 ## Cómo se verificó
 
@@ -58,36 +64,30 @@ Comparación LW6EQG con ICHIVI22:
 | Dirección | ENE (67.5°) | 68 |
 | Software | — | meteobridge |
 
-## Otra estación cercana (no pertenece al proyecto)
+## Estación descartada
 
-- **`ICHIVI4`** — "Chivilcoy, Zona Sur": Weather Underground, Chivilcoy, lat `-34.92062`,
-  lon `-60.001767`, elevación ~55 m, software `EasyWeatherV1.6.4`. Está en la misma
-  ciudad pero no corresponde a ninguna de las estaciones que consume este proyecto.
 - **`ICHIVI12`** — "In-Aqua": Weather Underground, Chivilcoy, lat `-34.870264`,
   lon `-59.997462`, elevación ~16 m, hardware `other` (sin identificar), software
-  `EasyWeatherV1.7.5`, sobre la **Ruta 30**. No pertenece al proyecto y por ahora
-  **no se consume**; queda documentada únicamente a modo de referencia.
-- **`ICHIVI27`** — "AFA CHIVILCOY": Weather Underground, Chivilcoy, lat `-34.865`,
-  lon `-60.003`, elevación ~16 m, hardware **AcuRite 5-in-1 Weather Station with Wi-Fi**,
-  software `EasyWeatherPro_V5.2.2`. Muy cercana a `ICHIVI12`. No pertenece al proyecto y
-  por ahora **no se consume**; queda documentada únicamente a modo de referencia.
+  `EasyWeatherV1.7.5`, sobre la **Ruta 30**. **Descartada** por redundancia frente a
+  `ICHIVI27` (a solo ~600 m de distancia), hardware genérico sin identificar y datos de presión
+  descalibrados (~11,7 hPa de diferencia respecto a la misma cota).
 
-### Preferencia entre `ICHIVI12` e `ICHIVI27`
+### Comparación entre `ICHIVI12` e `ICHIVI27`
 
 `ICHIVI12` e `ICHIVI27` están a ~600 m entre sí, por lo que son **redundantes** como
-fuente y no conviene sumar ambas. En comparación directa, se prefiere **`ICHIVI27`**:
+fuente y no conviene sumar ambas. En comparación directa, se integró **`ICHIVI27`**:
 
-| Criterio | ICHIVI12 | ICHIVI27 |
+| Criterio | ICHIVI12 (Descartada) | ICHIVI27 (Integrada) |
 | --- | --- | --- |
 | Hardware | `other` (sin identificar) | AcuRite 5-in-1 Weather Station with Wi-Fi |
 | Software | `EasyWeatherV1.7.5` | `EasyWeatherPro_V5.2.2` (generación "Pro", posterior) |
 | Presión (misma hora) | 996,3 hPa | 1008,0 hPa |
 | Radiación solar (misma hora) | 0,4 W/m² | 18,9 W/m² |
 
-ICHIVI27 es la **más moderna** (hardware identificado y software de generación
+`ICHIVI27` es la más moderna (hardware identificado y software de generación
 posterior). Además, la presión difiere ~11,7 hPa entre ambas pese a la corta distancia
-y a la misma elevación, un indicio de barómetro descalibrado en `ICHIVI12`. Por eso la
-candidata a sumar es **`ICHIVI27`**; `ICHIVI12` queda documentada como alternativa.
+y a la misma elevación, un indicio de barómetro descalibrado en `ICHIVI12`. Por eso
+se incorporó **`ICHIVI27`** al ensamble del proyecto y `ICHIVI12` quedó descartada.
 
 ## Consulta rápida (Weather Underground API)
 
