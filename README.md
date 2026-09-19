@@ -22,18 +22,18 @@ físicas reales y actualización automática.
 
 ---
 
-## Qué ofrece
+## ✨ Qué ofrece
 
-- **Condiciones actuales**: temperatura, sensación, humedad, punto de rocío, presión, viento,
+- ⛅ **Condiciones actuales**: temperatura, sensación, humedad, punto de rocío, presión, viento,
   lluvia, sol y luna.
-- **Pronóstico** del día y **extendido del SMN**, con **alertas oficiales**.
-- **Ensamble de estaciones locales** con **desglose por estación** (valor y antigüedad).
-- **Cámara en vivo** de la estación y **visor de radar/satélite**.
-- **Auto-refresco** (~60 s; cámara ~2 min) y recarga manual al instante.
-- **PWA instalable** en Android, iPhone y escritorio. **Unidades métricas** siempre.
-- Interfaz **Material 3**, en español.
+- 📅 **Pronóstico** del día y **extendido del SMN**, con **alertas oficiales**.
+- 🛰️ **Ensamble de estaciones locales** con **desglose por estación** (valor y antigüedad).
+- 📷 **Cámara en vivo** de la estación y **visor de radar/satélite**.
+- 🔄 **Auto-refresco** (~60 s; cámara ~2 min) y recarga manual al instante.
+- 📱 **PWA instalable** en Android, iPhone y escritorio. **Unidades métricas** siempre.
+- 🎨 Interfaz **Material 3**, en español.
 
-## Estaciones
+## 🛰️ Estaciones
 
 Combina cinco fuentes, cada una con su cobertura:
 
@@ -49,7 +49,7 @@ El valor combinado se calcula con **peso por frescura** de cada estación, de mo
 más recientes mandan y las estaciones caídas se descartan solas. Detalle de códigos, hardware y
 coordenadas en [docs/estaciones-publicas.md](./docs/estaciones-publicas.md).
 
-## Arquitectura
+## 🏗️ Arquitectura
 
 - **Astro** con islas: página estática + endpoints on-demand (`/api/current`, `/api/webcam`).
 - Todo el **scraping/parseo ocurre del lado servidor** (la fuente no expone CORS); el navegador
@@ -57,7 +57,7 @@ coordenadas en [docs/estaciones-publicas.md](./docs/estaciones-publicas.md).
 - Lógica de fuentes aislada en `src/lib/`; UI en `src/pages/`.
 - **Service worker network-only**: la app es instalable y nunca sirve datos viejos.
 
-## Desarrollo
+## 👨‍💻 Desarrollo
 
 ```bash
 pnpm install   # instalar dependencias
@@ -68,7 +68,7 @@ pnpm preview   # previsualizar el build
 
 > Este repositorio usa **pnpm exclusivamente**. No `npm`, ni `yarn`, ni `bun`.
 
-## Créditos
+## 🤝 Créditos
 
 Proyecto **no oficial** que sólo consume datos publicados. El mérito es de quienes generan y
 mantienen la información: las estaciones **ClimaChivilcoy**, **INTA Chivilcoy** y **LW6EQG**, los
@@ -76,7 +76,7 @@ usuarios de **Weather Underground**, el **SMN** (alertas y pronóstico), **Weath
 de Brian Underdown y **Meteobridge**. La interfaz usa **Material 3** (`@material/web`).
 Las marcas, plantillas y datos pertenecen a sus respectivos autores.
 
-## Licencia
+## 📄 Licencia
 
 El **código** está bajo [MIT](./LICENSE). Los **datos meteorológicos** y las plantillas de
 terceros **no** están cubiertos por esta licencia y pertenecen a sus autores.
