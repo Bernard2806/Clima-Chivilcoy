@@ -3,6 +3,13 @@
 Documento de referencia con la identificación de cada estación del proyecto en redes
 públicas de observación, más su ubicación. Verificado el 2026-09-17/18.
 
+## Punto centro de Chivilcoy
+
+Coordenadas del punto centro de la ciudad, usadas como referencia geográfica:
+
+- Latitud: `-34.8968559839007`
+- Longitud: `-60.01908793360461`
+
 ## Resumen
 
 | Estación | Nombre en WU | Red / código | Coordenadas (lat, lon) | Elevación | Software de subida |
@@ -57,17 +64,30 @@ Comparación LW6EQG con ICHIVI22:
   lon `-60.001767`, elevación ~55 m, software `EasyWeatherV1.6.4`. Está en la misma
   ciudad pero no corresponde a ninguna de las estaciones que consume este proyecto.
 - **`ICHIVI12`** — "In-Aqua": Weather Underground, Chivilcoy, lat `-34.870264`,
-  lon `-59.997462`, elevación ~16 m, software `EasyWeatherV1.7.5`, sobre la **Ruta 30**.
-  No pertenece al proyecto y por ahora **no se consume**; queda documentada únicamente
-  a modo de referencia.
+  lon `-59.997462`, elevación ~16 m, hardware `other` (sin identificar), software
+  `EasyWeatherV1.7.5`, sobre la **Ruta 30**. No pertenece al proyecto y por ahora
+  **no se consume**; queda documentada únicamente a modo de referencia.
 - **`ICHIVI27`** — "AFA CHIVILCOY": Weather Underground, Chivilcoy, lat `-34.865`,
-  lon `-60.003`, elevación ~16 m, software `EasyWeatherPro_V5.2.2`. Muy cercana a
-  `ICHIVI12`. No pertenece al proyecto y por ahora **no se consume**; queda documentada
-  únicamente a modo de referencia.
-- **`ICORON112`** — "La blanqueada": Weather Underground, zona `Coronel Mon` (a la salida
-  de Chivilcoy, poco poblada), lat `-34.857665`, lon `-60.079049`, elevación ~17 m,
-  software sin informar. No pertenece al proyecto y por ahora **no se consume**; queda
-  documentada únicamente a modo de referencia.
+  lon `-60.003`, elevación ~16 m, hardware **AcuRite 5-in-1 Weather Station with Wi-Fi**,
+  software `EasyWeatherPro_V5.2.2`. Muy cercana a `ICHIVI12`. No pertenece al proyecto y
+  por ahora **no se consume**; queda documentada únicamente a modo de referencia.
+
+### Preferencia entre `ICHIVI12` e `ICHIVI27`
+
+`ICHIVI12` e `ICHIVI27` están a ~600 m entre sí, por lo que son **redundantes** como
+fuente y no conviene sumar ambas. En comparación directa, se prefiere **`ICHIVI27`**:
+
+| Criterio | ICHIVI12 | ICHIVI27 |
+| --- | --- | --- |
+| Hardware | `other` (sin identificar) | AcuRite 5-in-1 Weather Station with Wi-Fi |
+| Software | `EasyWeatherV1.7.5` | `EasyWeatherPro_V5.2.2` (generación "Pro", posterior) |
+| Presión (misma hora) | 996,3 hPa | 1008,0 hPa |
+| Radiación solar (misma hora) | 0,4 W/m² | 18,9 W/m² |
+
+ICHIVI27 es la **más moderna** (hardware identificado y software de generación
+posterior). Además, la presión difiere ~11,7 hPa entre ambas pese a la corta distancia
+y a la misma elevación, un indicio de barómetro descalibrado en `ICHIVI12`. Por eso la
+candidata a sumar es **`ICHIVI27`**; `ICHIVI12` queda documentada como alternativa.
 
 ## Consulta rápida (Weather Underground API)
 
