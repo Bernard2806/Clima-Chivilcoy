@@ -14,7 +14,6 @@ físicas reales y actualización automática.
 ![Astro](https://img.shields.io/badge/Astro-BC52EE?logo=astro&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
 ![pnpm](https://img.shields.io/badge/pnpm-F69220?logo=pnpm&logoColor=white)
-![Unidades](https://img.shields.io/badge/unidades-m%C3%A9tricas-blue)
 ![Licencia MIT](https://img.shields.io/badge/licencia-MIT-green)
 
 </div>
