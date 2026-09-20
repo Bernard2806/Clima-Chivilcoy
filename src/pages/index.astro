@@ -226,14 +226,14 @@ const REFRESH_SECONDS = 60;
         font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
       }
       .hero-icon-wrap.wb_sunny md-icon,
-      .hero-icon-wrap.sunny md-icon { color: #fbbc04; filter: drop-shadow(0 4px 12px rgba(251, 188, 4, 0.45)); }
-      .hero-icon-wrap.partly_cloudy_day md-icon { color: #ffa726; filter: drop-shadow(0 4px 12px rgba(255, 167, 38, 0.4)); }
-      .hero-icon-wrap.partly_cloudy_night md-icon { color: #80cbc4; }
+      .hero-icon-wrap.sunny md-icon { color: #fbbc04; }
+      .hero-icon-wrap.partly_cloudy_day md-icon { color: #ffa726; }
+      .hero-icon-wrap.partly_cloudy_night md-icon { color: #8ab4f8; }
       .hero-icon-wrap.clear_night md-icon,
-      .hero-icon-wrap.nights_stay md-icon { color: #c58af9; filter: drop-shadow(0 4px 12px rgba(197, 138, 249, 0.4)); }
-      .hero-icon-wrap.cloud md-icon { color: #a8c7fa; filter: drop-shadow(0 4px 12px rgba(168, 199, 250, 0.35)); }
-      .hero-icon-wrap.rainy md-icon { color: #7fcfff; filter: drop-shadow(0 4px 12px rgba(127, 207, 255, 0.4)); }
-      .hero-icon-wrap.thunderstorm md-icon { color: #d7aefb; filter: drop-shadow(0 4px 12px rgba(215, 174, 251, 0.4)); }
+      .hero-icon-wrap.nights_stay md-icon { color: #c58af9; }
+      .hero-icon-wrap.cloud md-icon { color: #a8c7fa; }
+      .hero-icon-wrap.rainy md-icon { color: #7fcfff; }
+      .hero-icon-wrap.thunderstorm md-icon { color: #d7aefb; }
       .hero-icon-wrap.foggy md-icon { color: #b0bec5; }
       .hero-icon-wrap.weather_snowy md-icon { color: #81d4fa; }
       .hero-icon-wrap.air md-icon { color: #80cbc4; }
@@ -273,29 +273,23 @@ const REFRESH_SECONDS = 60;
       .m3-weather-icon.wb_sunny,
       .m3-weather-icon.sunny {
         color: #fbbc04;
-        filter: drop-shadow(0 2px 5px rgba(251, 188, 4, 0.45));
       }
       .m3-weather-icon.partly_cloudy_day {
         color: #ffa726;
-        filter: drop-shadow(0 2px 5px rgba(255, 167, 38, 0.35));
       }
       .m3-weather-icon.partly_cloudy_night,
       .m3-weather-icon.clear_night,
       .m3-weather-icon.nights_stay {
         color: #c58af9;
-        filter: drop-shadow(0 2px 5px rgba(197, 138, 249, 0.35));
       }
       .m3-weather-icon.cloud {
         color: #a8c7fa;
-        filter: drop-shadow(0 2px 5px rgba(168, 199, 250, 0.3));
       }
       .m3-weather-icon.rainy {
         color: #7fcfff;
-        filter: drop-shadow(0 2px 5px rgba(127, 207, 255, 0.4));
       }
       .m3-weather-icon.thunderstorm {
         color: #d7aefb;
-        filter: drop-shadow(0 2px 5px rgba(215, 174, 251, 0.4));
       }
       .m3-weather-icon.foggy {
         color: #c4c6d0;
@@ -536,7 +530,7 @@ const REFRESH_SECONDS = 60;
       }
       .m3-forecast-row {
         display: grid;
-        grid-template-columns: 82px 48px 1fr 140px;
+        grid-template-columns: 82px 48px 1fr auto;
         align-items: center;
         padding: 10px 8px;
         border-radius: 16px;
@@ -612,7 +606,7 @@ const REFRESH_SECONDS = 60;
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        gap: 8px;
+        gap: 12px;
       }
       .m3-temp-val {
         font-size: 0.92rem;
@@ -626,43 +620,17 @@ const REFRESH_SECONDS = 60;
       .m3-temp-val.max {
         text-align: left;
         color: var(--md-sys-color-on-surface);
-        font-weight: 600;
-      }
-      .m3-temp-track-wrap {
-        flex: 1;
-        max-width: 74px;
-        min-width: 48px;
-        display: flex;
-        align-items: center;
-      }
-      .m3-temp-track {
-        width: 100%;
-        height: 5px;
-        background: rgba(255, 255, 255, 0.08);
-        border-radius: 999px;
-        position: relative;
-        overflow: hidden;
-      }
-      .m3-temp-bar-fill {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        border-radius: 999px;
-        background: linear-gradient(90deg, #7fcfff 0%, #ffd54f 65%, #ff8a65 100%);
+        font-weight: 500;
       }
 
       @media (max-width: 480px) {
         .m3-forecast-row {
-          grid-template-columns: 68px 44px 1fr 118px;
+          grid-template-columns: 68px 44px 1fr auto;
           padding: 8px 4px;
           gap: 6px;
         }
         .m3-forecast-cond {
           font-size: 0.8rem;
-        }
-        .m3-temp-track-wrap {
-          max-width: 52px;
-          min-width: 36px;
         }
       }
       @media (max-width: 380px) {
@@ -670,7 +638,7 @@ const REFRESH_SECONDS = 60;
           display: none;
         }
         .m3-forecast-row {
-          grid-template-columns: 58px 38px 1fr 105px;
+          grid-template-columns: 58px 38px 1fr auto;
         }
       }
       .smn-forecast-note {
@@ -2652,12 +2620,6 @@ const REFRESH_SECONDS = 60;
         container.hidden = false;
         list.textContent = "";
 
-        const allMins = validItems.map((i) => i.tempMin).filter((v): v is number => typeof v === "number");
-        const allMaxs = validItems.map((i) => i.tempMax).filter((v): v is number => typeof v === "number");
-        const globalMin = allMins.length > 0 ? Math.min(...allMins) : 10;
-        const globalMax = allMaxs.length > 0 ? Math.max(...allMaxs) : 30;
-        const rangeSpan = Math.max(globalMax - globalMin, 1);
-
         for (const item of validItems) {
           const row = document.createElement("div");
           row.className = "m3-forecast-row";
@@ -2718,7 +2680,7 @@ const REFRESH_SECONDS = 60;
             infoCol.appendChild(windSpan);
           }
 
-          // Col 4: Barra de temperatura Google Weather
+          // Col 4: Temperaturas mínima y máxima
           const barCol = document.createElement("div");
           barCol.className = "m3-forecast-bar-col";
 
@@ -2729,31 +2691,11 @@ const REFRESH_SECONDS = 60;
           minSpan.className = "m3-temp-val min";
           minSpan.textContent = minVal !== null ? `${fmt(minVal, 0)}°` : "--";
 
-          const trackWrap = document.createElement("div");
-          trackWrap.className = "m3-temp-track-wrap";
-          const track = document.createElement("div");
-          track.className = "m3-temp-track";
-
-          if (minVal !== null && maxVal !== null) {
-            const leftPct = Math.max(0, Math.min(100, ((minVal - globalMin) / rangeSpan) * 100));
-            const rightPct = Math.max(0, Math.min(100, ((maxVal - globalMin) / rangeSpan) * 100));
-            const widthPct = Math.max(8, rightPct - leftPct);
-
-            const fill = document.createElement("div");
-            fill.className = "m3-temp-bar-fill";
-            fill.style.left = `${leftPct.toFixed(1)}%`;
-            fill.style.width = `${widthPct.toFixed(1)}%`;
-            track.appendChild(fill);
-          }
-
-          trackWrap.appendChild(track);
-
           const maxSpan = document.createElement("span");
           maxSpan.className = "m3-temp-val max";
           maxSpan.textContent = maxVal !== null ? `${fmt(maxVal, 0)}°` : "--";
 
           barCol.appendChild(minSpan);
-          barCol.appendChild(trackWrap);
           barCol.appendChild(maxSpan);
 
           row.appendChild(dayCol);
