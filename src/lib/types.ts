@@ -2,10 +2,14 @@ export interface Forecast {
   temperature: number | null;
   summary: string | null;
   icon: string | null;
+  iconName?: string;
+  iconTheme?: string;
   period: string | null;
   periodOffsetDays: number | null;
   condition: string | null;
   details: string[];
+  stationName?: string;
+  stationLocation?: string;
 }
 
 export interface StationSnapshot {
@@ -45,6 +49,7 @@ export interface SmnAlert {
 
 export interface SmnForecastItem {
   date: string;
+  dateLabel: string;
   dayName: string;
   period: string;
   temp: number | null;
@@ -53,7 +58,10 @@ export interface SmnForecastItem {
   condition: string;
   icon: string;
   rainProb: number | null;
+  rainProbLabel: string | null;
   wind: string | null;
+  windSpeed: number | null;
+  windDirection: string | null;
 }
 
 export interface CurrentWeather {

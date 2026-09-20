@@ -48,6 +48,22 @@ function toIso(timestamp: number | null | undefined): string | null {
   }
 }
 
+function getDateLabel(dateStr: string): string {
+  try {
+    const [year, month, day] = dateStr.split("-").map(Number);
+    const date = new Date(year, month - 1, day);
+    return new Intl.DateTimeFormat("es-AR", {
+      day: "numeric",
+      month: "short",
+      timeZone: "America/Argentina/Buenos_Aires",
+    })
+      .format(date)
+      .replace(".", "");
+  } catch {
+    return dateStr;
+  }
+}
+
 function conditionToIcon(cond: string | null | undefined): string {
   const c = String(cond ?? "").toLowerCase();
   if (c.includes("tormenta")) return "thunderstorm";
@@ -56,7 +72,7 @@ function conditionToIcon(cond: string | null | undefined): string {
   if (c.includes("niebla") || c.includes("neblina")) return "foggy";
   if (c.includes("algo nublado") || c.includes("ligeramente nublado") || c.includes("parcialmente")) return "partly_cloudy_day";
   if (c.includes("nublado") || c.includes("cubierto")) return "cloud";
-  if (c.includes("despejado")) return "wb_sunny";
+  if (c.includes("despejado") || c.includes("bueno")) return "wb_sunny";
   if (c.includes("ventoso")) return "air";
   return "wb_sunny";
 }
@@ -226,12 +242,16 @@ export async function getSmnForecast(): Promise<SmnForecastItem[]> {
       const condition = afternoon.clima || "Tiempo bueno";
       const icon = conditionToIcon(condition);
 
+      const maxProb = probs.length > 0 ? Math.max(...probs) : 0;
+      const rainProbLabel = maxProb > 0 ? `${maxProb}%` : null;
+
       const windParts: string[] = [];
       if (afternoon.direccion_viento) windParts.push(afternoon.direccion_viento);
       if (afternoon.velocidad_viento_maxima) windParts.push(`${afternoon.velocidad_viento_maxima} km/h`);
 
       forecastList.push({
         date,
+        dateLabel: getDateLabel(date),
         dayName: getDayLabel(date, index),
         period: afternoon.franja_horaria || "Día",
         temp: afternoon.temperatura ?? null,
@@ -239,8 +259,11 @@ export async function getSmnForecast(): Promise<SmnForecastItem[]> {
         tempMax: maxs.length > 0 ? Math.max(...maxs) : null,
         condition,
         icon,
-        rainProb: probs.length > 0 ? Math.max(...probs) : 0,
+        rainProb: maxProb,
+        rainProbLabel,
         wind: windParts.length > 0 ? windParts.join(" ") : null,
+        windSpeed: typeof afternoon.velocidad_viento_maxima === "number" ? afternoon.velocidad_viento_maxima : null,
+        windDirection: afternoon.direccion_viento || null,
       });
 
       index++;

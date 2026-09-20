@@ -1,5 +1,9 @@
 import type { CurrentWeather } from "./types";
-import { buildForecast, translateForecastSummary } from "./translate";
+import {
+  buildForecast,
+  getConditionMaterialIcon,
+  translateForecastSummary,
+} from "./translate";
 import {
   detectTempUnit,
   round,
@@ -290,6 +294,10 @@ export async function getCurrentWeather(): Promise<CurrentWeather> {
     forecast: (() => {
       const rawSummary = pick(forecast, /Forecast -?[\d.]+ ?\u00b0 (.*)$/);
       const parts = buildForecast(rawSummary);
+      const isNight =
+        parts.period?.toLowerCase().includes("noche") ||
+        /nt_/i.test(iconPath ?? "");
+      const matIcon = getConditionMaterialIcon(parts.condition, isNight);
       return {
         temperature: toTemperature(
           pick(forecast, /Forecast (-?[\d.]+)\u00b0/),
@@ -297,10 +305,14 @@ export async function getCurrentWeather(): Promise<CurrentWeather> {
         ),
         summary: translateForecastSummary(rawSummary),
         icon: iconPath ? BASE_URL + iconPath : null,
+        iconName: matIcon.icon,
+        iconTheme: matIcon.theme,
         period: parts.period,
         periodOffsetDays: parts.periodOffsetDays,
         condition: parts.condition,
         details: parts.details,
+        stationName: "ClimaChivilcoy",
+        stationLocation: "Barrio Alsina",
       };
     })(),
     sources: [],

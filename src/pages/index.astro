@@ -212,84 +212,162 @@ const REFRESH_SECONDS = 60;
       .extremes b {
         color: var(--md-sys-color-on-surface);
       }
+      .forecast-card {
+        position: relative;
+        overflow: hidden;
+      }
+      .forecast-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
+      }
+      .forecast-title-col {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .forecast-title-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .forecast-badge {
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        padding: 3px 8px;
+        border-radius: 999px;
+        background: rgba(109, 213, 140, 0.15);
+        color: #6dd58c;
+        border: 1px solid rgba(109, 213, 140, 0.3);
+        letter-spacing: 0.04em;
+      }
+      .forecast-title {
+        font-size: 1.05rem;
+        font-weight: 600;
+        color: var(--md-sys-color-on-surface);
+        margin: 0;
+      }
+      .forecast-subtitle {
+        font-size: 0.75rem;
+        color: var(--md-sys-color-outline);
+      }
       .forecast-head {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 14px;
         margin-bottom: 12px;
       }
-      .forecast-icon {
-        width: 48px;
-        height: 48px;
-      }
-      .forecast-icon-placeholder {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        background: var(--md-sys-color-primary-container);
-        color: var(--md-sys-color-on-primary-container);
+      .forecast-icon-avatar {
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        background: var(--md-sys-color-surface-container-high);
+        border: 1px solid var(--md-sys-color-outline-variant);
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+        transition: transform 0.2s ease, background 0.2s ease;
       }
-      .forecast-icon-placeholder md-icon {
-        --md-icon-size: 28px;
+      .forecast-icon-avatar md-icon {
+        --md-icon-size: 32px;
       }
+      .forecast-icon-avatar.wb_sunny md-icon { color: #fbc02d; }
+      .forecast-icon-avatar.partly_cloudy_day md-icon { color: #ffa726; }
+      .forecast-icon-avatar.partly_cloudy_night md-icon { color: #80cbc4; }
+      .forecast-icon-avatar.clear_night md-icon,
+      .forecast-icon-avatar.nights_stay md-icon { color: #bb86fc; }
+      .forecast-icon-avatar.cloud md-icon { color: #90caf9; }
+      .forecast-icon-avatar.rainy md-icon { color: #4fc3f7; }
+      .forecast-icon-avatar.thunderstorm md-icon { color: #ba68c8; }
+      .forecast-icon-avatar.foggy md-icon { color: #b0bec5; }
+      .forecast-icon-avatar.weather_snowy md-icon { color: #81d4fa; }
+      .forecast-icon-avatar.air md-icon { color: #80cbc4; }
+
       .forecast-heading {
         display: flex;
         flex-direction: column;
+        gap: 4px;
+        min-width: 0;
+        flex: 1;
       }
-      .forecast-label {
-        font-size: 0.72rem;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: var(--md-sys-color-on-surface-variant);
-      }
-      .forecast-period {
-        font-size: 1.05rem;
-        font-weight: 500;
+      .forecast-period-badge {
+        font-size: 0.75rem;
+        font-weight: 600;
         color: var(--md-sys-color-primary);
+        background: rgba(144, 202, 249, 0.08);
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(144, 202, 249, 0.2);
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
       }
       .forecast-condition {
-        font-size: 1.35rem;
-        font-weight: 500;
-        margin-bottom: 12px;
+        font-size: 1.25rem;
+        font-weight: 600;
+        line-height: 1.25;
+        color: var(--md-sys-color-on-surface);
       }
       .forecast-details {
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
+        margin-top: 12px;
       }
       .forecast-chip {
         background: var(--md-sys-color-surface-container-high);
-        color: var(--md-sys-color-on-surface-variant);
+        border: 1px solid var(--md-sys-color-outline-variant);
+        color: var(--md-sys-color-on-surface);
         padding: 6px 12px;
         border-radius: 999px;
-        font-size: 0.85rem;
+        font-size: 0.82rem;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .forecast-chip md-icon {
+        --md-icon-size: 16px;
+        color: var(--md-sys-color-primary);
       }
       .forecast-note {
         margin: 14px 0 0;
         font-size: 0.72rem;
         line-height: 1.4;
         color: var(--md-sys-color-outline);
+        display: flex;
+        align-items: center;
+        gap: 6px;
       }
-      .smn-forecast-section {
-        margin-top: 18px;
+      .forecast-note md-icon {
+        --md-icon-size: 14px;
+        color: var(--md-sys-color-outline);
+        flex-shrink: 0;
       }
-      .smn-forecast-divider {
-        height: 1px;
-        background: var(--md-sys-color-outline-variant);
-        margin: 16px 0 14px;
-        opacity: 0.6;
+
+      /* SMN Extended Forecast Card */
+      .smn-forecast-card {
+        border: 1px solid var(--md-sys-color-outline-variant);
+        background: var(--md-sys-color-surface-container-low);
       }
       .smn-forecast-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 10px;
-        margin-bottom: 12px;
+        gap: 12px;
+        margin-bottom: 14px;
         flex-wrap: wrap;
+      }
+      .smn-forecast-title-col {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
       }
       .smn-forecast-title-row {
         display: flex;
@@ -307,16 +385,26 @@ const REFRESH_SECONDS = 60;
         letter-spacing: 0.04em;
       }
       .smn-forecast-title {
-        font-size: 0.95rem;
+        font-size: 1.05rem;
         font-weight: 600;
         color: var(--md-sys-color-on-surface);
+        margin: 0;
+      }
+      .smn-forecast-subtitle {
+        font-size: 0.75rem;
+        color: var(--md-sys-color-outline);
       }
       .smn-forecast-source {
         font-size: 0.72rem;
-        color: var(--md-sys-color-outline);
+        font-weight: 500;
+        color: var(--md-sys-color-primary);
         display: inline-flex;
         align-items: center;
         gap: 4px;
+        background: rgba(144, 202, 249, 0.08);
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(144, 202, 249, 0.15);
       }
       .smn-forecast-source md-icon {
         --md-icon-size: 14px;
@@ -324,48 +412,64 @@ const REFRESH_SECONDS = 60;
       }
       .smn-forecast-scroll {
         display: grid;
-        grid-template-columns: repeat(5, minmax(96px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(92px, 1fr));
         gap: 8px;
         overflow-x: auto;
-        padding-bottom: 6px;
+        padding-bottom: 4px;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
       }
+      @media (max-width: 620px) {
+        .smn-forecast-scroll {
+          display: flex;
+          overflow-x: auto;
+          scroll-snap-type: x mandatory;
+          padding-bottom: 8px;
+          gap: 8px;
+          scrollbar-width: thin;
+        }
+      }
       .smn-day-card {
+        min-width: 92px;
+        flex: 1;
         background: var(--md-sys-color-surface-container-high);
         border: 1px solid var(--md-sys-color-outline-variant);
         border-radius: 14px;
-        padding: 12px 6px;
+        padding: 12px 6px 10px;
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
         gap: 4px;
         scroll-snap-align: start;
-        transition: transform 0.15s ease, background-color 0.15s ease;
+        transition: transform 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
       }
       .smn-day-card:hover {
         background: var(--md-sys-color-surface-container-highest);
+        border-color: rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
       }
       .smn-day-name {
-        font-size: 0.85rem;
+        font-size: 0.88rem;
         font-weight: 700;
         color: var(--md-sys-color-on-surface);
       }
       .smn-day-date {
-        font-size: 0.7rem;
+        font-size: 0.72rem;
+        font-weight: 500;
         color: var(--md-sys-color-outline);
         margin-top: -2px;
       }
       .smn-day-icon-wrap {
-        width: 42px;
-        height: 42px;
+        width: 44px;
+        height: 44px;
         border-radius: 50%;
         background: var(--md-sys-color-surface-container-lowest);
         display: flex;
         align-items: center;
         justify-content: center;
-        margin: 4px 0;
+        margin: 6px 0;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
       }
       .smn-day-icon-wrap md-icon {
         --md-icon-size: 26px;
@@ -373,6 +477,9 @@ const REFRESH_SECONDS = 60;
       .smn-day-icon-wrap.sunny md-icon,
       .smn-day-icon-wrap.wb_sunny md-icon { color: #fbc02d; }
       .smn-day-icon-wrap.partly_cloudy_day md-icon { color: #ffa726; }
+      .smn-day-icon-wrap.partly_cloudy_night md-icon { color: #80cbc4; }
+      .smn-day-icon-wrap.clear_night md-icon,
+      .smn-day-icon-wrap.nights_stay md-icon { color: #bb86fc; }
       .smn-day-icon-wrap.cloud md-icon { color: #90caf9; }
       .smn-day-icon-wrap.rainy md-icon { color: #4fc3f7; }
       .smn-day-icon-wrap.thunderstorm md-icon { color: #ba68c8; }
@@ -396,7 +503,7 @@ const REFRESH_SECONDS = 60;
         font-size: 0.8rem;
       }
       .smn-day-desc {
-        font-size: 0.7rem;
+        font-size: 0.72rem;
         line-height: 1.25;
         color: var(--md-sys-color-on-surface-variant);
         min-height: 2.5em;
@@ -407,39 +514,49 @@ const REFRESH_SECONDS = 60;
       .smn-day-badges {
         display: flex;
         flex-direction: column;
-        gap: 3px;
+        gap: 4px;
         width: 100%;
-        margin-top: 2px;
+        margin-top: 4px;
       }
       .smn-day-badge-item {
         font-size: 0.68rem;
-        font-weight: 500;
-        padding: 2px 4px;
+        font-weight: 600;
+        padding: 3px 6px;
         border-radius: 6px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 3px;
+        gap: 4px;
       }
       .smn-day-badge-item.rain {
         background: rgba(3, 169, 244, 0.15);
         color: #4fc3f7;
+        border: 1px solid rgba(3, 169, 244, 0.25);
       }
       .smn-day-badge-item.rain md-icon {
-        --md-icon-size: 12px;
+        --md-icon-size: 13px;
       }
       .smn-day-badge-item.wind {
         background: rgba(255, 255, 255, 0.05);
         color: var(--md-sys-color-on-surface-variant);
+        border: 1px solid rgba(255, 255, 255, 0.08);
       }
       .smn-day-badge-item.wind md-icon {
-        --md-icon-size: 12px;
+        --md-icon-size: 13px;
       }
       .smn-forecast-note {
-        margin: 12px 0 0;
+        margin: 14px 0 0;
         font-size: 0.72rem;
         line-height: 1.35;
         color: var(--md-sys-color-outline);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .smn-forecast-note md-icon {
+        --md-icon-size: 14px;
+        color: var(--md-sys-color-outline);
+        flex-shrink: 0;
       }
       .smn-alerts-card {
         margin-bottom: 12px;
@@ -1540,39 +1657,50 @@ const REFRESH_SECONDS = 60;
       </section>
 
       <section class="card elevated forecast-card">
+        <div class="forecast-header">
+          <div class="forecast-title-col">
+            <div class="forecast-title-row">
+              <span class="forecast-badge" data-field="forecastStationBadge">Estación Local</span>
+              <h2 class="forecast-title">Pronóstico de la estación</h2>
+            </div>
+            <span class="forecast-subtitle" data-field="forecastStationSub">Estación ClimaChivilcoy · Barrio Alsina</span>
+          </div>
+          <span class="forecast-period-badge" data-field="forecastPeriod">--</span>
+        </div>
         <div class="forecast-head">
-          <img class="forecast-icon" data-field="forecastIcon" alt="" hidden />
-          <div class="forecast-icon-placeholder" data-field="forecastIconPlaceholder">
-            <md-icon>cloudy_snowing</md-icon>
+          <div class="forecast-icon-avatar" data-field="forecastAvatar">
+            <md-icon data-field="forecastIcon">partly_cloudy_day</md-icon>
           </div>
           <div class="forecast-heading">
-            <span class="forecast-label">Pronóstico</span>
-            <span class="forecast-period" data-field="forecastPeriod">--</span>
+            <div class="forecast-condition" data-field="forecastCondition">Sin pronóstico</div>
           </div>
         </div>
-        <div class="forecast-condition" data-field="forecastCondition">Sin pronóstico</div>
         <div class="forecast-details" data-field="forecastDetails"></div>
         <p class="forecast-note">
-          Estimación a partir de modelos meteorológicos (no es una medición en vivo de la
-          estación).
+          <md-icon>cell_tower</md-icon>
+          <span data-field="forecastNote">Pronóstico derivado de sensores y modelo meteorológico de la estación ClimaChivilcoy (Barrio Alsina).</span>
         </p>
-        <div class="smn-forecast-section" data-smn-forecast-container hidden>
-          <div class="smn-forecast-divider"></div>
-          <div class="smn-forecast-header">
+      </section>
+
+      <section class="card elevated smn-forecast-card" data-smn-forecast-container hidden>
+        <div class="smn-forecast-header">
+          <div class="smn-forecast-title-col">
             <div class="smn-forecast-title-row">
               <span class="smn-forecast-badge">Oficial SMN</span>
-              <span class="smn-forecast-title">Pronóstico extendido regional</span>
+              <h2 class="smn-forecast-title">Pronóstico extendido</h2>
             </div>
-            <span class="smn-forecast-source">
-              <md-icon>verified</md-icon>
-              Servicio Meteorológico Nacional
-            </span>
+            <span class="smn-forecast-subtitle">Región Chivilcoy · Próximos 6 días</span>
           </div>
-          <div class="smn-forecast-scroll" data-smn-forecast-list></div>
-          <p class="smn-forecast-note">
-            Emitido por el Servicio Meteorológico Nacional (SMN) para la región de Chivilcoy.
-          </p>
+          <span class="smn-forecast-source">
+            <md-icon>verified</md-icon>
+            <span>SMN Oficial</span>
+          </span>
         </div>
+        <div class="smn-forecast-scroll" data-smn-forecast-list></div>
+        <p class="smn-forecast-note">
+          <md-icon>verified_user</md-icon>
+          <span>Datos oficiales emitidos por el Servicio Meteorológico Nacional (SMN).</span>
+        </p>
       </section>
 
       <section class="card webcam-card" data-webcam-card hidden>
@@ -1985,6 +2113,16 @@ const REFRESH_SECONDS = 60;
         }
       };
 
+      const getForecastChipIcon = (text: string): string => {
+        const t = text.toLowerCase();
+        if (t.includes("máx") || t.includes("mín")) return "device_thermostat";
+        if (t.includes("viento")) return "air";
+        if (t.includes("lluvia") || t.includes("precip") || t.includes("chaparron")) return "water_drop";
+        if (t.includes("humedad")) return "humidity_mid";
+        if (t.includes("uv")) return "sunny";
+        return "info";
+      };
+
       const setForecastCard = (forecast: Record<string, any> | undefined): void => {
         const parts: string[] = [];
         if (forecast?.period) {
@@ -2000,6 +2138,20 @@ const REFRESH_SECONDS = 60;
         }
         setField("forecastCondition", condition || "Sin pronóstico");
 
+        const stationName = forecast?.stationName || "ClimaChivilcoy";
+        const stationLoc = forecast?.stationLocation || "Barrio Alsina";
+        setField("forecastStationSub", `Estación ${stationName} · ${stationLoc}`);
+        setField("forecastNote", `Pronóstico derivado de sensores y modelo meteorológico de la estación ${stationName} (${stationLoc}).`);
+
+        const avatarEl = document.querySelector<HTMLElement>('[data-field="forecastAvatar"]');
+        const iconEl = document.querySelector<HTMLElement>('[data-field="forecastIcon"]');
+        if (avatarEl && iconEl) {
+          const iconName = forecast?.iconName || "wb_sunny";
+          const iconTheme = forecast?.iconTheme || iconName;
+          iconEl.textContent = iconName;
+          avatarEl.className = `forecast-icon-avatar ${iconTheme}`;
+        }
+
         const wrap = document.querySelector<HTMLElement>('[data-field="forecastDetails"]');
         if (wrap) {
           wrap.textContent = "";
@@ -2007,7 +2159,12 @@ const REFRESH_SECONDS = 60;
           for (const detail of details) {
             const chip = document.createElement("span");
             chip.className = "forecast-chip";
-            chip.textContent = detail;
+            const icon = document.createElement("md-icon");
+            icon.textContent = getForecastChipIcon(detail);
+            const textSpan = document.createElement("span");
+            textSpan.textContent = detail;
+            chip.appendChild(icon);
+            chip.appendChild(textSpan);
             wrap.appendChild(chip);
           }
           wrap.hidden = details.length === 0;
@@ -2316,11 +2473,11 @@ const REFRESH_SECONDS = 60;
 
           const dayEl = document.createElement("span");
           dayEl.className = "smn-day-name";
-          dayEl.textContent = item.dayName;
+          dayEl.textContent = item.dayName || "--";
 
           const dateEl = document.createElement("span");
           dateEl.className = "smn-day-date";
-          dateEl.textContent = item.dateLabel;
+          dateEl.textContent = item.dateLabel || "";
 
           const iconWrap = document.createElement("div");
           const iconName = item.icon || "wb_sunny";
@@ -2337,10 +2494,12 @@ const REFRESH_SECONDS = 60;
 
           const condEl = document.createElement("span");
           condEl.className = "smn-day-desc";
-          condEl.textContent = item.description || "";
+          condEl.textContent = item.condition || item.description || "";
 
           card.appendChild(dayEl);
-          card.appendChild(dateEl);
+          if (dateEl.textContent) {
+            card.appendChild(dateEl);
+          }
           card.appendChild(iconWrap);
           card.appendChild(tempsEl);
           card.appendChild(condEl);
@@ -2348,17 +2507,27 @@ const REFRESH_SECONDS = 60;
           const badgesEl = document.createElement("div");
           badgesEl.className = "smn-day-badges";
 
-          if (item.rainProb && item.rainProb !== "0%") {
+          const rainText =
+            item.rainProbLabel ||
+            (typeof item.rainProb === "number" && item.rainProb > 0 ? `${item.rainProb}%` : null);
+
+          if (rainText && rainText !== "0%") {
             const rainEl = document.createElement("span");
             rainEl.className = "smn-day-badge-item rain";
-            rainEl.innerHTML = `<md-icon>water_drop</md-icon> ${item.rainProb}`;
+            rainEl.innerHTML = `<md-icon>water_drop</md-icon> ${rainText}`;
             badgesEl.appendChild(rainEl);
           }
 
-          if (item.windSpeed) {
+          const windLabel =
+            item.wind ||
+            (typeof item.windSpeed === "number" && item.windSpeed > 0
+              ? `${item.windSpeed} km/h${item.windDirection ? ` ${item.windDirection}` : ""}`
+              : null);
+
+          if (windLabel) {
             const windEl = document.createElement("span");
             windEl.className = "smn-day-badge-item wind";
-            windEl.innerHTML = `<md-icon>air</md-icon> ${item.windSpeed} km/h`;
+            windEl.innerHTML = `<md-icon>air</md-icon> ${windLabel}`;
             badgesEl.appendChild(windEl);
           }
 
@@ -2397,19 +2566,6 @@ const REFRESH_SECONDS = 60;
         renderStations(data);
         renderAlerts(data.alerts);
         renderSmnForecast(data.smnForecast);
-
-        const icon = document.querySelector<HTMLImageElement>('[data-field="forecastIcon"]');
-        const iconPlaceholder = document.querySelector<HTMLElement>('[data-field="forecastIconPlaceholder"]');
-        if (icon) {
-          if (data.forecast?.icon) {
-            icon.src = data.forecast.icon;
-            icon.hidden = false;
-            if (iconPlaceholder) iconPlaceholder.hidden = true;
-          } else {
-            icon.hidden = true;
-            if (iconPlaceholder) iconPlaceholder.hidden = false;
-          }
-        }
 
         setField("updated", updatedLabel(data.sourceUpdatedSeconds));
       };
