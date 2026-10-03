@@ -21,11 +21,11 @@ const REFRESH_SECONDS = 60;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=optional"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
       rel="stylesheet"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=optional"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=block"
       rel="stylesheet"
     />
     <style is:global>
@@ -64,24 +64,10 @@ const REFRESH_SECONDS = 60;
         display: none !important;
       }
       md-icon {
-        font-family: 'Material Symbols Outlined', sans-serif;
-        font-weight: normal;
-        font-style: normal;
-        font-size: var(--md-icon-size, 24px);
-        line-height: 1;
-        letter-spacing: normal;
-        text-transform: none;
+        --md-icon-font: 'Material Symbols Outlined';
+        font-family: 'Material Symbols Outlined';
         display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: var(--md-icon-size, 24px);
-        height: var(--md-icon-size, 24px);
-        white-space: nowrap;
-        word-wrap: normal;
-        direction: ltr;
-        overflow: hidden;
-        flex-shrink: 0;
-        font-feature-settings: 'liga';
+        vertical-align: middle;
       }
       md-icon-button {
         display: inline-flex;
