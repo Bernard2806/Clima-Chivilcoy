@@ -21,13 +21,21 @@ const REFRESH_SECONDS = 60;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&amp;display=swap"
-      rel="stylesheet"
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap"
+      onload="this.rel='stylesheet'"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&amp;display=block"
-      rel="stylesheet"
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=swap"
+      onload="this.rel='stylesheet'"
     />
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+      <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0..1,0&display=swap" rel="stylesheet" />
+    </noscript>
     <style is:global>
       :root {
         color-scheme: dark;
@@ -118,15 +126,23 @@ const REFRESH_SECONDS = 60;
       }
       .status.live {
         background: #6dd58c;
+        position: relative;
+      }
+      .status.live::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: #6dd58c;
         animation: pulse 2s infinite;
       }
       .status.error {
         background: var(--md-sys-color-error);
       }
       @keyframes pulse {
-        0% { box-shadow: 0 0 0 0 rgba(109, 213, 140, 0.5); }
-        70% { box-shadow: 0 0 0 8px rgba(109, 213, 140, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(109, 213, 140, 0); }
+        0% { transform: scale(1); opacity: 0.6; }
+        70% { transform: scale(2.2); opacity: 0; }
+        100% { transform: scale(2.2); opacity: 0; }
       }
       .card {
         background: var(--md-sys-color-surface-container-low);
@@ -1143,6 +1159,7 @@ const REFRESH_SECONDS = 60;
         background: var(--md-sys-color-surface-container-low);
         border: 1px solid rgba(255, 255, 255, 0.05);
         padding: 18px 16px;
+        min-height: 110px;
         transition: background-color 0.2s ease, border-color 0.2s ease;
       }
       .metric:hover {
@@ -1229,6 +1246,15 @@ const REFRESH_SECONDS = 60;
       .stations-badge-pill .pulse-dot {
         width: 7px;
         height: 7px;
+        border-radius: 50%;
+        background: #6dd58c;
+        position: relative;
+        flex-shrink: 0;
+      }
+      .stations-badge-pill .pulse-dot::after {
+        content: '';
+        position: absolute;
+        inset: 0;
         border-radius: 50%;
         background: #6dd58c;
         animation: pulse 2s infinite;
