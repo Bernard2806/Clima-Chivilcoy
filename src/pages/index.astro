@@ -89,9 +89,19 @@ const REFRESH_SECONDS = 60;
         direction: ltr;
         overflow: hidden;
         flex-shrink: 0;
-        -webkit-font-smoothing: antialiased;
-        text-rendering: optimizeLegibility;
         font-feature-settings: 'liga';
+      }
+      md-icon-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        vertical-align: middle;
       }
       body {
         margin: 0;
@@ -216,25 +226,31 @@ const REFRESH_SECONDS = 60;
         background: var(--md-sys-color-surface-container-low);
         border: 1px solid rgba(255, 255, 255, 0.06);
         padding: 24px 22px 22px;
-        min-height: 154px;
+        min-height: 180px;
         box-sizing: border-box;
       }
       .hero-row {
         display: flex;
-        align-items: center;
+        align-items: stretch;
         justify-content: space-between;
         gap: 16px;
+        min-height: 134px;
       }
       .hero-main {
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
+        min-height: 134px;
       }
       .temp {
         font-size: 5rem;
         font-weight: 300;
-        line-height: 0.95;
+        line-height: 1;
         letter-spacing: -3px;
         color: var(--md-sys-color-on-surface);
+        min-height: 72px;
+        display: flex;
+        align-items: baseline;
       }
       .temp .unit {
         font-size: 1.6rem;
@@ -245,16 +261,26 @@ const REFRESH_SECONDS = 60;
       }
       .feels {
         color: var(--md-sys-color-on-surface-variant);
-        margin: 10px 0 0;
+        margin: 6px 0 0;
         font-size: 0.92rem;
         font-weight: 400;
+        line-height: 1.2;
+        min-height: 18px;
+      }
+      .station-badge-slot {
+        min-height: 28px;
+        margin-top: 6px;
+        display: flex;
+        align-items: center;
       }
       .hero-side {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
+        justify-content: space-between;
         gap: 8px;
         flex-shrink: 0;
+        min-height: 134px;
       }
       .hero-icon-wrap {
         display: flex;
@@ -1236,7 +1262,7 @@ const REFRESH_SECONDS = 60;
         display: inline-flex;
         align-items: center;
         gap: 5px;
-        margin: 10px 0 0;
+        margin: 0;
         padding: 4px 12px;
         border-radius: 9999px;
         background: var(--md-sys-color-secondary-container);
@@ -1849,10 +1875,12 @@ const REFRESH_SECONDS = 60;
           <div class="hero-main">
             <div class="temp"><span data-field="temperature">--</span><span class="unit">°C</span></div>
             <p class="feels">Sensación térmica <span data-field="feelsLike">--</span>°</p>
-            <p class="station-badge" data-field="stationBadge" hidden>
-              <md-icon>cell_tower</md-icon>
-              <span data-field="stationBadgeText"></span>
-            </p>
+            <div class="station-badge-slot">
+              <p class="station-badge" data-field="stationBadge" hidden>
+                <md-icon>cell_tower</md-icon>
+                <span data-field="stationBadgeText"></span>
+              </p>
+            </div>
           </div>
           <div class="hero-side">
             <div class="hero-icon-wrap" data-field="heroAvatar">
