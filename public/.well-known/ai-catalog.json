@@ -6,7 +6,7 @@
   },
   "entries": [
     {
-      "identifier": "urn:ai:climachivilcoy.netlify.app:mcp:weather",
+      "identifier": "urn:air:climachivilcoy.netlify.app:mcp:weather",
       "displayName": "Clima actual de Chivilcoy",
       "type": "application/mcp-server-card+json",
       "url": "https://climachivilcoy.netlify.app/.well-known/mcp/server-card.json",
