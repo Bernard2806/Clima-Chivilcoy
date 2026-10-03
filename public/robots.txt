@@ -1,0 +1,46 @@
+User-agent: *
+Allow: /
+
+# Bloquea acceso a los endpoints de API (son para uso interno de la app)
+Disallow: /api/
+
+Sitemap: https://climachivilcoy.netlify.app/sitemap-index.xml
+
+# --- Crawlers de búsqueda de IA (indexación para respuestas de asistentes) ---
+# Permitidos: enriquecer respuestas de AI con datos del clima local
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+# --- Crawlers de entrenamiento de modelos ---
+# Bloqueados: el contenido es en tiempo real y no tiene valor como corpus de entrenamiento
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+# --- Preferencias de uso del contenido (Content Signals draft) ---
+Content-Signal: ai-train=no, search=yes, ai-input=yes

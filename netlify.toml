@@ -4,3 +4,27 @@
 
 [build.environment]
   NODE_VERSION = "22"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+[[headers]]
+  for = "/"
+  [headers.values]
+    Link = '''</.well-known/api-catalog>; rel="api-catalog", </sitemap-index.xml>; rel="sitemap"'''
+
+[[headers]]
+  for = "/.well-known/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "/.well-known/api-catalog"
+  [headers.values]
+    Content-Type = "application/linkset+json"

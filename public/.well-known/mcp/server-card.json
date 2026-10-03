@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "0.1",
+  "serverInfo": {
+    "name": "Clima Chivilcoy",
+    "version": "1.0.0",
+    "description": "API de clima en tiempo real de Chivilcoy, Buenos Aires. Ensamble ponderado de cinco estaciones meteorológicas locales más pronóstico y alertas del Servicio Meteorológico Nacional (SMN).",
+    "homepage": "https://climachivilcoy.netlify.app",
+    "contact": "https://github.com/Bernard2806/Clima-Chivilcoy"
+  },
+  "transport": {
+    "type": "http",
+    "endpoint": "https://climachivilcoy.netlify.app/api/current"
+  },
+  "capabilities": {
+    "resources": true,
+    "tools": false,
+    "prompts": false
+  },
+  "resources": [
+    {
+      "uri": "https://climachivilcoy.netlify.app/api/current",
+      "name": "Condiciones meteorológicas actuales",
+      "description": "JSON con temperatura, humedad, punto de rocío, presión, viento, lluvia, índice UV, sol, luna y pronóstico de las estaciones de Chivilcoy. Actualización cada ~60 s.",
+      "mimeType": "application/json"
+    },
+    {
+      "uri": "https://climachivilcoy.netlify.app/api/webcam",
+      "name": "Imagen de cámara en vivo",
+      "description": "Fotografía actual de la estación meteorológica de Chivilcoy. Actualización cada ~15 s.",
+      "mimeType": "image/jpeg"
+    }
+  ]
+}

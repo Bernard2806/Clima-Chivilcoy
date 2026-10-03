@@ -1,0 +1,44 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://climachivilcoy.netlify.app/api/current",
+      "service-desc": [
+        {
+          "href": "https://climachivilcoy.netlify.app/.well-known/api-catalog",
+          "type": "application/linkset+json"
+        }
+      ],
+      "service-doc": [
+        {
+          "href": "https://github.com/Bernard2806/Clima-Chivilcoy#readme",
+          "type": "text/html"
+        }
+      ],
+      "type": [
+        {
+          "value": "application/json"
+        }
+      ],
+      "describedby": [
+        {
+          "href": "https://climachivilcoy.netlify.app/.well-known/api-catalog",
+          "type": "application/linkset+json"
+        }
+      ]
+    },
+    {
+      "anchor": "https://climachivilcoy.netlify.app/api/webcam",
+      "service-doc": [
+        {
+          "href": "https://github.com/Bernard2806/Clima-Chivilcoy#readme",
+          "type": "text/html"
+        }
+      ],
+      "type": [
+        {
+          "value": "image/jpeg"
+        }
+      ]
+    }
+  ]
+}
