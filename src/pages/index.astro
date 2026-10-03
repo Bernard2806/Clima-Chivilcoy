@@ -216,6 +216,8 @@ const REFRESH_SECONDS = 60;
         background: var(--md-sys-color-surface-container-low);
         border: 1px solid rgba(255, 255, 255, 0.06);
         padding: 24px 22px 22px;
+        min-height: 154px;
+        box-sizing: border-box;
       }
       .hero-row {
         display: flex;
@@ -1182,7 +1184,11 @@ const REFRESH_SECONDS = 60;
         background: var(--md-sys-color-surface-container-low);
         border: 1px solid rgba(255, 255, 255, 0.05);
         padding: 18px 16px;
-        min-height: 110px;
+        min-height: 114px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        box-sizing: border-box;
         transition: background-color 0.2s ease, border-color 0.2s ease;
       }
       .metric:hover {
@@ -1192,6 +1198,7 @@ const REFRESH_SECONDS = 60;
         display: flex;
         align-items: center;
         gap: 6px;
+        height: 20px;
         color: var(--md-sys-color-on-surface-variant);
         font-size: 0.8rem;
         font-weight: 500;
@@ -1206,7 +1213,9 @@ const REFRESH_SECONDS = 60;
       .metric-value {
         font-size: 1.85rem;
         font-weight: 400;
-        margin-top: 8px;
+        line-height: 1.1;
+        margin-top: 6px;
+        min-height: 34px;
         color: var(--md-sys-color-on-surface);
         letter-spacing: -0.02em;
       }
@@ -1221,6 +1230,7 @@ const REFRESH_SECONDS = 60;
         font-size: 0.76rem;
         margin-top: 4px;
         line-height: 1.35;
+        min-height: 16px;
       }
       .station-badge {
         display: inline-flex;
@@ -1950,7 +1960,7 @@ const REFRESH_SECONDS = 60;
           </div>
         </div>
         <div class="webcam-frame" data-webcam-zoom role="button" tabindex="0" aria-label="Ver la cámara en pantalla completa">
-          <img class="webcam-img" data-webcam-img alt="Vista en vivo desde la estación ClimaChivilcoy" />
+          <img class="webcam-img" data-webcam-img alt="Vista en vivo desde la estación ClimaChivilcoy" width="900" height="506" loading="lazy" decoding="async" />
           <div class="webcam-overlay" data-webcam-loading>
             <md-icon>refresh</md-icon>
           </div>

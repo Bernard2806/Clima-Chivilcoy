@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import sharp from "sharp";
 import { getWebcam, type WebcamImage } from "../../lib/source";
 
 export const prerender = false;
@@ -14,6 +15,22 @@ interface CachedWebcam {
 
 let cache: CachedWebcam | null = null;
 let pending: Promise<WebcamImage | null> | null = null;
+
+async function processImage(image: WebcamImage): Promise<WebcamImage> {
+  try {
+    const optimized = await sharp(image.body)
+      .resize({ width: 900, withoutEnlargement: true })
+      .jpeg({ quality: 80, progressive: true })
+      .toBuffer();
+    return {
+      body: new Uint8Array(optimized),
+      contentType: "image/jpeg",
+      fetchedAt: image.fetchedAt,
+    };
+  } catch {
+    return image;
+  }
+}
 
 function respond(
   entry: { body: Uint8Array; contentType: string; fetchedAt: number },
@@ -42,11 +59,13 @@ export const GET: APIRoute = async ({ request }) => {
 
   if (!pending) {
     pending = getWebcam()
-      .then((result) => {
+      .then(async (result) => {
         if (result) {
-          cache = { ...result, expires: Date.now() + TTL_MS };
+          const optimized = await processImage(result);
+          cache = { ...optimized, expires: Date.now() + TTL_MS };
+          return optimized;
         }
-        return result;
+        return null;
       })
       .finally(() => {
         pending = null;
