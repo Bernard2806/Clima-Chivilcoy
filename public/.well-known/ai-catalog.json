@@ -1,47 +1,22 @@
 {
-  "specVersion": "0.1.0",
+  "specVersion": "1.0",
   "host": {
-    "name": "Clima Chivilcoy",
-    "url": "https://climachivilcoy.netlify.app",
-    "description": "Condiciones meteorológicas en tiempo real de Chivilcoy, Buenos Aires, Argentina. Ensamble de cinco estaciones locales más pronóstico y alertas oficiales del SMN.",
-    "language": "es-AR"
+    "displayName": "Clima Chivilcoy",
+    "identifier": "did:web:climachivilcoy.netlify.app"
   },
   "entries": [
     {
-      "id": "urn:air:climachivilcoy.netlify.app:weather:current",
+      "identifier": "urn:ai:climachivilcoy.netlify.app:mcp:weather",
       "displayName": "Clima actual de Chivilcoy",
-      "type": "application/json",
-      "url": "https://climachivilcoy.netlify.app/api/current",
-      "description": "Datos meteorológicos en tiempo real de Chivilcoy: temperatura (°C), sensación térmica, humedad relativa (%), punto de rocío, presión (hPa), velocidad y dirección del viento (km/h), lluvia acumulada (mm), tasa de lluvia (mm/h), índice UV, datos de sol y luna, y pronóstico local. Promedio ponderado de cinco estaciones activas. Se actualiza cada ~60 segundos.",
+      "type": "application/mcp-server-card+json",
+      "url": "https://climachivilcoy.netlify.app/.well-known/mcp/server-card.json",
+      "description": "Datos meteorológicos en tiempo real de Chivilcoy, Buenos Aires, Argentina. Temperatura, humedad, viento, lluvia, pronóstico y alertas del SMN. Ensamble de cinco estaciones locales, actualización cada ~60 s.",
       "representativeQueries": [
         "¿Cómo está el clima en Chivilcoy ahora?",
         "Temperatura actual en Chivilcoy Buenos Aires",
         "¿Está lloviendo en Chivilcoy?",
         "Humedad y viento en Chivilcoy hoy",
-        "Condiciones meteorológicas Chivilcoy en este momento"
-      ]
-    },
-    {
-      "id": "urn:air:climachivilcoy.netlify.app:weather:webcam",
-      "displayName": "Cámara en vivo de Chivilcoy",
-      "type": "image/jpeg",
-      "url": "https://climachivilcoy.netlify.app/api/webcam",
-      "description": "Imagen en tiempo real de la estación meteorológica de Chivilcoy. Se actualiza cada ~15 segundos.",
-      "representativeQueries": [
-        "Foto actual del tiempo en Chivilcoy",
-        "Cámara en vivo clima Chivilcoy"
-      ]
-    },
-    {
-      "id": "urn:air:climachivilcoy.netlify.app:web:homepage",
-      "displayName": "Página web Clima Chivilcoy",
-      "type": "text/html",
-      "url": "https://climachivilcoy.netlify.app/",
-      "description": "Aplicación web PWA con panel completo del clima de Chivilcoy: condiciones actuales, desglose por estación, pronóstico de 6 días, alertas del SMN y visor de radar/satélite.",
-      "representativeQueries": [
-        "Pronóstico del tiempo en Chivilcoy",
-        "Alertas meteorológicas Chivilcoy SMN",
-        "Radar de lluvia Chivilcoy"
+        "Pronóstico del tiempo en Chivilcoy"
       ]
     }
   ]

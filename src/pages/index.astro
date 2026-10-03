@@ -71,6 +71,28 @@ const REFRESH_SECONDS = 60;
       [hidden] {
         display: none !important;
       }
+      md-icon {
+        font-family: 'Material Symbols Outlined', sans-serif;
+        font-weight: normal;
+        font-style: normal;
+        font-size: var(--md-icon-size, 24px);
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: var(--md-icon-size, 24px);
+        height: var(--md-icon-size, 24px);
+        white-space: nowrap;
+        word-wrap: normal;
+        direction: ltr;
+        overflow: hidden;
+        flex-shrink: 0;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+        font-feature-settings: 'liga';
+      }
       body {
         margin: 0;
         min-height: 100dvh;
@@ -434,6 +456,7 @@ const REFRESH_SECONDS = 60;
         flex-wrap: wrap;
         gap: 8px;
         margin-top: 14px;
+        min-height: 38px;
       }
       .forecast-chip {
         background: var(--md-sys-color-surface-container-high);
@@ -1833,6 +1856,39 @@ const REFRESH_SECONDS = 60;
         </div>
       </section>
 
+      <section class="grid">
+        <article class="card metric">
+          <div class="metric-head"><md-icon>humidity_high</md-icon> Humedad</div>
+          <div class="metric-value"><span data-field="humidity">--</span><small>%</small></div>
+          <div class="metric-sub">Máx <span data-field="humidityMax">--</span>% · Mín <span data-field="humidityMin">--</span>%</div>
+        </article>
+        <article class="card metric">
+          <div class="metric-head"><md-icon>water_drop</md-icon> Punto de rocío</div>
+          <div class="metric-value"><span data-field="dewpoint">--</span><small>°C</small></div>
+          <div class="metric-sub" data-field="dewpointTrend">--</div>
+        </article>
+        <article class="card metric">
+          <div class="metric-head"><md-icon>speed</md-icon> Presión</div>
+          <div class="metric-value"><span data-field="pressure">--</span><small>hPa</small></div>
+          <div class="metric-sub" data-field="pressureTrend">--</div>
+        </article>
+        <article class="card metric">
+          <div class="metric-head"><md-icon>air</md-icon> Viento</div>
+          <div class="metric-value"><span data-field="windAvg">--</span><small>km/h</small></div>
+          <div class="metric-sub">Ráfaga <span data-field="windMax">--</span> km/h · Recorrido <span data-field="windRun">--</span> km</div>
+        </article>
+        <article class="card metric">
+          <div class="metric-head"><md-icon>rainy</md-icon> Lluvia hoy</div>
+          <div class="metric-value"><span data-field="rainToday">--</span><small>mm</small></div>
+          <div class="metric-sub">Mes <span data-field="rainMonth">--</span> mm</div>
+        </article>
+        <article class="card metric">
+          <div class="metric-head"><md-icon>water</md-icon> Intensidad</div>
+          <div class="metric-value"><span data-field="rainRate">--</span><small>mm/h</small></div>
+          <div class="metric-sub">Lluvia por hora</div>
+        </article>
+      </section>
+
       <section class="card elevated forecast-card">
         <div class="forecast-header">
           <div class="forecast-title-col">
@@ -1963,39 +2019,6 @@ const REFRESH_SECONDS = 60;
             </a>
           </div>
         </div>
-      </section>
-
-      <section class="grid">
-        <article class="card metric">
-          <div class="metric-head"><md-icon>humidity_high</md-icon> Humedad</div>
-          <div class="metric-value"><span data-field="humidity">--</span><small>%</small></div>
-          <div class="metric-sub">Máx <span data-field="humidityMax">--</span>% · Mín <span data-field="humidityMin">--</span>%</div>
-        </article>
-        <article class="card metric">
-          <div class="metric-head"><md-icon>water_drop</md-icon> Punto de rocío</div>
-          <div class="metric-value"><span data-field="dewpoint">--</span><small>°C</small></div>
-          <div class="metric-sub" data-field="dewpointTrend">--</div>
-        </article>
-        <article class="card metric">
-          <div class="metric-head"><md-icon>speed</md-icon> Presión</div>
-          <div class="metric-value"><span data-field="pressure">--</span><small>hPa</small></div>
-          <div class="metric-sub" data-field="pressureTrend">--</div>
-        </article>
-        <article class="card metric">
-          <div class="metric-head"><md-icon>air</md-icon> Viento</div>
-          <div class="metric-value"><span data-field="windAvg">--</span><small>km/h</small></div>
-          <div class="metric-sub">Ráfaga <span data-field="windMax">--</span> km/h · Recorrido <span data-field="windRun">--</span> km</div>
-        </article>
-        <article class="card metric">
-          <div class="metric-head"><md-icon>rainy</md-icon> Lluvia hoy</div>
-          <div class="metric-value"><span data-field="rainToday">--</span><small>mm</small></div>
-          <div class="metric-sub">Mes <span data-field="rainMonth">--</span> mm</div>
-        </article>
-        <article class="card metric">
-          <div class="metric-head"><md-icon>water</md-icon> Intensidad</div>
-          <div class="metric-value"><span data-field="rainRate">--</span><small>mm/h</small></div>
-          <div class="metric-sub">Lluvia por hora</div>
-        </article>
       </section>
 
       <section class="stations-section" data-stations-section>
