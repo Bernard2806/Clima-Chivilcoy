@@ -89,12 +89,22 @@ const REFRESH_SECONDS = 60;
         font-family: Roboto, system-ui, -apple-system, "Segoe UI", sans-serif;
         display: flex;
         justify-content: center;
-        padding: 16px 16px 72px;
+        padding: 16px 16px calc(72px + env(safe-area-inset-bottom));
         overscroll-behavior-y: contain;
         -webkit-tap-highlight-color: transparent;
       }
-      body.has-fab {
-        padding-bottom: 120px;
+      :focus-visible {
+        outline: 2px solid var(--md-sys-color-primary);
+        outline-offset: 2px;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
       }
       .app {
         width: 100%;
@@ -187,6 +197,7 @@ const REFRESH_SECONDS = 60;
         align-items: center;
         justify-content: space-between;
         gap: 14px;
+        background: var(--md-sys-color-surface-container);
       }
       .install-card strong {
         font-size: 0.95rem;
@@ -195,18 +206,51 @@ const REFRESH_SECONDS = 60;
       .install-card p {
         margin: 4px 0 0;
         font-size: 0.82rem;
+        line-height: 1.4;
         color: var(--md-sys-color-on-surface-variant);
       }
-      .install-card md-filled-button {
+      .install-actions {
+        display: flex;
+        align-items: center;
+        gap: 4px;
         flex-shrink: 0;
       }
+      .install-dismiss {
+        background: none;
+        border: none;
+        border-radius: var(--radius-pill);
+        padding: 10px 14px;
+        font: inherit;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--md-sys-color-primary);
+        cursor: pointer;
+      }
+      .install-dismiss:hover {
+        background: rgba(168, 199, 250, 0.08);
+      }
       .hero {
-        background: var(--md-sys-color-surface-container-low);
+        --hero-tint: transparent;
+        background:
+          radial-gradient(120% 140% at 100% 0%, var(--hero-tint) 0%, transparent 62%),
+          var(--md-sys-color-surface-container-low);
         border: 1px solid rgba(255, 255, 255, 0.06);
         padding: 24px 22px 22px;
         min-height: 180px;
         box-sizing: border-box;
       }
+      .hero:has(.hero-icon-wrap.wb_sunny),
+      .hero:has(.hero-icon-wrap.sunny) { --hero-tint: rgba(253, 214, 99, 0.16); }
+      .hero:has(.hero-icon-wrap.partly_cloudy_day) { --hero-tint: rgba(251, 192, 45, 0.12); }
+      .hero:has(.hero-icon-wrap.partly_cloudy_night),
+      .hero:has(.hero-icon-wrap.clear_night),
+      .hero:has(.hero-icon-wrap.nights_stay) { --hero-tint: rgba(120, 144, 230, 0.18); }
+      .hero:has(.hero-icon-wrap.cloud) { --hero-tint: rgba(154, 160, 166, 0.14); }
+      .hero:has(.hero-icon-wrap.rainy) { --hero-tint: rgba(79, 195, 247, 0.16); }
+      .hero:has(.hero-icon-wrap.thunderstorm) { --hero-tint: rgba(92, 107, 192, 0.24); }
+      .hero:has(.hero-icon-wrap.foggy) { --hero-tint: rgba(207, 216, 220, 0.12); }
+      .hero:has(.hero-icon-wrap.weather_snowy) { --hero-tint: rgba(129, 212, 250, 0.16); }
+      .hero:has(.hero-icon-wrap.air) { --hero-tint: rgba(128, 203, 196, 0.14); }
       .hero-row {
         display: flex;
         align-items: stretch;
@@ -371,18 +415,18 @@ const REFRESH_SECONDS = 60;
       .forecast-title-row {
         display: flex;
         align-items: center;
-        gap: 8px;
+        flex-wrap: wrap;
+        gap: 6px 8px;
       }
       .forecast-badge {
-        font-size: 0.68rem;
-        font-weight: 600;
-        text-transform: uppercase;
+        font-size: 0.74rem;
+        font-weight: 500;
+        white-space: nowrap;
         padding: 3px 9px;
         border-radius: 8px;
         background: rgba(109, 213, 140, 0.12);
         color: #6dd58c;
         border: 1px solid rgba(109, 213, 140, 0.25);
-        letter-spacing: 0.04em;
         display: inline-flex;
         align-items: center;
         gap: 4px;
@@ -519,18 +563,18 @@ const REFRESH_SECONDS = 60;
       .smn-forecast-title-row {
         display: flex;
         align-items: center;
-        gap: 8px;
+        flex-wrap: wrap;
+        gap: 6px 8px;
       }
       .smn-forecast-badge {
-        font-size: 0.68rem;
-        font-weight: 600;
-        text-transform: uppercase;
+        font-size: 0.74rem;
+        font-weight: 500;
+        white-space: nowrap;
         padding: 3px 9px;
         border-radius: 8px;
         background: rgba(168, 199, 250, 0.12);
         color: #a8c7fa;
         border: 1px solid rgba(168, 199, 250, 0.25);
-        letter-spacing: 0.04em;
         display: inline-flex;
         align-items: center;
         gap: 4px;
@@ -1627,10 +1671,8 @@ const REFRESH_SECONDS = 60;
         font-size: 0.78rem;
       }
       .footer-sources-label {
-        color: var(--md-sys-color-outline);
-        font-size: 0.72rem;
-        letter-spacing: 0.3px;
-        text-transform: uppercase;
+        color: var(--md-sys-color-on-surface-variant);
+        font-size: 0.78rem;
         font-weight: 500;
       }
       .footer-chips {
@@ -1682,76 +1724,21 @@ const REFRESH_SECONDS = 60;
         max-width: 480px;
         text-wrap: balance;
       }
-      .creator-badge {
-        position: fixed;
-        left: 18px;
-        bottom: calc(18px + env(safe-area-inset-bottom));
-        z-index: 11;
-        display: inline-flex;
-        align-items: center;
-        gap: 9px;
-        white-space: nowrap;
-        padding: 9px 14px 9px 11px;
-        border-radius: 999px;
-        background: linear-gradient(180deg, #1d2024 0%, #131518 100%);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        text-decoration: none;
-        color: #f4f9f9;
-        font-size: 13px;
-        font-weight: 600;
-        letter-spacing: 0.01em;
-        line-height: 1.2;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
-        transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease, bottom 0.2s ease;
-        max-width: calc(100vw - 36px);
+      .footer-credit {
+        margin: 0;
+        font-size: 0.78rem;
+        color: var(--md-sys-color-on-surface-variant);
       }
-      .creator-badge:hover,
-      .creator-badge:focus-visible {
-        border-color: rgba(168, 199, 250, 0.35);
-        transform: translateY(-1px);
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
-      }
-      body.has-fab .creator-badge {
-        bottom: calc(76px + env(safe-area-inset-bottom));
-      }
-      .creator-badge-icon {
-        font-size: 18px;
-        --md-icon-size: 18px;
-        width: 18px;
-        height: 18px;
-        color: var(--md-sys-color-primary);
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .creator-badge-text {
-        display: inline-flex;
-        align-items: baseline;
-        gap: 5px;
-      }
-      .creator-badge-label {
-        color: #c4c6d0;
+      .footer-credit a {
+        color: var(--md-sys-color-on-surface);
         font-weight: 500;
-        font-size: 13px;
+        text-decoration: underline;
+        text-decoration-color: rgba(168, 199, 250, 0.4);
+        text-underline-offset: 3px;
       }
-      .creator-badge-name {
-        color: #ffffff;
-        font-weight: 700;
-        font-size: 13px;
-        transition: color 0.2s ease;
-      }
-      .creator-badge:hover .creator-badge-name {
+      .footer-credit a:hover {
         color: var(--md-sys-color-primary);
-      }
-      .install-fab {
-        position: fixed;
-        right: 16px;
-        left: auto;
-        bottom: calc(16px + env(safe-area-inset-bottom));
-        z-index: 12;
+        text-decoration-color: currentColor;
       }
       .ptr {
         position: fixed;
@@ -1794,7 +1781,21 @@ const REFRESH_SECONDS = 60;
         .temp { font-size: 3.8rem; }
         .hero-icon-wrap md-icon { --md-icon-size: 46px; }
         .hero-side { gap: 6px; }
-        .install-card { flex-direction: column; align-items: flex-start; }
+        .install-card { flex-direction: column; align-items: stretch; }
+        .install-actions { justify-content: flex-end; }
+        .radar-badge-pill { display: none; }
+        .radar-head-sub { white-space: normal; }
+        .station-action-title,
+        .station-action-url { white-space: normal; }
+        .station-action-pill { padding: 8px; }
+        .station-action-pill > span {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          overflow: hidden;
+          clip: rect(0 0 0 0);
+          white-space: nowrap;
+        }
       }
     </style>
   </head>
@@ -1822,10 +1823,13 @@ const REFRESH_SECONDS = 60;
           <strong>Instalá la app</strong>
           <p data-install-hint>Accedé al clima con un toque, como una app de Android.</p>
         </div>
-        <md-filled-button data-install>
-          <md-icon slot="icon">download</md-icon>
-          Instalar
-        </md-filled-button>
+        <div class="install-actions">
+          <button type="button" class="install-dismiss" data-install-dismiss>Ahora no</button>
+          <md-filled-button data-install>
+            <md-icon slot="icon">download</md-icon>
+            Instalar
+          </md-filled-button>
+        </div>
       </div>
 
       <!-- Alertas SMN -->
@@ -1865,8 +1869,8 @@ const REFRESH_SECONDS = 60;
               <md-icon data-field="heroIcon">wb_sunny</md-icon>
             </div>
             <div class="extremes">
-              <span><md-icon>arrow_upward</md-icon> Máx <b data-field="temperatureMax">--</b>°</span>
-              <span><md-icon>arrow_downward</md-icon> Mín <b data-field="temperatureMin">--</b>°</span>
+              <span><md-icon>arrow_upward</md-icon> Máx <b><span data-field="temperatureMax">--</span>°</b></span>
+              <span><md-icon>arrow_downward</md-icon> Mín <b><span data-field="temperatureMin">--</span>°</b></span>
             </div>
           </div>
         </div>
@@ -1909,7 +1913,7 @@ const REFRESH_SECONDS = 60;
         <div class="forecast-header">
           <div class="forecast-title-col">
             <div class="forecast-title-row">
-              <span class="forecast-badge" data-field="forecastStationBadge">Estación Local</span>
+              <span class="forecast-badge" data-field="forecastStationBadge">Estación local</span>
               <h2 class="forecast-title">Pronóstico de la estación</h2>
             </div>
             <span class="forecast-subtitle" data-field="forecastStationSub">Estación ClimaChivilcoy · Barrio Alsina</span>
@@ -2215,31 +2219,16 @@ const REFRESH_SECONDS = 60;
         <p class="footer-note">
           Promedio de lecturas en vivo de las estaciones locales · Actualización automática cada&nbsp;{REFRESH_SECONDS}&nbsp;s
         </p>
+
+        <p class="footer-credit">
+          Hecho por <a href="https://bernard2806.is-a.dev/" target="_blank" rel="noopener noreferrer">Bernardo G. Erramuspe</a>
+        </p>
       </footer>
     </main>
 
     <div class="ptr" data-ptr aria-hidden="true">
       <md-icon>refresh</md-icon>
     </div>
-
-    <a
-      class="creator-badge"
-      href="https://bernard2806.is-a.dev/"
-      target="_blank"
-      rel="noopener noreferrer"
-      title="Website of Bernardo G. Erramuspe"
-      aria-label="Created by Bernardo G. Erramuspe (opens in a new tab)"
-    >
-      <md-icon class="creator-badge-icon">code</md-icon>
-      <span class="creator-badge-text">
-        <span class="creator-badge-label">Created by</span>
-        <span class="creator-badge-name">Bernardo G. Erramuspe</span>
-      </span>
-    </a>
-
-    <md-fab class="install-fab" data-install-fab variant="primary" label="Instalar" hidden>
-      <md-icon slot="icon">download</md-icon>
-    </md-fab>
 
     <div class="lightbox" data-lightbox role="dialog" aria-modal="true" aria-label="Cámara en pantalla completa" hidden>
       <div class="lightbox-bar">
@@ -2260,7 +2249,6 @@ const REFRESH_SECONDS = 60;
       import "@material/web/icon/icon.js";
       import "@material/web/iconbutton/icon-button.js";
       import "@material/web/button/filled-button.js";
-      import "@material/web/fab/fab.js";
 
       const REFRESH_MS = 60_000;
       const CAMERA_REFRESH_MS = 120_000;
@@ -3017,21 +3005,33 @@ const REFRESH_SECONDS = 60;
       const installCard = document.querySelector<HTMLElement>("[data-install-card]");
       const installButton = document.querySelector<HTMLElement>("[data-install]");
       const installHint = document.querySelector<HTMLElement>("[data-install-hint]");
-      const installFab = document.querySelector<HTMLElement>("[data-install-fab]");
+      const installDismiss = document.querySelector<HTMLElement>("[data-install-dismiss]");
+
+      const readFlag = (key: string): boolean => {
+        try {
+          return localStorage.getItem(key) === "1";
+        } catch {
+          return false;
+        }
+      };
+      const writeFlag = (key: string): void => {
+        try {
+          localStorage.setItem(key, "1");
+        } catch {}
+      };
 
       let canPrompt = false;
       let deferredPrompt: any = null;
-      let installed = displayStandalone() || localStorage.getItem("clima-installed") === "1";
+      let installed = displayStandalone() || readFlag("clima-installed");
+      let dismissed = readFlag("clima-install-dismissed");
 
       const refreshInstallUI = (): void => {
-        const base = isMobileOrTablet && !installed;
+        const base = isMobileOrTablet && !installed && !dismissed;
         if (installCard) installCard.hidden = !(base && (canPrompt || isIOS));
-        if (installFab) installFab.hidden = !(base && canPrompt);
         if (isIOS) {
           if (installHint) installHint.textContent = 'Tocá Compartir y elegí "Agregar a pantalla de inicio".';
           if (installButton) installButton.hidden = true;
         }
-        document.body.classList.toggle("has-fab", base && canPrompt);
       };
 
       const promptInstall = async (): Promise<void> => {
@@ -3051,11 +3051,15 @@ const REFRESH_SECONDS = 60;
       });
       window.addEventListener("appinstalled", () => {
         installed = true;
-        localStorage.setItem("clima-installed", "1");
+        writeFlag("clima-installed");
         refreshInstallUI();
       });
       installButton?.addEventListener("click", promptInstall);
-      installFab?.addEventListener("click", promptInstall);
+      installDismiss?.addEventListener("click", () => {
+        dismissed = true;
+        writeFlag("clima-install-dismissed");
+        refreshInstallUI();
+      });
       refreshInstallUI();
 
       if ("serviceWorker" in navigator && import.meta.env.PROD) {

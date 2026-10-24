@@ -148,6 +148,10 @@ const RULES: Array<[RegExp, Replacer]> = [
 
   // Periods and weekdays
   [/\bTomorrow\s+Night\b/gi, "Mañana a la noche"],
+  [/\bTomorrow\s+Morning\b/gi, "Mañana por la mañana"],
+  [/\bTomorrow\s+Afternoon\b/gi, "Mañana por la tarde"],
+  [/\bTomorrow\s+Evening\b/gi, "Mañana a la noche"],
+  [/\bThis\s+Morning\b/gi, "Esta mañana"],
   [/\bTomorrow\b/gi, "Mañana"],
   [/\bTonight\b/gi, "Esta noche"],
   [/\bToday\b/gi, "Hoy"],
@@ -189,8 +193,11 @@ const PERIOD_RULES: PeriodRule[] = [
   { pattern: /^Tomorrow Night\b/i, label: "Mañana a la noche", offsetDays: 1 },
   { pattern: /^Tonight\b/i, label: "Esta noche", offsetDays: 0 },
   { pattern: /^Overnight\b/i, label: "Esta noche", offsetDays: 0 },
+  { pattern: /^Tomorrow Morning\b/i, label: "Mañana por la mañana", offsetDays: 1 },
+  { pattern: /^Tomorrow Afternoon\b/i, label: "Mañana por la tarde", offsetDays: 1 },
+  { pattern: /^Tomorrow Evening\b/i, label: "Mañana a la noche", offsetDays: 1 },
   { pattern: /^Tomorrow\b/i, label: "Mañana", offsetDays: 1 },
-  { pattern: /^This (?:Evening|Afternoon)\b/i, label: "Hoy", offsetDays: 0 },
+  { pattern: /^This (?:Morning|Evening|Afternoon)\b/i, label: "Hoy", offsetDays: 0 },
   { pattern: /^Today\b/i, label: "Hoy", offsetDays: 0 },
   { pattern: /^Monday Night\b/i, label: "Lunes a la noche", offsetDays: 1 },
   { pattern: /^Monday\b/i, label: "Lunes", offsetDays: 1 },
@@ -227,6 +234,16 @@ export function buildForecast(raw: string | null): ForecastParts {
   let text = raw.trim();
   let period: string | null = null;
   let periodOffsetDays: number | null = null;
+  let expectedPrecipitation: string | null = null;
+
+  const precipMatch = text.match(/^(Rain|Snow)\s+([\d.]+)\s*mm\s+\d+\s*%\s*/i);
+  if (precipMatch) {
+    text = text.slice(precipMatch[0].length).trim();
+    const amount = Number.parseFloat(precipMatch[2]);
+    if (Number.isFinite(amount) && amount > 0) {
+      expectedPrecipitation = `${precipitationName(precipMatch[1])} prevista ${amount} mm`;
+    }
+  }
 
   for (const rule of PERIOD_RULES) {
     const match = text.match(rule.pattern);
@@ -245,6 +262,7 @@ export function buildForecast(raw: string | null): ForecastParts {
     .map((sentence) => translateForecastSummary(sentence) ?? sentence);
 
   const condition = sentences.shift() ?? null;
+  if (expectedPrecipitation) sentences.push(expectedPrecipitation);
 
   return { period, periodOffsetDays, condition, details: sentences };
 }
