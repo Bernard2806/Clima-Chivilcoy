@@ -10,7 +10,7 @@ Reglas y contexto para agentes que trabajen en este repositorio.
 
 ## Proyecto
 
-App web de clima **en vivo de Chivilcoy (Buenos Aires)**. Combina lecturas de **cinco
+App web de clima **en vivo de Chivilcoy (Buenos Aires)**. Combina lecturas de **tres
 estaciones meteorológicas locales** en un **ensamble ponderado por frescura**, y suma
 **pronóstico y alertas oficiales del SMN**, **cámara en vivo** y **visor de radar/satélite**.
 
@@ -44,15 +44,13 @@ modelo de predicción propio (p. ej. WeatherNex3).
 
 ## Fuentes de datos
 
-El ensamble combina **cinco estaciones**, cada una parseada en su propio módulo de `src/lib/`:
+El ensamble combina **tres estaciones**, cada una parseada en su propio módulo de `src/lib/`:
 
 | Estación | Fuente | Tipo | Módulo |
 | --- | --- | --- | --- |
 | ClimaChivilcoy (Barrio Alsina) | [climachivilcoy.com.ar](https://climachivilcoy.com.ar/) | HTML (Weather34/Meteobridge) | `source.ts` |
 | INTA Chivilcoy | [chivilcoy.gov.ar/inta/api.php](https://chivilcoy.gov.ar/inta/api.php) | API JSON | `inta.ts` |
 | LW6EQG Chivilcoy | [lw6eqg.ar](https://lw6eqg.ar/) | HTML | `lw6eqg.ts` |
-| AFA Chivilcoy (`ICHIVI27`) | Weather Underground API | JSON | `wu.ts` |
-| Chivilcoy Zona Sur (`ICHIVI4`) | Weather Underground API | JSON | `wu.ts` |
 
 Además, **SMN** (Servicio Meteorológico Nacional) aporta alertas y pronóstico extendido
 vía su FeatureServer de ArcGIS (`smn.ts`). Códigos, coordenadas y hardware de cada estación
@@ -74,7 +72,7 @@ están documentados en [docs/estaciones-publicas.md](./docs/estaciones-publicas.
 
 - El valor combinado es un **promedio ponderado por antigüedad** (`updatedSeconds`) de cada
   estación, con vida media de ~15 min y ventana fresca de ~2 min.
-- La estación base es ClimaChivilcoy (`getCurrentWeather()`); las otras cuatro son
+- La estación base es ClimaChivilcoy (`getCurrentWeather()`); las otras dos son
   `StationSnapshot` opcionales que se combinan encima.
 - Campos sin dato se resuelven con `?? current.<campo>` (fallback a ClimaChivilcoy).
 
@@ -88,7 +86,7 @@ están documentados en [docs/estaciones-publicas.md](./docs/estaciones-publicas.
 - `weather34-sun-moon-2024.php`, `weather34-Chart-forecast-2024.php`, `data-updated.php`
 
 Nota: la portada de la fuente indica `LICENSE EXPIRED 2026-05-03`; la fuente podría
-discontinuarse. Las demás estaciones (INTA, LW6EQG, WU) son las que dan resiliencia.
+discontinuarse. Las demás estaciones (INTA, LW6EQG) son las que dan resiliencia.
 
 ### Cámara y radar/satélite
 
@@ -118,7 +116,7 @@ discontinuarse. Las demás estaciones (INTA, LW6EQG, WU) son las que dan resilie
 - **No agregar comentarios** salvo que se pidan explícitamente.
 - Separar **scraping/parseo y fuentes** (`src/lib/`) de **UI** (`src/pages/`).
 - Preferir HTML/CSS liviano; evitar dependencias innecesarias.
-- Nunca hardcodear secretos ni claves: usar variables de entorno (p. ej. `WU_API_KEY`).
+- Nunca hardcodear secretos ni claves: usar variables de entorno (p. ej. `WEBCAM_URL`).
 
 ## Commits — Conventional Commits en español
 

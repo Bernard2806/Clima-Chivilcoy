@@ -33,19 +33,18 @@ físicas reales y actualización automática.
 
 ## 🛰️ Estaciones
 
-Combina cinco fuentes, cada una con su cobertura:
+Combina tres fuentes, cada una con su cobertura:
 
 | Estación | Fuente |
 | --- | --- |
 | ClimaChivilcoy | [climachivilcoy.com.ar](https://climachivilcoy.com.ar/) (Meteobridge · Weather34) |
 | INTA Chivilcoy | [chivilcoy.gov.ar/inta](https://chivilcoy.gov.ar/inta/) (API JSON) |
 | LW6EQG Chivilcoy | [lw6eqg.ar](https://lw6eqg.ar/) |
-| AFA Chivilcoy (`ICHIVI27`) | Weather Underground |
-| Chivilcoy Zona Sur (`ICHIVI4`) | Weather Underground |
 
 El valor combinado se calcula con **peso por frescura** de cada estación, de modo que las lecturas
 más recientes mandan y las estaciones caídas se descartan solas. Detalle de códigos, hardware y
-coordenadas en [docs/estaciones-publicas.md](./docs/estaciones-publicas.md).
+coordenadas en [docs/estaciones-publicas.md](./docs/estaciones-publicas.md), que también guarda
+el registro de las estaciones retiradas (AFA Chivilcoy y Chivilcoy Zona Sur, vía Weather Underground).
 
 ## 🏗️ Arquitectura
 
@@ -69,8 +68,8 @@ pnpm preview   # previsualizar el build
 ## 🤝 Créditos
 
 Proyecto **no oficial** que sólo consume datos publicados. El mérito es de quienes generan y
-mantienen la información: las estaciones **ClimaChivilcoy**, **INTA Chivilcoy** y **LW6EQG**, los
-usuarios de **Weather Underground**, el **SMN** (alertas y pronóstico), **Weather34 Aurora MKII**
+mantienen la información: las estaciones **ClimaChivilcoy**, **INTA Chivilcoy** y **LW6EQG**, el
+**SMN** (alertas y pronóstico), **Weather34 Aurora MKII**
 de Brian Underdown y **Meteobridge**. La interfaz usa **Material 3** (`@material/web`).
 Las marcas, plantillas y datos pertenecen a sus respectivos autores.
 

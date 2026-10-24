@@ -17,8 +17,11 @@ Coordenadas del punto centro de la ciudad, usadas como referencia geográfica:
 | ClimaChivilcoy | Barrio Alsina (Zona Este) | Weather Underground `ICHIVI1` | -34.903034, -60.002193 | ~50 m | meteobridge |
 | LW6EQG | LW6EQG Chivilcoy | Weather Underground `ICHIVI22` | -34.893694, -60.005607 | ~17 m | meteobridge |
 | INTA Chivilcoy | — | sin PWS en Weather Underground | -34.890556, -60.005833 | — | API propia |
-| AFA Chivilcoy | AFA CHIVILCOY | Weather Underground `ICHIVI27` | -34.865, -60.003 | ~16 m | EasyWeatherPro_V5.2.2 |
-| Chivilcoy Zona Sur | Chivilcoy, Zona Sur | Weather Underground `ICHIVI4` | -34.92062, -60.001767 | ~55 m | EasyWeatherV1.6.4 |
+| AFA Chivilcoy *(retirada)* | AFA CHIVILCOY | Weather Underground `ICHIVI27` | -34.865, -60.003 | ~16 m | EasyWeatherPro_V5.2.2 |
+| Chivilcoy Zona Sur *(retirada)* | Chivilcoy, Zona Sur | Weather Underground `ICHIVI4` | -34.92062, -60.001767 | ~55 m | EasyWeatherV1.6.4 |
+
+AFA Chivilcoy y Chivilcoy Zona Sur ya no se usan; ver
+[Estaciones retiradas](#estaciones-retiradas-registro-histórico).
 
 Dashboards de Weather Underground:
 
@@ -89,9 +92,25 @@ posterior). Además, la presión difiere ~11,7 hPa entre ambas pese a la corta d
 y a la misma elevación, un indicio de barómetro descalibrado en `ICHIVI12`. Por eso
 se incorporó **`ICHIVI27`** al ensamble del proyecto y `ICHIVI12` quedó descartada.
 
+## Estaciones retiradas (registro histórico)
+
+**AFA Chivilcoy (`ICHIVI27`)** y **Chivilcoy Zona Sur (`ICHIVI4`)** formaron parte del
+ensamble entre el 2026-09-19 y el 2026-10-24. Se leían desde la API de Weather Underground
+(`api.weather.com/v2/pws`, módulo `src/lib/wu.ts`) con la clave pública que usaba el
+propio sitio de wunderground.com. Los datos de hardware, coordenadas y comparaciones de
+este documento corresponden a ese período.
+
+El 2026-10-24 la API empezó a responder `401 API key is throttled` para ambas, aunque las
+dos estaciones seguían activas y publicando en Weather Underground. Weather Underground
+solo entrega claves de API gratuitas a quien tiene una estación propia que les sube datos.
+Como el proyecto no tiene acceso a esa API ni estación propia para generar una clave, se
+optó por **eliminarlas del ensamble y de la interfaz**.
+
+Podrían volver si en el futuro se consigue una clave de API propia (`WU_API_KEY`).
+
 ## Consulta rápida (Weather Underground API)
 
 ```bash
-apiKey="e1f10a1e78da46f5b10a1e78da96f525"
+apiKey="<tu-clave-de-weather-underground>"
 curl "https://api.weather.com/v2/pws/observations/current?stationId=ICHIVI1&format=json&units=m&numericPrecision=decimal&apiKey=$apiKey"
 ```

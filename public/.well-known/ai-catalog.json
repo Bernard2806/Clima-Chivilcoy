@@ -10,7 +10,7 @@
       "displayName": "Clima actual de Chivilcoy",
       "type": "application/mcp-server-card+json",
       "url": "https://climachivilcoy.netlify.app/.well-known/mcp/server-card.json",
-      "description": "Datos meteorológicos en tiempo real de Chivilcoy, Buenos Aires, Argentina. Temperatura, humedad, viento, lluvia, pronóstico y alertas del SMN. Ensamble de cinco estaciones locales, actualización cada ~60 s.",
+      "description": "Datos meteorológicos en tiempo real de Chivilcoy, Buenos Aires, Argentina. Temperatura, humedad, viento, lluvia, pronóstico y alertas del SMN. Ensamble de tres estaciones locales, actualización cada ~60 s.",
       "representativeQueries": [
         "¿Cómo está el clima en Chivilcoy ahora?",
         "Temperatura actual en Chivilcoy Buenos Aires",

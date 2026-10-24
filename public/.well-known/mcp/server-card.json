@@ -3,7 +3,7 @@
   "serverInfo": {
     "name": "Clima Chivilcoy",
     "version": "1.0.0",
-    "description": "API de clima en tiempo real de Chivilcoy, Buenos Aires. Ensamble ponderado de cinco estaciones meteorológicas locales más pronóstico y alertas del Servicio Meteorológico Nacional (SMN).",
+    "description": "API de clima en tiempo real de Chivilcoy, Buenos Aires. Ensamble ponderado de tres estaciones meteorológicas locales más pronóstico y alertas del Servicio Meteorológico Nacional (SMN).",
     "homepage": "https://climachivilcoy.netlify.app",
     "contact": "https://github.com/Bernard2806/Clima-Chivilcoy"
   },
