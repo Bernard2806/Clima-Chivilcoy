@@ -2655,7 +2655,9 @@ const REFRESH_SECONDS = 60;
           if (rainText && rainText !== "0%") {
             const rainProb = document.createElement("span");
             rainProb.className = "m3-forecast-rain-prob";
-            rainProb.innerHTML = `<md-icon>water_drop</md-icon>${rainText}`;
+            const rainIcon = document.createElement("md-icon");
+            rainIcon.textContent = "water_drop";
+            rainProb.append(rainIcon, rainText);
             iconCol.appendChild(rainProb);
           }
 
@@ -2676,7 +2678,9 @@ const REFRESH_SECONDS = 60;
           if (windLabel) {
             const windSpan = document.createElement("span");
             windSpan.className = "m3-forecast-wind";
-            windSpan.innerHTML = `<md-icon>air</md-icon>${windLabel}`;
+            const windIcon = document.createElement("md-icon");
+            windIcon.textContent = "air";
+            windSpan.append(windIcon, windLabel);
             infoCol.appendChild(windSpan);
           }
 
