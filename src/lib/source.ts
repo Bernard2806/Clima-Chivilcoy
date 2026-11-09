@@ -47,6 +47,9 @@ const MODULES = {
   updated: "data-updated.php",
 } as const;
 
+const MAX_CONCURRENT_MODULES = 4;
+const MODULES_TIMEOUT_MS = 8000;
+
 const ENTITIES: Array<[string, string]> = [
   ["&deg;", "\u00b0"],
   ["&deg", "\u00b0"],
@@ -106,13 +109,16 @@ function toRain(value: string | null, unit: RainUnit): number | null {
   return parsed === null ? null : round(toMm(parsed, unit));
 }
 
-async function fetchText(path: string): Promise<string | null> {
+async function fetchText(
+  path: string,
+  signal: AbortSignal,
+): Promise<string | null> {
   try {
     const url = new URL(path, BASE_URL);
     url.searchParams.set("units", "metric");
     const response = await fetch(url, {
       headers: { "User-Agent": USER_AGENT, Accept: "text/html,text/csv,*/*" },
-      signal: AbortSignal.timeout(8000),
+      signal,
       cache: "no-store",
     });
     if (!response.ok) return null;
@@ -120,6 +126,22 @@ async function fetchText(path: string): Promise<string | null> {
   } catch {
     return null;
   }
+}
+
+async function fetchModules(paths: string[]): Promise<Array<string | null>> {
+  const signal = AbortSignal.timeout(MODULES_TIMEOUT_MS);
+  const results = new Array<string | null>(paths.length).fill(null);
+  let next = 0;
+  const worker = async (): Promise<void> => {
+    while (next < paths.length) {
+      const index = next++;
+      results[index] = await fetchText(paths[index], signal);
+    }
+  };
+  await Promise.all(
+    Array.from({ length: MAX_CONCURRENT_MODULES }, () => worker()),
+  );
+  return results;
 }
 
 function normalizeTrend(value: string | null): string | null {
@@ -188,9 +210,7 @@ function parseUpdatedSeconds(text: string | null): number | null {
 
 export async function getCurrentWeather(): Promise<CurrentWeather> {
   const entries = Object.entries(MODULES);
-  const responses = await Promise.all(
-    entries.map(([, path]) => fetchText(path)),
-  );
+  const responses = await fetchModules(entries.map(([, path]) => path));
   const raw = Object.fromEntries(
     entries.map(([key], index) => [key, responses[index]]),
   ) as Record<keyof typeof MODULES, string | null>;

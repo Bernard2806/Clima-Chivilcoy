@@ -16,6 +16,7 @@ const DEGRADED_CACHE_CONTROL = "public, max-age=0, s-maxage=30";
 
 let cache: { data: CurrentWeather; storedAt: number; expires: number } | null =
   null;
+let pending: Promise<CurrentWeather | null> | null = null;
 
 function json(data: CurrentWeather, cacheControl: string): Response {
   return new Response(JSON.stringify(data), {
@@ -43,6 +44,15 @@ async function fetchWeather(): Promise<CurrentWeather> {
   };
 }
 
+function refreshWeather(): Promise<CurrentWeather | null> {
+  pending ??= fetchWeather()
+    .catch(() => null)
+    .finally(() => {
+      pending = null;
+    });
+  return pending;
+}
+
 function withElapsedAge(
   data: CurrentWeather,
   elapsedMs: number,
@@ -62,7 +72,7 @@ export const GET: APIRoute = async () => {
     return json(cache.data, FRESH_CACHE_CONTROL);
   }
 
-  const data = await fetchWeather().catch(() => null);
+  const data = await refreshWeather();
 
   if (data && data.stationCount > 0) {
     cache = { data, storedAt: now, expires: now + TTL_MS };
