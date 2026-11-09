@@ -8,6 +8,17 @@ Reglas y contexto para agentes que trabajen en este repositorio.
 > o lockfile se hace con `pnpm`. Si una guía o herramienta sugiere otro gestor, traducilo
 > a su equivalente de `pnpm` (`pnpm install`, `pnpm add <paquete>`, `pnpm dlx`, etc.).
 
+## Documentación: Context7 obligatorio
+
+> **Consultar siempre [Context7](https://context7.com/)** antes de escribir, modificar o
+> depurar código que dependa de una librería, framework, SDK, API, CLI o servicio (Astro,
+> `@astrojs/netlify`, `@material/web`, `sharp`, Netlify, etc.), incluso si creés conocerlo.
+> No confiar en la memoria: la documentación cambia entre versiones.
+
+- Usar las herramientas MCP de Context7 (`resolve-library-id` y luego `query-docs`). Si el
+  MCP no está disponible, consultar directamente https://context7.com/.
+- Pedir la documentación de la versión instalada (ver `package.json`).
+
 ## Proyecto
 
 App web de clima **en vivo de Chivilcoy (Buenos Aires)**. Combina lecturas de **tres
