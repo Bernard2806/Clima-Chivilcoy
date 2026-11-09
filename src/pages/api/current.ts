@@ -10,20 +10,22 @@ export const prerender = false;
 
 const TTL_MS = 60_000;
 const STALE_LIMIT_MS = 15 * 60_000;
-const FRESH_CACHE_CONTROL =
-  "public, max-age=0, s-maxage=60, stale-while-revalidate=120";
-const DEGRADED_CACHE_CONTROL = "public, max-age=0, s-maxage=30";
+const BROWSER_CACHE_CONTROL = "public, max-age=0, must-revalidate";
+const FRESH_CDN_CACHE_CONTROL =
+  "public, durable, s-maxage=60, stale-while-revalidate=120";
+const DEGRADED_CDN_CACHE_CONTROL = "public, s-maxage=30";
 
 let cache: { data: CurrentWeather; storedAt: number; expires: number } | null =
   null;
 let pending: Promise<CurrentWeather | null> | null = null;
 
-function json(data: CurrentWeather, cacheControl: string): Response {
+function json(data: CurrentWeather, cdnCacheControl: string): Response {
   return new Response(JSON.stringify(data), {
     status: 200,
     headers: {
       "Content-Type": "application/json; charset=utf-8",
-      "Cache-Control": cacheControl,
+      "Cache-Control": BROWSER_CACHE_CONTROL,
+      "Netlify-CDN-Cache-Control": cdnCacheControl,
     },
   });
 }
@@ -69,25 +71,25 @@ export const GET: APIRoute = async () => {
   const now = Date.now();
 
   if (cache && cache.expires > now) {
-    return json(cache.data, FRESH_CACHE_CONTROL);
+    return json(cache.data, FRESH_CDN_CACHE_CONTROL);
   }
 
   const data = await refreshWeather();
 
   if (data && data.stationCount > 0) {
     cache = { data, storedAt: now, expires: now + TTL_MS };
-    return json(data, FRESH_CACHE_CONTROL);
+    return json(data, FRESH_CDN_CACHE_CONTROL);
   }
 
   if (cache && now - cache.storedAt < STALE_LIMIT_MS) {
     return json(
       withElapsedAge(cache.data, now - cache.storedAt),
-      DEGRADED_CACHE_CONTROL,
+      DEGRADED_CDN_CACHE_CONTROL,
     );
   }
 
   if (data && (data.alerts.length > 0 || data.smnForecast.length > 0)) {
-    return json(data, DEGRADED_CACHE_CONTROL);
+    return json(data, DEGRADED_CDN_CACHE_CONTROL);
   }
 
   return new Response(
