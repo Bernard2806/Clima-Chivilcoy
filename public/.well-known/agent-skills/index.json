@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "clima-chivilcoy",
+      "type": "skill-md",
+      "description": "Consulta el clima en vivo de Chivilcoy, Buenos Aires, con pronóstico y alertas del SMN.",
+      "url": "https://climachivilcoy.netlify.app/.well-known/agent-skills/clima-chivilcoy/SKILL.md",
+      "digest": "sha256:9ef56289850b95a77ab1d2c38753d2ee044ab530400edc56da171e4cc307136b"
+    }
+  ]
+}
