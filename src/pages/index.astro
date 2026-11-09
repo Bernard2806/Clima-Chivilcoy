@@ -2758,8 +2758,11 @@ const REFRESH_SECONDS = 60;
             cache: "no-store",
           });
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
-          render(await response.json());
-          setStatus("live");
+          const data = await response.json();
+          render(data);
+          const hasReadings = data.stationCount > 0;
+          setStatus(hasReadings ? "live" : "error");
+          if (!hasReadings) setField("updated", "Sin datos de las estaciones");
           showOffline(false);
         } catch {
           const offline = navigator.onLine === false;
