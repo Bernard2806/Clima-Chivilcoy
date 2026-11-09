@@ -104,15 +104,19 @@ export function combineStations(
 
   const activeSources = group.filter((s) => s.temperature !== null && calculateWeight(s.updatedSeconds) > 0);
 
+  const reachable = group.filter((s) => calculateWeight(s.updatedSeconds) > 0);
+  const knownAge = reachable.filter((s) => s.updatedSeconds !== null && s.updatedSeconds !== undefined);
+  const extremeSources = knownAge.length > 0 ? knownAge : reachable;
+
   const mergedTemperature = avg((s) => s.temperature, 1) ?? current.temperature;
 
-  const rawMax = maxOf(group.map((s) => s.temperatureMax)) ?? current.temperatureMax;
+  const rawMax = maxOf(extremeSources.map((s) => s.temperatureMax)) ?? current.temperatureMax;
   const temperatureMax =
     rawMax !== null && mergedTemperature !== null
       ? round(Math.max(rawMax, mergedTemperature), 1)
       : rawMax;
 
-  const rawMin = minOf(group.map((s) => s.temperatureMin)) ?? current.temperatureMin;
+  const rawMin = minOf(extremeSources.map((s) => s.temperatureMin)) ?? current.temperatureMin;
   const temperatureMin =
     rawMin !== null && mergedTemperature !== null
       ? round(Math.min(rawMin, mergedTemperature), 1)
@@ -128,8 +132,8 @@ export function combineStations(
     dewpoint: avg((s) => s.dewpoint, 1) ?? current.dewpoint,
     pressure: avg((s) => s.pressure, 0) ?? current.pressure,
     windAvg: avg((s) => s.windAvg, 1) ?? current.windAvg,
-    windMax: maxOf(group.map((s) => s.windGust)) ?? current.windMax,
-    rainToday: maxOf(group.map((s) => s.rainToday), 1) ?? current.rainToday,
+    windMax: maxOf(extremeSources.map((s) => s.windGust)) ?? current.windMax,
+    rainToday: maxOf(extremeSources.map((s) => s.rainToday), 1) ?? current.rainToday,
     sources,
     stationCount: activeSources.length > 0 ? activeSources.length : group.filter((s) => s.temperature !== null).length,
   };
