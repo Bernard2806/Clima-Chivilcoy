@@ -1,3 +1,4 @@
+import { WEBCAM_URL } from "astro:env/server";
 import type { CurrentWeather } from "./types";
 import {
   buildForecast,
@@ -22,11 +23,6 @@ const BASE_URL = "https://climachivilcoy.com.ar/";
 
 const USER_AGENT =
   "ClimaChivilcoy/0.1 (+https://github.com/Bernard2806/Clima-Chivilcoy)";
-
-const WEBCAM_URL =
-  typeof process !== "undefined" && process.env?.WEBCAM_URL
-    ? process.env.WEBCAM_URL
-    : "https://content.meteobridge.com/cam/3df1b6ca785a216dcf89414ed1e056d7/camplus.jpg";
 
 export interface WebcamImage {
   body: Uint8Array;
@@ -345,6 +341,7 @@ export async function getCurrentWeather(): Promise<CurrentWeather> {
 }
 
 export async function getWebcam(): Promise<WebcamImage | null> {
+  if (!WEBCAM_URL) return null;
   try {
     const response = await fetch(WEBCAM_URL, {
       headers: { "User-Agent": USER_AGENT, Accept: "image/jpeg,image/*,*/*" },
