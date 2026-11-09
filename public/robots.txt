@@ -1,7 +1,8 @@
 User-agent: *
 Allow: /
 
-# Bloquea acceso a los endpoints de API (son para uso interno de la app)
+# Solo /api/current es pública para agentes; el resto de la API es de uso interno
+Allow: /api/current
 Disallow: /api/
 
 Sitemap: https://climachivilcoy.netlify.app/sitemap-index.xml
