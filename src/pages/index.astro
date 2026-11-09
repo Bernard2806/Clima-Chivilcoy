@@ -11,6 +11,7 @@ const REFRESH_SECONDS = 60;
     <meta name="google-site-verification" content="5b52fec84606d4e4" />
     <title>Clima Chivilcoy</title>
     <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="ai-catalog" href="/.well-known/ai-catalog.json" />
     <meta name="theme-color" content="#111318" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -3149,6 +3150,24 @@ const REFRESH_SECONDS = 60;
         if (!document.hidden) load();
       }, REFRESH_MS);
       startWebcam();
+
+      Promise.resolve()
+        .then(() =>
+          ((document as any).modelContext ?? (navigator as any).modelContext)?.registerTool({
+            name: "get_current_weather",
+            description:
+              "Devuelve el clima actual de Chivilcoy, con pronóstico y alertas del SMN, en unidades métricas.",
+            inputSchema: { type: "object", properties: {} },
+            async execute() {
+              const response = await fetch("/api/current", {
+                signal: AbortSignal.timeout(15_000),
+              });
+              if (!response.ok) throw new Error("No se pudo obtener el clima");
+              return response.json();
+            },
+          }),
+        )
+        .catch(() => {});
     </script>
   </body>
 </html>
