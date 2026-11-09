@@ -85,7 +85,9 @@ están documentados en [docs/estaciones-publicas.md](./docs/estaciones-publicas.
   estación, con vida media de ~15 min y ventana fresca de ~2 min.
 - La estación base es ClimaChivilcoy (`getCurrentWeather()`); las otras dos son
   `StationSnapshot` opcionales que se combinan encima.
-- Campos sin dato se resuelven con `?? current.<campo>` (fallback a ClimaChivilcoy).
+- Una lectura de más de 2 h no cuenta: si todas están vencidas, el campo queda en `null`.
+  Las estaciones sin antigüedad conocida pesan menos y no definen máxima, mínima, ráfaga
+  ni lluvia si hay otra con antigüedad conocida.
 
 ### Módulos en vivo de ClimaChivilcoy (fragmentos HTML, refresco ~30-60 s)
 
