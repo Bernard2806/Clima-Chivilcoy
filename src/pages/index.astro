@@ -3141,7 +3141,9 @@ const REFRESH_SECONDS = 60;
       }
 
       load();
-      setInterval(load, REFRESH_MS);
+      setInterval(() => {
+        if (!document.hidden) load();
+      }, REFRESH_MS);
       startWebcam();
     </script>
   </body>
