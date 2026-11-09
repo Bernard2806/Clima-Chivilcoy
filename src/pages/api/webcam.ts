@@ -5,6 +5,7 @@ import { getWebcam, type WebcamImage } from "../../lib/source";
 export const prerender = false;
 
 const TTL_MS = 15_000;
+const FORCE_MIN_INTERVAL_MS = 5_000;
 
 interface CachedWebcam {
   body: Uint8Array;
@@ -48,7 +49,9 @@ function respond(
 
 export const GET: APIRoute = async ({ request }) => {
   const now = Date.now();
-  const force = new URL(request.url).searchParams.get("refresh") === "1";
+  const force =
+    new URL(request.url).searchParams.get("refresh") === "1" &&
+    (!cache || now - cache.fetchedAt >= FORCE_MIN_INTERVAL_MS);
 
   if (cache && !force && cache.expires > now) {
     return respond(
