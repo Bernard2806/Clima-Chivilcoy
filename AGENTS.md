@@ -104,7 +104,7 @@ discontinuarse. Las demás estaciones (INTA, LW6EQG) son las que dan resiliencia
 ### Cámara y radar/satélite
 
 - **Cámara**: `/api/webcam` sirve la imagen de Meteobridge (`content.meteobridge.com`,
-  configurable con la env `WEBCAM_URL`). Se cachea ~15 s en el server.
+  URL en la env `WEBCAM_URL`; sin ella la cámara se oculta). Se cachea ~15 s en el server.
 - **Radar/satélite**: se cargan **del lado cliente** (iframe de RainViewer + imágenes
   estáticas de GOES-19 de NOAA). No pasan por nuestros endpoints.
 
