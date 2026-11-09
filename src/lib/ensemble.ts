@@ -6,10 +6,11 @@ const CHIVILCOY_URL = "https://climachivilcoy.com.ar/";
 const MAX_STALE_SECONDS = 7200;
 const FRESH_WINDOW_SECONDS = 120;
 const HALF_LIFE_SECONDS = 900;
+const UNKNOWN_AGE_WEIGHT = 0.25;
 
 function calculateWeight(updatedSeconds: number | null | undefined): number {
   if (updatedSeconds === null || updatedSeconds === undefined) {
-    return 1.0;
+    return UNKNOWN_AGE_WEIGHT;
   }
   const age = Math.max(0, updatedSeconds);
   if (age >= MAX_STALE_SECONDS) {
@@ -35,15 +36,7 @@ function weightedAverage(
         e.value !== null && e.value !== undefined && !Number.isNaN(e.value) && e.weight > 0,
     );
 
-  if (clean.length === 0) {
-    const fallback = entries.filter(
-      (e): e is { value: number; updatedSeconds: any } =>
-        e.value !== null && e.value !== undefined && !Number.isNaN(e.value),
-    );
-    if (fallback.length === 0) return null;
-    const sum = fallback.reduce((total, e) => total + e.value, 0);
-    return round(sum / fallback.length, digits);
-  }
+  if (clean.length === 0) return null;
 
   const totalWeight = clean.reduce((sum, e) => sum + e.weight, 0);
   if (totalWeight <= 0) return null;
@@ -108,15 +101,15 @@ export function combineStations(
   const knownAge = reachable.filter((s) => s.updatedSeconds !== null && s.updatedSeconds !== undefined);
   const extremeSources = knownAge.length > 0 ? knownAge : reachable;
 
-  const mergedTemperature = avg((s) => s.temperature, 1) ?? current.temperature;
+  const mergedTemperature = avg((s) => s.temperature, 1);
 
-  const rawMax = maxOf(extremeSources.map((s) => s.temperatureMax)) ?? current.temperatureMax;
+  const rawMax = maxOf(extremeSources.map((s) => s.temperatureMax));
   const temperatureMax =
     rawMax !== null && mergedTemperature !== null
       ? round(Math.max(rawMax, mergedTemperature), 1)
       : rawMax;
 
-  const rawMin = minOf(extremeSources.map((s) => s.temperatureMin)) ?? current.temperatureMin;
+  const rawMin = minOf(extremeSources.map((s) => s.temperatureMin));
   const temperatureMin =
     rawMin !== null && mergedTemperature !== null
       ? round(Math.min(rawMin, mergedTemperature), 1)
@@ -127,15 +120,15 @@ export function combineStations(
     temperature: mergedTemperature,
     temperatureMax,
     temperatureMin,
-    feelsLike: avg((s) => s.feelsLike, 1) ?? current.feelsLike,
-    humidity: avg((s) => s.humidity, 0) ?? current.humidity,
-    dewpoint: avg((s) => s.dewpoint, 1) ?? current.dewpoint,
-    pressure: avg((s) => s.pressure, 0) ?? current.pressure,
-    windAvg: avg((s) => s.windAvg, 1) ?? current.windAvg,
-    windMax: maxOf(extremeSources.map((s) => s.windGust)) ?? current.windMax,
-    rainToday: maxOf(extremeSources.map((s) => s.rainToday), 1) ?? current.rainToday,
+    feelsLike: avg((s) => s.feelsLike, 1),
+    humidity: avg((s) => s.humidity, 0),
+    dewpoint: avg((s) => s.dewpoint, 1),
+    pressure: avg((s) => s.pressure, 0),
+    windAvg: avg((s) => s.windAvg, 1),
+    windMax: maxOf(extremeSources.map((s) => s.windGust)),
+    rainToday: maxOf(extremeSources.map((s) => s.rainToday), 1),
     sources,
-    stationCount: activeSources.length > 0 ? activeSources.length : group.filter((s) => s.temperature !== null).length,
+    stationCount: activeSources.length,
   };
 
   return merged;
