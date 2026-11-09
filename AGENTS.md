@@ -159,11 +159,12 @@ No hay `pnpm lint` ni `pnpm typecheck` definidos. Para validar tipos usar
 
 ## Entorno
 
-- Trabajo sobre **WSL**; el repo vive en `/mnt/e/...`.
-- `node` **no está en el PATH de WSL**; existe Node de Windows (`node.exe` v24.19.0 en
-  `/mnt/c/Program Files/nodejs/`). Verificar el runtime antes de correr scripts.
-- `pnpm` está disponible (v11.25.0, instalado en Windows en
-  `/mnt/c/Users/Bernardo/AppData/Local/pnpm/bin/pnpm`). Es el único gestor permitido.
+- Trabajo sobre **Linux (Debian)**; el repo vive en
+  `/mnt/GamesHDD/Desarrollo/Private-Repos/Clima-Chivilcoy`.
+- `node` (v26.13.0) y `pnpm` (v12.18.0) se gestionan con **Volta** y están en el PATH
+  (`~/.volta/bin`). `pnpm` es el único gestor permitido.
+- Netlify compila con Node 22 (`netlify.toml`), distinto del Node local. Para reproducir
+  ese build: `volta run --node 22 --pnpm 12.18.0 pnpm build`.
 - `scripts/` incluye utilidades de desarrollo (`generate-icons.mjs`, `test-lw6eqg.mjs`);
   no forman parte del build de producción.
 
